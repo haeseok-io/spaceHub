@@ -15,6 +15,8 @@ import com.spacehub.www.model.Action;
 import com.spacehub.www.model.JsonAction;
 import com.spacehub.www.model.LikeWriteAction;
 import com.spacehub.www.model.SpaceDetailAction;
+import com.spacehub.www.model.SpaceWriteAction;
+import com.spacehub.www.model.SpaceWriteOkAction;
 
 @WebServlet("/space")
 public class SpaceControl extends HttpServlet {
@@ -35,6 +37,13 @@ public class SpaceControl extends HttpServlet {
 		} else if( cmd.equals("likeWriteOk") ) {
 			JsonAction ac = new LikeWriteAction();
 			jsonObject = ac.execute(req, resp);
+		} else if(cmd.equals("write")) {
+			Action ac = new SpaceWriteAction();
+			url = ac.execute(req, resp);
+		} else if(cmd.equals("writeOk")) {
+			Action ac = new SpaceWriteOkAction();
+			url = ac.execute(req, resp);
+			isRedirect = true;
 		}
 		
 		if( !url.equals("") ) {
