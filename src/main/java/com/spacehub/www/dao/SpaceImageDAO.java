@@ -47,19 +47,19 @@ public class SpaceImageDAO {
 	}
 	
 	// 데이터 추가
-	public void addOne(SpaceImageVO vo) {
-		sb.setLength(0);
-		sb.append("INSERT INTO space_image (path, seq, spaceno) VALUES (?, ?, ?)");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setString(1, vo.getPath());
-			pstmt.setInt(2, vo.getSeq());
-			pstmt.setInt(3, vo.getSpaceno());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		public void addOne(SpaceImageVO vo) {
+			sb.setLength(0);
+			sb.append("INSERT INTO space_image (path, seq, spaceno) VALUES (?, ?, ?)");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, vo.getPath());
+				pstmt.setInt(2, vo.getSeq());
+				pstmt.setInt(3, vo.getSpaceno());
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	// 공간 대표 이미지 추출

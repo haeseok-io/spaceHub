@@ -211,60 +211,53 @@ public class SpaceDAO {
 	}
 	
 	//하나 가져오기
-	public SpaceVO getOne(int spaceno) {
-		SpaceVO data = null;
-		
-		sb.setLength(0);
-		sb.append("select spaceno, type, loc, subject, post, addr, price, regdate, ip, v_status, status, memno ");
-		sb.append("from space ");
-		sb.append("where spaceno=?");
-		
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, spaceno);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				data = new SpaceVO(
-					rs.getInt("spaceno"),
-					rs.getString("type"),
-					rs.getString("loc"),
-					rs.getString("subject"),
-					rs.getString("post"),
-					rs.getString("addr"),
-					rs.getInt("price"),
-					rs.getString("regdate"),
-					rs.getString("ip"),
-					rs.getInt("v_status"),
-					rs.getInt("status"),
-					rs.getInt("memno")
-				);
+		public SpaceVO getOne(int spaceno) {
+			SpaceVO data = null;
+			sb.setLength(0);
+			sb.append("select spaceno, type, loc, subject, post, addr, price, regdate, ip, v_status, status, memno from space where spaceno = ? ");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, spaceno);
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					String type = rs.getString("type");
+					String loc = rs.getString("loc");
+					String subject = rs.getString("subject");
+					String post = rs.getString("post");
+					String addr = rs.getString("addr");
+					int price = rs.getInt("price");
+					String regdate = rs.getString("regdate");
+					String ip = rs.getString("ip");
+					int vStatus = rs.getInt("v_status");
+					int status = rs.getInt("status");
+					int memno = rs.getInt("memno");
+					data = new SpaceVO(spaceno, type, loc, subject, post, addr, price, regdate, ip, vStatus, status, memno);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			return data;
 		}
 		
-		return data;
-	}
-	
-	//추가
-	public void addOne(SpaceVO vo) {
-		sb.setLength(0);
-		sb.append("insert into space(type, loc, subject, post, addr, price, regdate, ip, v_status, status, memno) ");
-		sb.append("values(?,?,?,?,?,?,now(),?,1,1,?) ");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setString(1, vo.getType());
-			pstmt.setString(2, vo.getLoc());
-			pstmt.setString(3, vo.getSubject());
-			pstmt.setString(4, vo.getPost());
-			pstmt.setString(5, vo.getAddr());
-			pstmt.setInt(6, vo.getPrice());
-			pstmt.setString(7, vo.getIp());
-			pstmt.setInt(8, vo.getMemno());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//추가
+		public void addOne(SpaceVO vo) {
+			sb.setLength(0);
+			sb.append("insert into space(type, loc, subject, post, addr, price, regdate, ip, v_status, status, memno) ");
+			sb.append("values(?,?,?,?,?,?,now(),?,1,1,?) ");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, vo.getType());
+				pstmt.setString(2, vo.getLoc());
+				pstmt.setString(3, vo.getSubject());
+				pstmt.setString(4, vo.getPost());
+				pstmt.setString(5, vo.getAddr());
+				pstmt.setInt(6, vo.getPrice());
+				pstmt.setString(7, vo.getIp());
+				pstmt.setInt(8, vo.getMemno());
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	//종료

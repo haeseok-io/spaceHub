@@ -7,9 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form>
-		
-		<input type="text" name="" value="" >
-	</form>
+	<a href="/spaceHub/order?cmd=info&spaceno=1">1</a>
 </body>
 </html>

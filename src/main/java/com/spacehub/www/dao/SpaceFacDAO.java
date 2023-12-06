@@ -54,32 +54,32 @@ public class SpaceFacDAO {
 	}
 	
 	// 데이터 추가
-	public void addOne(SpaceFacVO vo) {
-		sb.setLength(0);
-		sb.setLength(0);
-		sb.append("INSERT INTO space_fac (spaceno, wifi, tv, kitchen, wm, aircon, canpark, canfreepark, swim, bbq, pooltable, fireplace, firealarm, aidkit, firearm) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());			
-			pstmt.setInt(1, vo.getSpaceno());
-			pstmt.setInt(2, vo.getWifi());
-			pstmt.setInt(3, vo.getTv());
-			pstmt.setInt(4, vo.getKitchen());
-			pstmt.setInt(5, vo.getWm());
-			pstmt.setInt(6, vo.getAircon());
-			pstmt.setInt(7, vo.getCanpark());
-			pstmt.setInt(8, vo.getCanfreepark());
-			pstmt.setInt(9, vo.getSwim());
-			pstmt.setInt(10, vo.getBbq());
-			pstmt.setInt(11, vo.getPooltable());
-			pstmt.setInt(12, vo.getFireplace());
-			pstmt.setInt(13, vo.getFirealarm());
-			pstmt.setInt(14, vo.getAidkit());
-			pstmt.setInt(15, vo.getFirearm());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		public void addOne(SpaceFacVO vo) {
+			sb.setLength(0);
+			sb.setLength(0);
+			sb.append("INSERT INTO space_fac (spaceno, wifi, tv, kitchen, wm, aircon, canpark, canfreepark, swim, bbq, pooltable, fireplace, firealarm, aidkit, firearm) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());			
+				pstmt.setInt(1, vo.getSpaceno());
+				pstmt.setInt(2, vo.getWifi());
+				pstmt.setInt(3, vo.getTv());
+				pstmt.setInt(4, vo.getKitchen());
+				pstmt.setInt(5, vo.getWm());
+				pstmt.setInt(6, vo.getAircon());
+				pstmt.setInt(7, vo.getCanpark());
+				pstmt.setInt(8, vo.getCanfreepark());
+				pstmt.setInt(9, vo.getSwim());
+				pstmt.setInt(10, vo.getBbq());
+				pstmt.setInt(11, vo.getPooltable());
+				pstmt.setInt(12, vo.getFireplace());
+				pstmt.setInt(13, vo.getFirealarm());
+				pstmt.setInt(14, vo.getAidkit());
+				pstmt.setInt(15, vo.getFirearm());
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public void close() {

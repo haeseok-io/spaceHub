@@ -7,9 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form>
-		
-		<input type="text" name="" value="" >
-	</form>
+	<h2>결제가 완료되었습니다.</h2>
+	<h2>감사합니다.</h2>
 </body>
 </html>
