@@ -13,6 +13,7 @@ public class OrderCommand implements ActionCommand {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		String s = req.getParameter("spaceno");
+		
 		if(s != null) {
 			int Spaceno = Integer.parseInt(s);
 			SpaceDAO dao = new SpaceDAO();

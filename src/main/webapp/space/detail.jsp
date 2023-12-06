@@ -302,6 +302,9 @@
 					<div class="host-message">
 						<button>호스트에게 문의하기</button>
 					</div>
+					<div class="space-order">
+						<button onclick="location.href='/spaceHub/order?cmd=info&spaceno=${detail.spaceno}'">예약하기</button>
+					</div>
 				</div>
 			</div>
 			
