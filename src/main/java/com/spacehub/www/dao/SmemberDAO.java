@@ -18,37 +18,35 @@ public class SmemberDAO {
 	}
 	
 	// 1건 조회
-	public SmemberVO getOne(int memno) {
-		SmemberVO vo = null;
-
-		sb.setLength(0);
-		sb.append("Select memno, email, name, post, addr, account_num, regdate, credits, status ");
-		sb.append("From xe.smember ");
-		sb.append("Where memno=?");
-		
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, memno);
-			rs = pstmt.executeQuery();
+		public SmemberVO getOne(int memno) {
+			sb.setLength(0);
+			sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from xe.smember where smember=?");
+			SmemberVO vo = null;
 			
-			while(rs.next()) {
-				String email = rs.getString("email");
-				String name = rs.getString("name");
-				String post = rs.getString("post");
-				String addr = rs.getString("addr");
-				String accountNum = rs.getString("account_num");
-				String regdate = rs.getString("regdate");
-				int credits = rs.getInt("credits");
-				int status = rs.getInt("status");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, memno);
+				rs = pstmt.executeQuery();
 				
-				vo = new SmemberVO(memno, email, null, name, post, addr, accountNum, regdate, credits, status);
+				while(rs.next()) {
+					String email = rs.getString("email");
+					String password = rs.getString("password");
+					String name = rs.getString("name");
+					String post = rs.getString("post");
+					String addr = rs.getString("addr");
+					String accountNum = rs.getString("account_num");
+					String regdate = rs.getString("regdate");
+					int credits = rs.getInt("credits");
+					int status = rs.getInt("status");
+					
+					vo = new SmemberVO(memno, email, password, name, post, addr, accountNum, regdate, credits, status);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return vo;
 		}
-		return vo;
-	}
 		
 		public SmemberVO getOne(String email) {
 			sb.setLength(0);

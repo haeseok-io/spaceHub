@@ -47,28 +47,28 @@ public class SpaceDetailDAO {
 	}
 	
 	// 데이터 추가
-	public void addOne(SpaceDetailVO vo) {
-		sb.setLength(0);
-		sb.setLength(0);
-		sb.append(
-				"INSERT INTO space_detail (spaceno, type, detail, max_guest, bed, bathroom, in_date, out_date, x, y) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, vo.getSpaceno());
-			pstmt.setString(2, vo.getType());
-			pstmt.setString(3, vo.getDetail());
-			pstmt.setInt(4, vo.getMaxGuest());
-			pstmt.setInt(5, vo.getBed());
-			pstmt.setInt(6, vo.getBathroom());
-			pstmt.setString(7, vo.getInDate());
-			pstmt.setString(8, vo.getOutDate());
-			pstmt.setString(9, vo.getX());
-			pstmt.setString(10, vo.getY());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		public void addOne(SpaceDetailVO vo) {
+			sb.setLength(0);
+			sb.setLength(0);
+			sb.append(
+					"INSERT INTO space_detail (spaceno, type, detail, max_guest, bed, bathroom, in_date, out_date, x, y) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, vo.getSpaceno());
+				pstmt.setString(2, vo.getType());
+				pstmt.setString(3, vo.getDetail());
+				pstmt.setInt(4, vo.getMaxGuest());
+				pstmt.setInt(5, vo.getBed());
+				pstmt.setInt(6, vo.getBathroom());
+				pstmt.setString(7, vo.getInDate());
+				pstmt.setString(8, vo.getOutDate());
+				pstmt.setString(9, vo.getX());
+				pstmt.setString(10, vo.getY());
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public void close() {

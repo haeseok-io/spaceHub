@@ -26,7 +26,7 @@
 	</style>
 </head>
 <body>
-	<h1>시몬 수정함</h1>
+	<h1>해석 수정함</h1>
 	<div class="container">
 		<form name="spaceForm" action="/spaceHub/space" method="get" enctype="multipart/form-data">
 			<input type="hidden" name="cmd" value="writeOk" />
