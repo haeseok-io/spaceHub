@@ -2,26 +2,36 @@ package com.spacehub.www.model;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
 
 import com.spacehub.www.dao.JjimDAO;
 import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.vo.SmemberVO;
 import com.spacehub.www.vo.SpaceListVO;
 
-public class SpaceListAction implements Action {
+public class SpaceListAction implements JsonAction {
 
 	@Override
-	public String execute(HttpServletRequest req, HttpServletResponse resp) {
+	public JSONObject execute(HttpServletRequest req, HttpServletResponse resp) {
+		// Val
+		JSONObject jsonObject = new JSONObject();
+
+		String subjectParam = req.getParameter("subject");
+		String inDateParam = req.getParameter("in_date");
+		String outDateParam = req.getParameter("out_date");
+		String maxGuestParam = req.getParameter("max_guest");
+		int maxGuest = 0;
+		
 		SpaceDAO spaceDAO = new SpaceDAO();
 		JjimDAO jjimDAO = new JjimDAO();
 		
-		String addr = req.getParameter("addr");
-		String inDate = req.getParameter("in_date");
-		String outDate = req.getParameter("out_date");
-		String guest = req.getParameter("max_guest");
-		int maxGuest = 0;
+		HttpSession session = req.getSession();
 		DecimalFormat formatter = new DecimalFormat("###,###");
 		
 		String page = req.getParameter("page");
@@ -29,8 +39,8 @@ public class SpaceListAction implements Action {
 		String pageScale = req.getParameter("page_scale");
 		
 		// Check
-		if( guest!=null ) {
-			maxGuest = Integer.parseInt(guest);
+		if( maxGuestParam!=null && !maxGuestParam.equals("") ) {
+			maxGuest = Integer.parseInt(maxGuestParam);
 		}
 		
 		int currentNum = 1;
@@ -41,34 +51,55 @@ public class SpaceListAction implements Action {
 		if( scale!=null && !scale.equals("") ) 			scaleNum = Integer.parseInt(scale);
 		if( pageScale!=null && !pageScale.equals("") )	pageScaleNum = Integer.parseInt(pageScale);
 		
-		int totalCount = spaceDAO.getTotalCount(addr, inDate, outDate, maxGuest);
+		int totalCount = spaceDAO.getTotalCount(subjectParam, inDateParam, outDateParam, maxGuest);
 		int totalPage = totalCount%scaleNum==0 ? totalCount/scaleNum : totalCount/scaleNum+1;
 		
 		int startNum = ((currentNum-1)*scaleNum);
 		int endNum = currentNum*scaleNum;
 		
 		// Data
-		ArrayList<SpaceListVO> list = new ArrayList<SpaceListVO>();
-		for(SpaceListVO data : spaceDAO.getList(startNum, endNum, addr, inDate, outDate, maxGuest)) {
+		// - 회원 정보
+		SmemberVO memberData = (SmemberVO)session.getAttribute("member");
+		
+		// - 가공
+		ArrayList<HashMap<String, String>> spaceList = new ArrayList<HashMap<String, String>>();
+		for(SpaceListVO data : spaceDAO.getList(startNum, endNum, subjectParam, inDateParam, outDateParam, maxGuest)) {
 			
 			// 회원 찜
-			data.setUserJjimStatus(jjimDAO.checkUser(data.getSpaceno(), 1));
+			String jjimStatus = "N";
+			if( memberData!=null ) {
+				jjimStatus = jjimDAO.checkUser(data.getSpaceno(), memberData.getMemno());
+			}
+			data.setJjimStatus(jjimStatus);
 			
 			// 가공
 			data.setPriceFormat(formatter.format(data.getPrice()));
 			
 			// 배열 담기
-			list.add(data);
+			HashMap<String, String> obj = new HashMap<String, String>();
+			obj.put("spaceno", ""+data.getSpaceno());
+			obj.put("loc", data.getLoc());
+			obj.put("subject", data.getSubject());
+			obj.put("addr", data.getAddr());
+			obj.put("price", ""+data.getPrice());
+			obj.put("priceFormat", ""+data.getPriceFormat());
+			obj.put("memno", ""+data.getMemno());
+			obj.put("inDate", ""+data.getInDate());
+			obj.put("outDate", ""+data.getOutDate());
+			obj.put("path", ""+data.getPath());
+			obj.put("rating", ""+data.getRating());
+			obj.put("userJjimStatus", data.getJjimStatus());
+			
+			spaceList.add(obj);
 		}
-		
-		req.setAttribute("list", list);
 
 		// Etc
 		spaceDAO.close();
 		jjimDAO.close();
 		
 		// Result
-		return "/main.jsp";
+		jsonObject.put("data", spaceList);
+		return jsonObject;
 	}
 	
 	

@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.spacehub.www.model.ActionCommand;
-import com.spacehub.www.model.LoginCommand;
+import com.spacehub.www.model.Action;
 import com.spacehub.www.model.LoginOkCommand;
 import com.spacehub.www.model.LogoutCommand;
-import com.spacehub.www.model.SignupCommand;
 import com.spacehub.www.model.SignupOkCommand;
 
 @WebServlet("/sign")
@@ -25,28 +23,36 @@ public class SignController extends HttpServlet{
 		
 		String cmd = req.getParameter("cmd");
 		
+		boolean isRedirect = false;
 		String msg = "";
 		String url = "";
 		
 		if(cmd == null || cmd.equals("login")) {
-			ActionCommand ac = new  LoginCommand();
+			url = "/sign/login.jsp";
+		} else if(cmd.equals("loginOk")) {
+			Action ac = new LoginOkCommand();
 			url = ac.execute(req, resp);
-		}else if(cmd.equals("signupOk")) {
-			ActionCommand ac = new SignupOkCommand();
+			
+			isRedirect = true;
+		} else if(cmd.equals("logoutOk")) {
+			Action ac = new LogoutCommand();
 			url = ac.execute(req, resp);
-		}else if(cmd.equals("signup")) {
-			ActionCommand ac = new SignupCommand();
-			url = ac.execute(req, resp);
-		}else if(cmd.equals("loginOk")) {
-			ActionCommand ac = new LoginOkCommand();
-			url = ac.execute(req, resp);
-		}else if(cmd.equals("logout")) {
-			ActionCommand ac = new LogoutCommand();
+			
+			isRedirect = true;
+		} else if(cmd.equals("signup")) {
+			url = "/sign/signup.jsp";
+		} else if(cmd.equals("signupOk")) {
+			Action ac = new SignupOkCommand();
 			url = ac.execute(req, resp);
 		}
+		
 
-		RequestDispatcher rd = req.getRequestDispatcher(url);
-		rd.forward(req, resp);
+		if( isRedirect ) {
+			resp.sendRedirect(url);
+		} else {
+			RequestDispatcher rd = req.getRequestDispatcher(url);
+			rd.forward(req, resp);			
+		}
 		
 	}
 	

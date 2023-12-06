@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>spaceHub</title>
+
+<jsp:include page="./common/common.jsp" />
 	
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" href="/spaceHub/css/common.css" />
+	<title>spaceHub</title>
+	<link rel="stylesheet" href="/spaceHub/css/datepicker.css" />
 	<style>
 		.main .inner { padding: 50px 0; }
 		.space-list { display: flex; justify-content: flex-start; flex-wrap: wrap; }
@@ -28,15 +25,20 @@
 		.space-list .list-item .item-price span { font-weight: bold; font-size: 18px; }
 	</style>
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="/spaceHub/js/datepicker.js"></script>
+	<script src="/spaceHub/js/datepicker.kr.js"></script>
 	<script>
 		$(() => {
+			// datepicker
+			$("input[name='in_date']").datepicker({language: 'kr'});
+			$("input[name='out_date']").datepicker({language: 'kr'});
+			
+			
 			// 상세검색
 			$(".search-toggle .toggle-item").click(e => {
 				let _this = $(e.currentTarget);
 				let status = _this.data('status');
 				
-				console.log(status);
 				_this.parents(".header-search").attr('data-status', status);
 			});
 			
@@ -53,7 +55,8 @@
 			});
 			
 			// 찜하기
-			$(".space-jjim i").click(e => {
+			$(document).on("click", ".space-jjim i", e => {
+				// Val
 				let _this = $(e.currentTarget);
 				let classList = _this.attr("class").split(" ");
 				
@@ -61,138 +64,121 @@
 				let processType = classList[1]=="bi-heart" ? "likeWriteOk" : "likeDeleteOk";
 				let iconName = classList[1]=="bi-heart" ? "bi-heart-fill" : "bi-heart";
 				
+				// Process
 				$.ajax({
 					type: "GET",
 					url: "/spaceHub/space",
 					data: {cmd: processType, spaceno: spaceno},
 					dataType: "json",
 					success: data => {
+						
+						if( data.errorCode ){
+							alert(data.errorMsg);
+							if( data.errorCode==="member empty" ){
+								document.location.href = "/spaceHub/sign?cmd=login";
+							}
+							
+							return;
+						}
+						
+						// 찜 아이콘 변경
 						let className = _this.attr("class");
 						className = className.replace(classList[1], iconName);
 						_this.attr("class", className);
-					},
-					error: error => {
-						let errorData = error.responseJSON;
-						alert(errorData.error);
 					}
 				});
 			});
+			
+			
+			// 초기 리스트 호출
+			callList();
 		});
+		
+		const callList = () => {
+			// Val
+			let form = $("form[name='spaceSearchForm']");
+			let appendSel = $(".space-list");
+			let appendTemplate = $("#space-template").html();
+			
+			// Init
+			appendSel.html("");
+		
+			// Process
+			$.ajax({
+				type: "GET",
+				url: "/spaceHub/space",
+				data: form.serialize(),
+				dataType: "json",
+				success: result => {
+					
+					if( result.data.length<1 ){
+						alert("데이터 없음");
+						return false;
+					}
+					
+					// 데이터 추가
+					result.data.forEach(obj => {
+						let appendHtml = $(appendTemplate);
+						
+						appendHtml.attr("data-spaceno", obj.spaceno);
+						appendHtml.find(".thumbnail-image").attr("src", obj.path);
+						appendHtml.find(".subject-name").text(obj.subject);
+						appendHtml.find(".rating-value").text(obj.rating);
+						appendHtml.find(".info-addr").text(obj.addr);
+						appendHtml.find(".info-date").text(obj.inDate+" ~ "+obj.outDate);
+						appendHtml.find(".price-value").text(obj.priceFormat);
+						
+						// 찜 아이콘
+						let jjimIconClass = obj.jjimStatus=='Y' ? "bi-heart-fill" : "bi-heart";
+						appendHtml.find(".jjim-icon").addClass(jjimIconClass);
+						
+						appendSel.append(appendHtml);
+					});				
+				}
+			});
+			
+			return false;
+		}
 	</script>
 	
-</head>
-<body>
-
-	<div id="header">
-		<div class="inner">
-			<div class="header-logo">
-				<h1>
-					<a href="">spaceHub</a>
-				</h1>
-			</div>
-			<div class="header-search" data-status="Y">
-				<div class="search-toggle">
-					<div class="toggle-item" data-status="N">
-						어디든 | 언제든 일주일 | 게스트
-						<i class="bi bi-search"></i>
-					</div>
-					<div class="toggle-item" data-status="Y">
-						원하는 조건을 검색해보세요.
-						<i class="bi bi-x-lg"></i>
-					</div>
-				</div>
-				
-				<div class="search-field">
-					<div class="search-wrap">
-						<form action="/spaceHub/home" method="get">
-							<input type="hidden" name="cmd" value="list" />
-							
-							<ul class="search-list">
-								<li class="list-item">
-									<p class="item-title">여행</p>
-									<div class="item-data">
-										<input type="text" name="addr" placeholder="여행지 검색" value="" />
-									</div>
-								</li>
-								<li class="list-item">
-									<p class="item-title">체크인</p>
-									<div class="item-data">
-										<input type="text" name="in_date" placeholder="날짜 입력" readonly />
-									</div>
-								</li>
-								<li class="list-item">
-									<p class="item-title">체크아웃</p>
-									<div class="item-data">
-										<input type="text" name="out_date" placeholder="날짜 입력" readonly />
-									</div>
-								</li>
-								<li class="list-item guest">
-									<p class="item-title">게스트</p>
-									<div class="item-data">
-										<button type="button" class="gueest-control-button" data-type="minus">
-											<i class="bi bi-dash-lg"></i>
-										</button>
-										<input type="text" name="max_guest" placeholder="게스트 인원" value="0" />
-										<button type="button" class="guest-control-button" data-type="plus">
-											<i class="bi bi-plus-lg"></i>
-										</button>
-									</div>
-								</li>
-							</ul>
-							<div class="search-button">
-								<button type="submit">검색</button>
-							</div>
-						</form>					
-					</div>
-				</div>
-			</div>
-			<div class="header-gnb">
-				<a href="/spaceHub/sign?cmd-login">로그인</a>
-			</div>
-		</div>
-	</div>
+<jsp:include page="./common/header.jsp" />
 
 	<div class="main">
 		<div class="inner">
 			<div class="space">
-				<ul class="space-list">
-					<c:forEach var="data" items="${requestScope.list}">
-						<li class="list-item" data-spaceno="${data.spaceno}">
-							<div class="item-thumbnail">
-								<img src="${data.path}" width="150" alt="">
-								<span class="space-jjim">
-									<c:if test="${data.userJjimStatus}">
-									<i class="bi bi-heart-fill"></i>
-									</c:if>
-									<c:if test="${!data.userJjimStatus}">
-									<i class="bi bi-heart"></i>
-									</c:if>
-								</span>
-							</div>
-							<div class="item-subject">
-								<p class="subject-name">${data.subject}</p>
-								<span class="subject-rating">
-									<i class="bi bi-star-fill"></i>
-									${data.rating}
-								</span>
-							</div>
-							<div class="item-info">
-								<p class="info-addr">${data.addr}</p>
-								<p class="info-date">
-									${data.inDate} ~ ${data.outDate}
-								</p>
-							</div>
-							<div class="item-price">
-								<span class="price">₩ ${data.priceFormat}</span>
-								/ 1박
-							</div>
-						</li>
-					</c:forEach>
-				</ul>
+				<ul class="space-list"></ul>
 			</div>
-
 		</div>
 	</div>
+	
+	
+	<!-- 공간 리스트 템플릿 -->
+	<template id="space-template">
+		<li class="list-item" data-spaceno="">
+			<div class="item-thumbnail">
+				<img src="" alt="" class="thumbnail-image" />
+				<span class="space-jjim">
+					<i class="jjim-icon bi"></i>
+				</span>
+			</div>
+			<div class="item-subject">
+				<p class="subject-name"></p>
+				<span class="subject-rating">
+					<i class="bi bi-star-fill"></i>
+					<span class="rating-value"></span>
+				</span>
+			</div>
+			<div class="item-info">
+				<p class="info-addr"></p>
+				<p class="info-date"></p>
+			</div>
+			<div class="item-price">
+				₩ <span class="price-value"></span>
+				/ 1박
+			</div>
+		</li>
+	</template>
+	
 
 </body>
 </html>
