@@ -24,7 +24,6 @@
 	    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
 	    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	</style>
-
 </head>
 <body>
 	<h1>시몬 수정함</h1>
