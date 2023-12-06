@@ -147,7 +147,7 @@
 				</div>
 			</div>
 			<div class="header-gnb">
-				메
+				<a href="/spaceHub/sign?cmd-login">로그인</a>
 			</div>
 		</div>
 	</div>
