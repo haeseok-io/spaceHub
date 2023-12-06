@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.JjimListVO;
 import com.spacehub.www.vo.SpaceListVO;
 import com.spacehub.www.vo.SpaceVO;
 
@@ -244,6 +245,46 @@ public class SpaceDAO {
 		}
 		
 		return data;
+	}
+	
+	// 찜 리스트
+	public ArrayList<JjimListVO> getJjimList(int memno) {
+		ArrayList<JjimListVO> list = new ArrayList<JjimListVO>();
+
+		sb.setLength(0);
+		sb.append("select smember.memno, space_image.path, space.subject, space.spaceno, space_detail.bed, "
+				+ "space_detail.in_date, space_detail.out_date, space.price, jjim.jjimno ");
+		sb.append("from space ");
+		sb.append("join space_image on space.spaceno = space_image.spaceno ");
+		sb.append("join space_detail on space.spaceno = space_detail.spaceno ");
+		sb.append("join jjim on space.spaceno = jjim.spaceno ");
+		sb.append("join smember on space.memno = smember.memno ");
+		sb.append("where smember.memno=?");
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String path = rs.getString("space_image.path");
+				String subject = rs.getString("space.subject");
+				int spaceno = rs.getInt("space.spaceno");
+				int bed = rs.getInt("space_detail.bed");
+				String inDate = rs.getString("space_detail.in_date");
+				String outDate = rs.getString("space_detail.out_date");
+				int price = rs.getInt("space.price");
+				int jjimno = rs.getInt("jjim.jjimno");
+				
+				JjimListVO vo = new JjimListVO(memno, path, subject, spaceno, bed, inDate, outDate, price, jjimno);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 	
 	//추가
