@@ -1,3 +1,6 @@
+<%@page import="com.spacehub.www.vo.ReservMessageVO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.spacehub.www.dao.MessageDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,6 +18,11 @@
 		$("#msggo").append("나 : "+mes+"\n");
 		$("#mes").val("");
 	}
+	
+	$(()=>{
+		var value = '<c:out value="${mlist.contents}"/>';
+		$("#msggo").text(value);
+	});
 
 </script>
 <style type="text/css">

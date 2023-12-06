@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import com.spacehub.www.vo.MessageMemSpaceVO;
 import com.spacehub.www.vo.MessageVO;
-import com.spacehub.www.vo.SpaceHostVO;
+import com.spacehub.www.vo.ReservMessageVO;
 
 public class MessageDAO {
 	Connection conn = null;
@@ -44,7 +44,7 @@ public class MessageDAO {
 	public ArrayList<MessageMemSpaceVO> getMsg(int reservno){
 		ArrayList<MessageMemSpaceVO> list = new ArrayList<MessageMemSpaceVO>();
 		sb.setLength(0);
-		sb.append("select m.memno, m.name, e.regdate, e.messageno, e.bno, r.spaceno, s.subject, r.reservno from smember m, message e, space s, reservation r where r.spaceno=s.spaceno and s.memno=m.memno and r.spaceno=e.spaceno  and reservno=? order by e.regdate desc limit 1;");
+		sb.append("select m.memno, m.name, e.regdate, e.messageno, e.bno, r.spaceno, s.subject, r.reservno from smember m, message e, space s, reservation r where r.spaceno=s.spaceno and s.memno=m.memno and r.spaceno=e.spaceno  and reservno=? order by e.regdate desc limit 1");
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, reservno);
@@ -58,6 +58,39 @@ public class MessageDAO {
 				int spaceno = rs.getInt("spaceno");
 				String subject = rs.getString("subject");
 				MessageMemSpaceVO vo = new MessageMemSpaceVO(memno, name, regdate, messageno, bno, spaceno, subject, reservno);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<ReservMessageVO> getMC(int reservno){
+		ArrayList<ReservMessageVO> list = new ArrayList<ReservMessageVO>();
+		sb.setLength(0);
+		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, m.messageno, m.bno, m.contents from reservation r, message m where r.spaceno=m.spaceno and r.reservno=? order by m.regdate");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, reservno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String checkin = rs.getString("checkin");
+				String checkout = rs.getString("checkout");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				int price = rs.getInt("price");
+				int guest = rs.getInt("guest");
+				int dcratio = rs.getInt("dcratio");
+				String regdate = rs.getString("regdate");
+				int status = rs.getInt("status");
+				String ip = rs.getString("ip");
+				int spaceno = rs.getInt("spaceno");
+				int memno = rs.getInt("memno");
+				int messageno = rs.getInt("messageno");
+				int bno = rs.getInt("bno");
+				String contents = rs.getString("contents");
+				ReservMessageVO vo = new ReservMessageVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno, messageno, bno, contents);
 				list.add(vo);
 			}
 		} catch (SQLException e) {
