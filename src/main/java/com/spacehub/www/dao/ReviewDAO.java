@@ -73,6 +73,31 @@ public class ReviewDAO {
 		return list;
 	}
 	
+<<<<<<< HEAD
+=======
+	public ArrayList<ReviewVO> getAll(int memno){
+		ArrayList<ReviewVO> list = new ArrayList<ReviewVO>();
+		sb.setLength(0);
+		sb.append("select reviewno, subject, contents, rating, regdate, status, ip, memno, reservno ");
+		sb.append("from review where memno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(new ReviewVO(
+						rs.getInt("reviewno"), rs.getString("subject"), rs.getString("contents"),
+						rs.getInt("rating"), rs.getString("regdate"), rs.getInt("status"),
+						rs.getString("ip"), rs.getInt("memno"), rs.getInt("reservno")
+						));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+>>>>>>> refs/heads/master
 	//하나 가져오기
 	public ReviewVO getOne(int reviewno) {
 		ReviewVO data = null;
