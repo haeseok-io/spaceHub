@@ -19,6 +19,6 @@ public class ModifyAction implements Action{
 			req.setAttribute("vo", vo);
 			dao.close();
 		}
-		return "modifyForm.jsp";
+		return "/mypage/modifyForm.jsp";
 	}
 }

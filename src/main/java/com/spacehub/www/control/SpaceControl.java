@@ -21,6 +21,33 @@ import com.spacehub.www.model.SpaceWriteOkAction;
 @WebServlet("/space")
 public class SpaceControl extends HttpServlet {
 	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+
+		String cmd = req.getParameter("cmd");
+		
+		boolean isRedirect = false;
+		String url = "";
+		
+		if(cmd!=null && cmd.equals("writeOk")) {
+			Action ac = new SpaceWriteOkAction();
+			url = ac.execute(req, resp);
+			isRedirect = true;
+		}
+		
+		if( !url.equals("") ) {
+			if( isRedirect ) {
+				resp.sendRedirect(url);							
+			} else {
+				RequestDispatcher rd = req.getRequestDispatcher(url);
+				rd.forward(req, resp);
+			}
+		}
+		
+	}
+	
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
@@ -40,11 +67,7 @@ public class SpaceControl extends HttpServlet {
 		} else if(cmd.equals("write")) {
 			Action ac = new SpaceWriteAction();
 			url = ac.execute(req, resp);
-		} else if(cmd.equals("writeOk")) {
-			Action ac = new SpaceWriteOkAction();
-			url = ac.execute(req, resp);
-			isRedirect = true;
-		}
+		} 
 		
 		if( !url.equals("") ) {
 			if( isRedirect ) {

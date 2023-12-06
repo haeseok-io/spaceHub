@@ -1,8 +1,14 @@
 package com.spacehub.www.model;
 
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.spacehub.www.dao.DiscountDAO;
 import com.spacehub.www.dao.SpaceDAO;
 import com.spacehub.www.dao.SpaceDetailDAO;
@@ -15,41 +21,18 @@ import com.spacehub.www.vo.SpaceImageVO;
 import com.spacehub.www.vo.SpaceVO;
 
 public class SpaceWriteOkAction implements Action {
-		//ip method
-		public static String getClientIpAddr(HttpServletRequest request) {
-		    String ip = request.getHeader("X-Forwarded-For");
-		 
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("Proxy-Client-IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("WL-Proxy-Client-IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("HTTP_CLIENT_IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getRemoteAddr();
-		    }
-		 
-		    return ip;
-		}
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		SpaceDAO dao1 = new SpaceDAO();
-		SpaceDetailDAO dao2 = new SpaceDetailDAO();
-		SpaceImageDAO dao3 = new SpaceImageDAO();
-		SpaceFacDAO dao4 = new SpaceFacDAO();
-		DiscountDAO dao5 = new DiscountDAO();
-		SpaceVO vo1 = new SpaceVO();
-		SpaceDetailVO vo2 = new SpaceDetailVO();
-		SpaceImageVO vo3 = new SpaceImageVO();
-		SpaceFacVO vo4 = new SpaceFacVO();
-		DiscountVO vo5 = new DiscountVO();
+		SpaceDAO spaceDao = new SpaceDAO();
+		SpaceDetailDAO spcaeDetailDao = new SpaceDetailDAO();
+		SpaceImageDAO spcaeImageDao = new SpaceImageDAO();
+		SpaceFacDAO spcaeFacDao = new SpaceFacDAO();
+		DiscountDAO discountDao = new DiscountDAO();
+		SpaceVO spaceVo = new SpaceVO();
+		SpaceDetailVO spaceDetailVo = new SpaceDetailVO();
+		SpaceImageVO spaceImageVo = new SpaceImageVO();
+		SpaceFacVO spaceFacVo = new SpaceFacVO();
 		
 		//공간 정보(space)
 		String type = req.getParameter("type");	
@@ -63,27 +46,23 @@ public class SpaceWriteOkAction implements Action {
 		String addr = req.getParameter("address");		
 		String price = req.getParameter("price");		
 		//String regdate = req.getParameter("regdate");		
-		//String ip = req.getParameter("ip");		
+		try {
+			String ip = req.getParameter( Inet4Address.getLocalHost().getHostAddress());
+			System.out.println("spaceip:"+ip);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}		
 		//String vStatus = req.getParameter("vStatus");		
-		//String status = req.getParameter("status");		
+		//String status = req.getParameter("status");
+		System.out.println("spacetype:"+type);
+		System.out.println("spaceloc:"+loc);
+		System.out.println("spacesubject:"+subject);
+		System.out.println("spacepost:"+post);
+		System.out.println("spacetype:"+type);
+		System.out.println("spaceaddr:"+addr);
+		System.out.println("spaceprice:"+price);
 		
-		
-		if(type!=null&&loc!=null&&subject!=null&&post!=null&&addr!=null&&price!=null) {
-			vo1.setType(type);
-			vo1.setLoc(locSplit[0] + locSplit[1]);
-			vo1.setSubject(subject);
-			vo1.setPost(post);
-			vo1.setAddr(addr);
-			vo1.setPrice(Integer.parseInt(price));
-			//vo1.setRegdate(regdate);
-			vo1.setIp(getClientIpAddr(req));
-			//vo1.setVStatus(Integer.parseInt(vStatus));
-			//vo1.setStatus(Integer.parseInt(status));
-		}
-		dao1.addOne(vo1);
-		
-		//LastInsertId
-		int lastInsert = dao1.getLastInsert();
+		//////////////////////////////////////
 		
 		//공간 상세정보(space_detail)
 		String detailType = req.getParameter("detailType"); // 집,방,다인실 선택
@@ -97,31 +76,17 @@ public class SpaceWriteOkAction implements Action {
 		String outDate = inOutDate.substring(idx+1);
 		String x = req.getParameter("x");
 		String y = req.getParameter("y");
-		if(detailType!=null&&detail!=null&&maxGuest!=null&&bed!=null&&bathroom!=null&&inOutDate!=null) {
-			vo2.setSpaceno(lastInsert);
-			vo2.setType(detailType);
-			vo2.setDetail(detail);
-			vo2.setMaxGuest(Integer.parseInt(maxGuest));
-			vo2.setBed(Integer.parseInt(bed));
-			vo2.setBathroom(Integer.parseInt(bathroom));
-			vo2.setInDate(inDate);
-			vo2.setOutDate(outDate);
-			vo2.setX(x);
-			vo2.setY(y);
-		}
-		dao2.addOne(vo2);
+		System.out.println("spacedetailType:"+detailType);
+		System.out.println("detail:"+detail);
+		System.out.println("maxGuest:"+maxGuest);
+		System.out.println("bed:"+bed);
+		System.out.println("bathroom:"+bathroom);
+		System.out.println("inDate:"+inDate);
+		System.out.println("outDate:"+outDate);
+		System.out.println("x:"+x);
+		System.out.println("y:"+y);
 		
-		//공간 이미지(space_image)
-		String[] path = req.getParameterValues("path");
-		if(path!=null) {
-			vo3.setImgno(1);
-			for(int i=0; i<path.length; i++) {
-				vo3.setPath(path[i]);
-				vo3.setSeq(i);
-			}
-			vo3.setSpaceno(11);
-		}
-		dao3.addOne(vo3);
+		/////////////////////////////////////////
 		
 		//공간 편의시설(space_fac)
 		String wifi = req.getParameter("wifi");
@@ -138,63 +103,126 @@ public class SpaceWriteOkAction implements Action {
 		String firealarm = req.getParameter("firealarm");
 		String aidkit = req.getParameter("aidkit");
 		String firearm = req.getParameter("firearm");
+		System.out.println("wifi:"+wifi);
+		System.out.println("tv:"+tv);
+		System.out.println("kitchen:"+kitchen);
+		System.out.println("wm:"+wm);
+		System.out.println("aircon:"+aircon);
+		System.out.println("canpark:"+canpark);
+		System.out.println("canfreepark:"+canfreepark);
+		System.out.println("swim:"+swim);
+		System.out.println("bbq:"+bbq);
+		System.out.println("pooltable:"+pooltable);
+		System.out.println("fireplace:"+fireplace);
+		System.out.println("firealarm:"+firealarm);
+		System.out.println("aidkit:"+aidkit);
+		System.out.println("firearm:"+firearm);
 		
-		if(wifi!=null&&tv!=null&&kitchen!=null&&wm!=null&&aircon!=null&&canpark!=null&&canfreepark!=null&&swim!=null&&bbq!=null&&pooltable!=null&&fireplace!=null&&firealarm!=null&&aidkit!=null&&firearm!=null) {
-			vo4.setSpaceno(11);
-			vo4.setWifi(Integer.parseInt(wifi));
-			vo4.setTv(Integer.parseInt(tv));
-			vo4.setKitchen(Integer.parseInt(kitchen));
-			vo4.setWm(Integer.parseInt(wm));
-			vo4.setAircon(Integer.parseInt(aircon));
-			vo4.setCanpark(Integer.parseInt(canpark));
-			vo4.setCanfreepark(Integer.parseInt(canfreepark));
-			vo4.setSwim(Integer.parseInt(swim));
-			vo4.setBbq(Integer.parseInt(bbq));
-			vo4.setPooltable(Integer.parseInt(pooltable));
-			vo4.setFireplace(Integer.parseInt(fireplace));
-			vo4.setFirealarm(Integer.parseInt(firealarm));
-			vo4.setAidkit(Integer.parseInt(aidkit));
-			vo4.setFirearm(Integer.parseInt(firearm));
-		} else if (wifi==null&&tv==null&&kitchen==null&&wm==null&&aircon==null&&canpark==null&&canfreepark==null&&swim==null&&bbq==null&&pooltable==null&&fireplace==null&&firealarm==null&&aidkit==null&&firearm==null) {
-			vo4.setWifi(0);
-			vo4.setTv(0);
-			vo4.setKitchen(0);
-			vo4.setWm(0);
-			vo4.setAircon(0);
-			vo4.setCanpark(0);
-			vo4.setCanfreepark(0);
-			vo4.setSwim(0);
-			vo4.setBbq(0);
-			vo4.setPooltable(0);
-			vo4.setFireplace(0);
-			vo4.setFirealarm(0);
-			vo4.setAidkit(0);
-			vo4.setFirearm(0);
-		}
-		dao4.addOne(vo4);
+		//////////////////////////////////////////////
 		
 		//할인등록
 		String[] dcRatio = req.getParameterValues("dcRatio");
 		String[] disName = req.getParameterValues("disName");
-		if(dcRatio!=null&&disName!=null) {
-			vo5.setSpaceno(11);
-			vo5.setDisno(11);
-			for(int i=0; i<dcRatio.length; i++)	{
-				vo5.setName(disName[i]);
-				vo5.setDcratio(Integer.parseInt(dcRatio[i]));
+		System.out.println("dcRatio:"+dcRatio);
+		System.out.println("disName:"+disName);
+		////////////////////////////////////////////////////
+		
+			System.out.println("ddddddddd");
+			spaceVo.setType(type);
+			spaceVo.setLoc(locSplit[0]);
+			spaceVo.setSubject(subject);
+			spaceVo.setPost(post);
+			spaceVo.setAddr(addr);
+			spaceVo.setPrice(Integer.parseInt(price));
+			//spaceVo.setRegdate(regdate);
+			try {
+				spaceVo.setIp(
+				 Inet4Address.getLocalHost().getHostAddress());
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
 			}
-		}
-		dao5.addOne(vo5);
+			//spaceVo.setVStatus(Integer.parseInt(vStatus));
+			//spaceVo.setStatus(Integer.parseInt(status));
+			spaceVo.setMemno(11);
+			spaceDao.addOne(spaceVo);
 		
-		dao1.close();
-		dao2.close();
-		dao3.close();
-		dao4.close();
-		dao5.close();
+		//LastInsertId
+		int lastInsert = spaceDao.getLastInsert();
+		System.out.println("마지막 번호 : " + lastInsert);
+//		
+//		
+//		if(detailType!=null&&detail!=null&&maxGuest!=null&&bed!=null&&bathroom!=null&&inOutDate!=null) {
+//			System.out.println("ddddddddd");
+//			spaceDetailVo.setSpaceno(lastInsert);
+//			spaceDetailVo.setType(detailType);
+//			spaceDetailVo.setDetail(detail);
+//			spaceDetailVo.setMaxGuest(Integer.parseInt(maxGuest));
+//			spaceDetailVo.setBed(Integer.parseInt(bed));
+//			spaceDetailVo.setBathroom(Integer.parseInt(bathroom));
+//			spaceDetailVo.setInDate(inDate);
+//			spaceDetailVo.setOutDate(outDate);
+//			spaceDetailVo.setX(x);
+//			spaceDetailVo.setY(y);
+//		}
+//		spcaeDetailDao.addOne(spaceDetailVo); 
+//		
+//		//공간 이미지(space_image)
+//		//업로드할 경로
+//		String saveFolder = "C:\\Users\\User\\git\\spaceHub\\src\\main\\webapp\\upload";
+//		//첨부파일 크기
+//		int size = 1024*1024*30;
+//		try {
+//			MultipartRequest mr = new MultipartRequest(req, saveFolder, size, "UTF-8", new DefaultFileRenamePolicy());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		String[] path = req.getParameterValues("path");
+//		if(path!=null) {
+//			
+//			spaceImageVo.setSpaceno(lastInsert);
+//			spaceImageVo.setImgno(1);
+//			for(int i=0; i<path.length; i++) {
+//				spaceImageVo.setPath(path[i]);
+//				spaceImageVo.setSeq(i);
+//			}
+//		}
+//		spcaeImageDao.addOne(spaceImageVo);
+//		
+//		spaceFacVo.setSpaceno(lastInsert);
+//		if(wifi!=null) spaceFacVo.setWifi(Integer.parseInt(wifi));
+//		if(tv!=null) spaceFacVo.setTv(Integer.parseInt(tv));
+//		if(kitchen!=null) spaceFacVo.setKitchen(Integer.parseInt(kitchen));
+//		if(wm!=null) spaceFacVo.setWm(Integer.parseInt(wm));
+//		if(aircon!=null) spaceFacVo.setAircon(Integer.parseInt(aircon));
+//		if(canpark!=null) spaceFacVo.setCanpark(Integer.parseInt(canpark));
+//		if(canfreepark!=null) spaceFacVo.setCanfreepark(Integer.parseInt(canfreepark));
+//		if(swim!=null) spaceFacVo.setSwim(Integer.parseInt(swim));
+//		if(bbq!=null) spaceFacVo.setBbq(Integer.parseInt(bbq));
+//		if(pooltable!=null) spaceFacVo.setPooltable(Integer.parseInt(pooltable));
+//		if(fireplace!=null) spaceFacVo.setFireplace(Integer.parseInt(fireplace));
+//		if(firealarm!=null) spaceFacVo.setFirealarm(Integer.parseInt(firealarm));
+//		if(aidkit!=null) spaceFacVo.setAidkit(Integer.parseInt(aidkit));
+//		if(firearm!=null) spaceFacVo.setFirearm(Integer.parseInt(firearm));
+//		spcaeFacDao.addOne(spaceFacVo);
+//		
+//		
+//		//System.out.println(dcRatio);
+//		if(dcRatio!=null&&disName!=null) {
+//			for(int i=0; i<dcRatio.length; i++)	{
+//				DiscountVO discountVo = new DiscountVO();
+//				discountVo.setSpaceno(lastInsert);
+//				discountVo.setName(disName[i]);
+//				discountVo.setDcratio(Integer.parseInt(dcRatio[i]));
+//				discountDao.addOne(discountVo);
+//			}
+//		}
+//		
+//		spaceDao.close();
+//		spcaeDetailDao.close();
+//		spcaeImageDao.close();
+//		spcaeFacDao.close();
+//		discountDao.close();
 		
-		return "space?cmd=write";
+		return "/spaceHub/home";
 	}
-	
-	
-	
 }// class end

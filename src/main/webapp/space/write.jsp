@@ -26,9 +26,8 @@
 	</style>
 </head>
 <body>
-	<h1>해석 수정함</h1>
 	<div class="container">
-		<form name="spaceForm" action="/spaceHub/space" method="get" enctype="multipart/form-data">
+		<form name="spaceForm" action="/spaceHub/space" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="cmd" value="writeOk" />
 			<input type="hidden" name="y" /> <!-- 위도  -->
 			<input type="hidden" name="x" /> <!-- 경도  -->
@@ -63,19 +62,22 @@
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
 			</div>
-			<select name="type" class="form-select" aria-label="Default select example">
-			  <option selected>건물 유형 선택</option>
-			  <option value="아파트">아파트</option>
-			  <option value="한옥">한옥</option>
-			  <option value="해변 바로 앞">해변 바로 앞</option>
-			  <option value="민박">민박</option>
-			  <option value="게스트하우스">게스트하우스</option>
-			  <option value="최고의 전망">최고의 전망</option>
-			  <option value="디자인">디자인</option>
-			  <option value="캠핑카">캠핑카</option>
-			  <option value="통나무집">통나무집</option>
-			  <option value="컨테이너하우스">컨테이너하우스</option>
-			</select> <br />
+			<div class="mb-3">
+				<select name="type" class="form-select" required aria-label="select example">
+				  <option selected>건물 유형 선택</option>
+				  <option value="아파트">아파트</option>
+				  <option value="한옥">한옥</option>
+				  <option value="해변 바로 앞">해변 바로 앞</option>
+				  <option value="민박">민박</option>
+				  <option value="게스트하우스">게스트하우스</option>
+				  <option value="최고의 전망">최고의 전망</option>
+				  <option value="디자인">디자인</option>
+				  <option value="캠핑카">캠핑카</option>
+				  <option value="통나무집">통나무집</option>
+				  <option value="컨테이너하우스">컨테이너하우스</option>
+				 </select>
+				  <div class="invalid-feedback">옵션을 선택해주세요.</div>
+			</div>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  숙소위치는 어디인가요?
 			</div>
@@ -178,7 +180,7 @@
 		}
 		</script> <br />
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
-			 숙소 기본 정보12323232222
+			 숙소 기본 정보
 			</div> <br />
 			최대인원 <input type="number" name="maxGuest" id="" step="1"/> 
 			침대 <input type="number" name="bed" id="" step="1"/> 
@@ -302,24 +304,24 @@
 				할인 추가
 			</div>
 			<div class="form-check">
-				<input type="hidden" name="disName[]" value="20% 신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)" />
+				<input type="hidden" name="disName" value="신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)" />
 				<input name="dcRatio" class="form-check-input" type="checkbox" value="20" id="flexCheckDefault">
 				<label  class="form-check-label" for="flexCheckDefault">
-				 20% 신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)
+				 신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)
 				</label>
 			</div>
 			<div class="form-check">
-				<input type="hidden" name="disName[]" value="10% 주간 할인 (7박 이상의 숙박에 적용되는 할인)" />
-			  	<input name="dcRatio[]" class="form-check-input" type="checkbox" value="10" id="flexCheckDefault">
+				<input type="hidden" name="disName" value="주간 할인 (7박 이상의 숙박에 적용되는 할인)" />
+			  	<input name="dcRatio" class="form-check-input" type="checkbox" value="10" id="flexCheckDefault">
 			  	<label class="form-check-label" for="flexCheckDefault">
-   			   10% 주간 할인 (7박 이상의 숙박에 적용되는 할인)
+   			   주간 할인 (7박 이상의 숙박에 적용되는 할인)
 			  	</label>
 			</div>
 			<div class="form-check">
-				<input type="hidden" name="disName[]" value="18% 월간 할인 (28박 이상의 숙박에 적용되는 할인)" />
-			  <input name="dcRatio[]" class="form-check-input" type="checkbox" value="18" id="flexCheckDefault">
+				<input type="hidden" name="disName" value="월간 할인 (28박 이상의 숙박에 적용되는 할인)" />
+			  <input name="dcRatio" class="form-check-input" type="checkbox" value="18" id="flexCheckDefault">
 			  <label class="form-check-label" for="flexCheckDefault">
-			   18% 월간 할인 (28박 이상의 숙박에 적용되는 할인)
+			   월간 할인 (28박 이상의 숙박에 적용되는 할인)
 			  </label>
 			</div>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
