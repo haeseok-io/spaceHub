@@ -179,6 +179,7 @@
 		</script> <br />
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			 숙소 기본 정보 (이건 해석 추가)
+			- 한줄 더 추가
 			</div> <br />
 			최대인원 <input type="number" name="maxGuest" id="" step="1"/> 
 			침대 <input type="number" name="bed" id="" step="1"/> 
