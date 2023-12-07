@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.ActionCommand;
-import com.spacehub.www.model.MessageCommand;
-import com.spacehub.www.model.ReviewCommand;
-import com.spacehub.www.model.ReviewOkCommand;
 import com.spacehub.www.model.SpaceListCommand;
 
 @WebServlet("/mypage/guest")
