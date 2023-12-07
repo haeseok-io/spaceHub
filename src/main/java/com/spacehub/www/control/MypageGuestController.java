@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.CouponCommand;
 import com.spacehub.www.model.SpaceListCommand;
 
 @WebServlet("/mypage/guest")
@@ -27,6 +28,9 @@ public class MypageGuestController extends HttpServlet{
 
 		if(cmd == null || cmd.equals("spaceList")) {
 			ActionCommand ac = new  SpaceListCommand();
+			url = ac.execute(req, resp);
+		}else if(cmd.equals("coupon")) {
+			ActionCommand ac = new  CouponCommand();
 			url = ac.execute(req, resp);
 		}
 		
