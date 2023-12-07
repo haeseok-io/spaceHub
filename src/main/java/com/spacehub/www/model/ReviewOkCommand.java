@@ -21,7 +21,7 @@ public class ReviewOkCommand implements ActionCommand {
 		String contents = req.getParameter("contents");
 		String r = req.getParameter("rating");
 		String re = req.getParameter("reservno");
-		String ip = $REMOTE_ADDR;
+		String ip = req.getRemoteAddr();
 		
 		if(subject != null || contents != null || r != null || re != null) {
 			
@@ -35,7 +35,7 @@ public class ReviewOkCommand implements ActionCommand {
 			vo.setSubject(subject);
 			vo.setContents(contents);
 			vo.setRating(rating);
-			vo.setIp(rvo.getIp());
+			vo.setIp(ip);
 			vo.setMemno(rvo.getMemno());
 			vo.setReservno(reservno);
 			

@@ -11,7 +11,6 @@ public class MessageMemSpaceVO {
 	private int memno;
 	private String name;
 	private String regdate;
-	private int messageno;
 	private int bno;
 	private int spaceno;
 	private String subject;
