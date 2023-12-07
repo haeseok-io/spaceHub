@@ -11,6 +11,7 @@ public class ModifyAction implements Action{
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		String m = req.getParameter("memno");
+		
 		if(m != null) {
 			int memno = Integer.parseInt(m);
 			SmemberDAO dao = new SmemberDAO();

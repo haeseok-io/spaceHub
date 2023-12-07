@@ -1,7 +1,5 @@
 package com.spacehub.www.vo;
 
-import java.util.ArrayList;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,15 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JjimListVO {
-	int memno;
-	String subject;
-	int spaceno;
-	int bed;
-	String inDate;
-	String outDate;
+public class CreditsVO {
+	int creditsno;
+	String contents;
 	int price;
-	int jjimno;
-	
-	ArrayList<HostSpaceImageVO> imgList;
+	String date;
+	int memno;
 }

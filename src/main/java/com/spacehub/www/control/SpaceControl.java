@@ -13,8 +13,10 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.JsonAction;
+import com.spacehub.www.model.LikeDeleteOkAction;
 import com.spacehub.www.model.LikeWriteAction;
 import com.spacehub.www.model.SpaceDetailAction;
+import com.spacehub.www.model.SpaceListAction;
 import com.spacehub.www.model.SpaceWriteAction;
 import com.spacehub.www.model.SpaceWriteOkAction;
 
@@ -59,16 +61,31 @@ public class SpaceControl extends HttpServlet {
 		String url = "";
 		JSONObject jsonObject = new JSONObject();
 		
-		if( cmd==null || cmd.equals("detail") ) {
+		if( cmd==null ) {
+			url = "/spaceHub/home";
+			isRedirect = true;
+		}  else if( cmd.equals("list") ) {
+			JsonAction ac = new SpaceListAction();
+			jsonObject = ac.execute(req, resp);
+		} else if( cmd.equals("detail") ) {
 			Action ac = new SpaceDetailAction();
 			url = ac.execute(req, resp);
+			
+			if( url==null ) {
+				url = "/spaceHub/home";
+				isRedirect = true;
+			}
 		} else if( cmd.equals("likeWriteOk") ) {
 			JsonAction ac = new LikeWriteAction();
+			jsonObject = ac.execute(req, resp);
+		} else if( cmd.equals("likeDeleteOk") ) {
+			JsonAction ac = new LikeDeleteOkAction();
 			jsonObject = ac.execute(req, resp);
 		} else if(cmd.equals("write")) {
 			Action ac = new SpaceWriteAction();
 			url = ac.execute(req, resp);
 		} 
+		
 		
 		if( !url.equals("") ) {
 			if( isRedirect ) {

@@ -31,7 +31,7 @@ public class SpaceDAO {
 		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
 		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
 		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
-		sb.append("Group By rv.reservno");
+		sb.append("Group By r.spaceno");
 		sb.append(") as s");
 		
 		try {
@@ -50,23 +50,25 @@ public class SpaceDAO {
 	}
 	
 	// 전체 갯수 가져오기
-	public int getTotalCount(String addr, String inDate, String outDate, int maxGuest) {
+	public int getTotalCount(String subject, String inDate, String outDate, int maxGuest) {
 		int total = 0;
 		
 		sb.setLength(0);
 		sb.append("select count(s.spaceno) as total ");
 		sb.append("From ( ");
-		sb.append("Select s.spaceno ");
-		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
-		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
-		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Select s.spaceno From space s ");
+		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
+		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
+		sb.append("Left Join review rv On r.reservno=rv.reservno ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
 		
-		if( addr!=null && !addr.equals("") ) 		sb.append("And addr Like '%"+addr+"%' ");
-		if( inDate!=null && !inDate.equals("") ) 	sb.append("And in_date>='"+inDate+"' ");
-		if( outDate!=null && !outDate.equals("") ) 	sb.append("And out_date<='"+outDate+"' ");
-		if( maxGuest!=0 )							sb.append("And max_guest>="+maxGuest+" ");
+		if( subject!=null && !subject.equals("") ) 	sb.append("And s.subject Like '%"+subject+"%' ");		
+		if( inDate!=null && !inDate.equals("") ) 	sb.append("And d.in_date<='"+inDate+"' ");
+		if( outDate!=null && !outDate.equals("") ) 	sb.append("And d.out_date>='"+outDate+"' ");
+		if( maxGuest!=0 )							sb.append("And d.max_guest>="+maxGuest+" ");
 		
-		sb.append("Group By rv.reservno");
+		sb.append("Group By s.spaceno");
 		sb.append(") as s");
 		
 		try {
@@ -111,10 +113,13 @@ public class SpaceDAO {
 		
 		sb.setLength(0);
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
-		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
-		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
-		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
-		sb.append("Group By rv.reservno");
+		sb.append("From space s ");
+		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
+		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
+		sb.append("Left Join review rv On r.reservno=rv.reservno ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Group By s.spaceno");
 		
 		
 		try {
@@ -136,10 +141,13 @@ public class SpaceDAO {
 		
 		sb.setLength(0);
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
-		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
-		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
-		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
-		sb.append("Group By rv.reservno ");
+		sb.append("From space s ");
+		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
+		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
+		sb.append("Left Join review rv On r.reservno=rv.reservno ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Group By s.spaceno ");
 		sb.append("Limit "+startNo+", "+endNo);
 		
 		
@@ -157,22 +165,26 @@ public class SpaceDAO {
 	}
 	
 	// 페이징 조건 검색
-	public ArrayList<SpaceListVO> getList(int startNo, int endNo, String addr, String inDate, String outDate, int maxGuest) {
+	public ArrayList<SpaceListVO> getList(int startNo, int endNo, String subject, String inDate, String outDate, int maxGuest) {
 		ArrayList<SpaceListVO> list = new ArrayList<SpaceListVO>();
 		
 		sb.setLength(0);
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
-		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
-		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
-		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("From space s ");
+		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
+		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
+		sb.append("Left Join review rv On r.reservno=rv.reservno ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
 		
-		if( addr!=null && !addr.equals("") ) 		sb.append("And addr Like '%"+addr+"%' ");
-		if( inDate!=null && !inDate.equals("") ) 	sb.append("And in_date>='"+inDate+"' ");
-		if( outDate!=null && !outDate.equals("") ) 	sb.append("And out_date<='"+outDate+"' ");
-		if( maxGuest!=0 )							sb.append("And max_guest>="+maxGuest+" ");
+		if( subject!=null && !subject.equals("") ) 	sb.append("And s.subject Like '%"+subject+"%' ");
+		if( inDate!=null && !inDate.equals("") ) 	sb.append("And d.in_date<='"+inDate+"' ");
+		if( outDate!=null && !outDate.equals("") ) 	sb.append("And d.out_date>='"+outDate+"' ");
+		if( maxGuest!=0 )							sb.append("And d.max_guest>="+maxGuest+" ");
 		
-		sb.append("Group By rv.reservno ");
+		sb.append("Group By s.spaceno ");
 		sb.append("Limit "+startNo+", "+endNo);
+		
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -245,10 +257,9 @@ public class SpaceDAO {
 		ArrayList<JjimListVO> list = new ArrayList<JjimListVO>();
 
 		sb.setLength(0);
-		sb.append("select smember.memno, space_image.path, space.subject, space.spaceno, space_detail.bed, "
+		sb.append("select smember.memno, space.subject, space.spaceno, space_detail.bed, "
 				+ "space_detail.in_date, space_detail.out_date, space.price, jjim.jjimno ");
 		sb.append("from space ");
-		sb.append("join space_image on space.spaceno = space_image.spaceno ");
 		sb.append("join space_detail on space.spaceno = space_detail.spaceno ");
 		sb.append("join jjim on space.spaceno = jjim.spaceno ");
 		sb.append("join smember on space.memno = smember.memno ");
@@ -260,8 +271,7 @@ public class SpaceDAO {
 			pstmt.setInt(1, memno);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				String path = rs.getString("space_image.path");
+			while(rs.next()) {;
 				String subject = rs.getString("space.subject");
 				int spaceno = rs.getInt("space.spaceno");
 				int bed = rs.getInt("space_detail.bed");
@@ -270,7 +280,7 @@ public class SpaceDAO {
 				int price = rs.getInt("space.price");
 				int jjimno = rs.getInt("jjim.jjimno");
 				
-				JjimListVO vo = new JjimListVO(memno, path, subject, spaceno, bed, inDate, outDate, price, jjimno);
+				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, inDate, outDate, price, jjimno, null);
 				list.add(vo);
 			}
 		} catch (SQLException e) {

@@ -22,60 +22,45 @@ public class SpaceDetailAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		// Val		
-		String s = req.getParameter("spaceno");
-		
-		// Check
-		if( s==null || s.equals("") ) {
+		// Val
+		String spacenoParam = req.getParameter("spaceno");
+		if( spacenoParam==null || spacenoParam.equals("") ) {
 			return null;
 		}
 		
 		// Data
-		Integer spaceno = Integer.parseInt(s);
+		Integer spaceno = Integer.parseInt(spacenoParam);
 		SpaceDAO spaceDAO = new SpaceDAO();
 		SmemberDAO smemberDAO = new SmemberDAO();
-		SpaceImageDAO imageDAO = new SpaceImageDAO();
 		SpaceDetailDAO spaceDetailDAO = new SpaceDetailDAO();
 		SpaceFacDAO spaceFacDAO = new SpaceFacDAO();
+		SpaceImageDAO imageDAO = new SpaceImageDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
 		
-		// - 기본 정보
+		// Process
 		SpaceVO spaceData = spaceDAO.getOne(spaceno);
-		
-		// - 호스트 정보
 		SmemberVO hostData = smemberDAO.getOne(spaceData.getMemno());
-		
-		// - 상세정보
 		SpaceDetailVO detailData = spaceDetailDAO.getOne(spaceno);
-		
-		// - 편의시설
 		SpaceFacVO factoryData = spaceFacDAO.getOne(spaceno);
-		
-		// - 이미지
 		ArrayList<SpaceImageVO> imageList = imageDAO.getSpaceImages(spaceno);
-		
-		// - 리뷰
 		ArrayList<ReviewListVO> reviewList = reviewDAO.getSpaceAll(spaceno);
 		
-		
-		
-		
-		spaceDAO.close();
-		spaceDetailDAO.close();
-		imageDAO.close();
-		spaceFacDAO.close();
-		spaceDetailDAO.close();
-		spaceFacDAO.close();
-		reviewDAO.close();
-		
-		
-		// Result
 		req.setAttribute("data", spaceData);
 		req.setAttribute("host", hostData);
 		req.setAttribute("detail", detailData);
 		req.setAttribute("factory", factoryData);
 		req.setAttribute("images", imageList);
 		req.setAttribute("review", reviewList);
+		
+		
+		spaceDAO.close();
+		smemberDAO.close();
+		spaceDetailDAO.close();
+		spaceFacDAO.close();
+		imageDAO.close();
+		reviewDAO.close();
+		
+		// Result
 		return "/space/detail.jsp";
 	}
 	

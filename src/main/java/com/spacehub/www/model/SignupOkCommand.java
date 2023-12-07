@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.spacehub.www.dao.SmemberDAO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class SignupOkCommand implements ActionCommand {
+public class SignupOkCommand implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {

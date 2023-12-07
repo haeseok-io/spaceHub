@@ -18,7 +18,6 @@ public class SpaceListVO {
 	private String outDate;
 	private	String path;
 	private float rating;
-	
 	private String priceFormat;
-	private boolean userJjimStatus;
+	private String jjimStatus;
 }
