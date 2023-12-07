@@ -18,11 +18,6 @@
 		$("#msggo").append("나 : "+mes+"\n");
 		$("#mes").val("");
 	}
-	
-	$(()=>{
-		var value = '<c:out value="${mlist.contents}"/>';
-		$("#msggo").text(value);
-	});
 
 </script>
 <style type="text/css">
