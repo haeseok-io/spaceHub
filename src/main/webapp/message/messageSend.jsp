@@ -15,38 +15,54 @@
 <script type="text/javascript">
 	function sendMsg(){
 		let mes = $("#mes").val();
-		$("#msggo").append("나 : "+mes+"\n");
-		$("#mes").val("");
+		let name = $("#name").val();
+		$("#uli").append("<li>"+name+" : "+mes+"</li>"+"\n");
+		
 	}
-	
-	$(()=>{
-		var value = '<c:out value="${mlist.contents}"/>';
-		$("#msggo").text(value);
-	});
-
 </script>
 <style type="text/css">
+.chat {
+		padding-bottom:60px;
+	}
+	.chat ul {
+		width:100%;
+		list-style:none;
+	}
+	.input-group{
+		position:absolute;
+		bottom:0;
+		width:80%;
+	}
 </style>
 </head>
 <body>
 	<div class="container">
 		<h2>메세지</h2>
-		<form action="">
+		<form action="/spaceHub/message?cmd=messageOk" method="post" onsubmit="sendMsg()">
 			<div class="mb-3 row">
 		<c:forEach var="vo" items="${list}">
 			    <label for="staticEmail" class="col-sm-2 col-form-label">호스트 :</label>
 			    <div class="col-sm-10">
 			      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="${vo.name}">
 			       <input type="hidden" name="cmd" value="messageOk" />
+			       <input type="hidden" name="spaceno" value="${vo.spaceno}" />
+			  		<input type="hidden" name="reservno" value="${vo.reservno}" />
 			    </div>
 		</c:forEach>
 			</div>
-			<div class="form-floating">
-			  <textarea class="form-control" placeholder="메세지를 보내주세요." id="msggo" style="height: 700px" readonly></textarea>
+			<div class="chat">
+			  <ul id="uli">
+		<c:forEach var="vo" items="${mlist}">
+			  	<li>${vo.name} : ${vo.contents}</li>
+		</c:forEach>
+			  </ul>
 			</div>
+			<c:forEach var="vo" items="${slist}">
+			<input type="hidden" id="name" value="${vo.name}" />
+			</c:forEach>
 			<div class="input-group mb-3">
-			  <input type="text" id="mes" class="form-control" placeholder="호스트에게 보낼 메세지를 입력해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-			  <input class="btn btn-outline-secondary" type="button" id="btn" value="전송" onclick="sendMsg()">
+			  <input type="text" id="mes" name="mes" class="form-control" placeholder="호스트에게 보낼 메세지를 입력해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+			  <input class="btn btn-outline-secondary" type="submit" id="btn" value="전송">
 			</div>
 		</form>
 	</div>
