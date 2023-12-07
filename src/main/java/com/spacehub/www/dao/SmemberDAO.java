@@ -22,7 +22,10 @@ public class SmemberDAO {
 		SmemberVO vo = null;
 
 		sb.setLength(0);
-		sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from xe.smember where smember=?");
+		sb.append("Select memno, email, password, name, post, addr, account_num, regdate, credits, status ");
+		sb.append("From smember ");
+		sb.append("Where memno=?");
+		
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());

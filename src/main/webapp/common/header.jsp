@@ -8,10 +8,11 @@
 		<div class="inner">
 			<div class="header-logo">
 				<h1>
-					<a href="">spaceHub</a>
+					<a href="/spaceHub/home">spaceHub</a>
 				</h1>
 			</div>
-			<div class="header-search" data-status="Y">
+			<c:if test="${requestScope['javax.servlet.forward.servlet_path']=='/home'}">
+			<div class="header-search" data-status="N">
 				<div class="search-toggle">
 					<div class="toggle-item" data-status="N">
 						어디든 | 언제든 일주일 | 게스트
@@ -27,6 +28,8 @@
 					<div class="search-wrap">
 						<form name="spaceSearchForm" onsubmit="return callList();">
 							<input type="hidden" name="cmd" value="list" />
+							<input type="hidden" name="page" value="1" />
+							<input type="hidden" name="scale" value="12" />
 							
 							<ul class="search-list">
 								<li class="list-item">
@@ -50,7 +53,7 @@
 								<li class="list-item guest">
 									<p class="item-title">게스트</p>
 									<div class="item-data">
-										<button type="button" class="gueest-control-button" data-type="minus">
+										<button type="button" class="guest-control-button" data-type="minus">
 											<i class="bi bi-dash-lg"></i>
 										</button>
 										<input type="text" name="max_guest" placeholder="게스트 인원" value="0" />
@@ -67,13 +70,29 @@
 					</div>
 				</div>
 			</div>
-			<div class="header-gnb">
-				<c:if test="${sessionScope.member==null}">				
-					<a href="/spaceHub/sign?cmd=login">로그인</a>
-				</c:if>
-				<c:if test="${sessionScope.member!=null}">
-					<a href="/spaceHub/sign?cmd=logoutOk">로그아웃</a>
-				</c:if>
+			</c:if>
+			<div class="header-user">
+				<div class="user-advertise">
+					<p>당신의 공간을 공유해보세요.</p>
+				</div>
+				<div class="user-menu">
+					<div class="menu-toggle">
+						<i class="bi bi-list"></i>
+						<i class="bi bi-person-circle"></i>
+					</div>
+					<div class="menu-wrap">
+						<ul class="menu-list">
+							<c:if test="${sessionScope.member==null}">
+							<li><a href="/spaceHub/sign?cmd=login">로그인</a></li>
+							</c:if>
+							
+							<c:if test="${sessionScope.member!=null}">
+								<li><a href="/spaceHub/sign?cmd=logoutOk">로그아웃</a></li>
+							</c:if>
+						</ul>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	</div>

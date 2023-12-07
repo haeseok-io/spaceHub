@@ -42,6 +42,11 @@ public class SpaceControl extends HttpServlet {
 		} else if( cmd.equals("detail") ) {
 			Action ac = new SpaceDetailAction();
 			url = ac.execute(req, resp);
+			
+			if( url==null ) {
+				url = "/spaceHub/home";
+				isRedirect = true;
+			}
 		} else if( cmd.equals("likeWriteOk") ) {
 			JsonAction ac = new LikeWriteAction();
 			jsonObject = ac.execute(req, resp);

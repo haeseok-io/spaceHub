@@ -1,20 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
+<jsp:include page="../common/common.jsp" />
+	<title>상세</title>
 	
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" href="/spaceHub/css/common.css" />
 	<link rel="stylesheet" href="/spaceHub/css/datepicker.css" />
 	<style>
-		* { padding: 0; margin: 0; box-sizing: border-box; }
-		ul li { list-style: none; }
-		
-		.inner { width: 1120px; margin: 0 auto; padding: 50px 0; }
+		.inner { width: 1120px; }
 		
 		.detail-subject { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 		.detail-subject .subject-name { font-weight: bold; font-size: 26px; }
@@ -25,12 +17,11 @@
 		.detail-images { display: flex; justify-content: space-between; }
 		.detail-images img { width: 100%; }
 		.detail-images .images-main { width: 50%; }
-		.detail-images .images-sub { width: 48%; }
+		.detail-images .images-sub { width: 49%; }
 		.detail-images .images-sub .images-list { display: flex; justify-content: space-between; flex-wrap: wrap; }
 		.detail-images .images-sub .images-list li { width: 49%; }
 	</style>
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="/spaceHub/js/datepicker.js"></script>
 	<script src="/spaceHub/js/datepicker.kr.js"></script>
 	<script>
@@ -75,77 +66,7 @@
 	</script>
 	
 	
-</head>
-<body>
-
-	<div id="header">
-		<div class="inner">
-			<div class="header-logo">
-				<h1>
-					<a href="">spaceHub</a>
-				</h1>
-			</div>
-			<div class="header-search" data-status="Y">
-				<div class="search-toggle">
-					<div class="toggle-item" data-status="N">
-						어디든 | 언제든 일주일 | 게스트
-						<i class="bi bi-search"></i>
-					</div>
-					<div class="toggle-item" data-status="Y">
-						원하는 조건을 검색해보세요.
-						<i class="bi bi-x-lg"></i>
-					</div>
-				</div>
-				
-				<div class="search-field">
-					<div class="search-wrap">
-						<form action="/spaceHub" method="get">
-							<input type="hidden" name="cmd" value="list" />
-							
-							<ul class="search-list">
-								<li class="list-item">
-									<p class="item-title">여행</p>
-									<div class="item-data">
-										<input type="text" name="addr" placeholder="여행지 검색" value="" />
-									</div>
-								</li>
-								<li class="list-item">
-									<p class="item-title">체크인</p>
-									<div class="item-data">
-										<input type="text" name="in_date" placeholder="날짜 입력" readonly />
-									</div>
-								</li>
-								<li class="list-item">
-									<p class="item-title">체크아웃</p>
-									<div class="item-data">
-										<input type="text" name="out_date" placeholder="날짜 입력" readonly />
-									</div>
-								</li>
-								<li class="list-item guest">
-									<p class="item-title">게스트</p>
-									<div class="item-data">
-										<button type="button" class="gueest-control-button" data-type="minus">
-											<i class="bi bi-dash-lg"></i>
-										</button>
-										<input type="text" name="max_guest" placeholder="게스트 인원" value="0" />
-										<button type="button" class="guest-control-button" data-type="plus">
-											<i class="bi bi-plus-lg"></i>
-										</button>
-									</div>
-								</li>
-							</ul>
-							<div class="search-button">
-								<button type="submit">검색</button>
-							</div>
-						</form>					
-					</div>
-				</div>
-			</div>
-			<div class="header-gnb">
-				메
-			</div>
-		</div>
-	</div>
+<jsp:include page="../common/header.jsp" />
 
 	<div class="main">
 		<div class="inner">

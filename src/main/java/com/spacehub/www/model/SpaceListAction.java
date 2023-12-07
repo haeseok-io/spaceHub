@@ -32,37 +32,45 @@ public class SpaceListAction implements JsonAction {
 		JjimDAO jjimDAO = new JjimDAO();
 		
 		HttpSession session = req.getSession();
-		DecimalFormat formatter = new DecimalFormat("###,###");
 		
 		String page = req.getParameter("page");
 		String scale = req.getParameter("scale");
-		String pageScale = req.getParameter("page_scale");
 		
 		// Check
 		if( maxGuestParam!=null && !maxGuestParam.equals("") ) {
 			maxGuest = Integer.parseInt(maxGuestParam);
 		}
 		
-		int currentNum = 1;
-		int scaleNum = 10;
-		int pageScaleNum = 10;
-		
-		if( page!=null && !page.equals("") )			currentNum = Integer.parseInt(page);
-		if( scale!=null && !scale.equals("") ) 			scaleNum = Integer.parseInt(scale);
-		if( pageScale!=null && !pageScale.equals("") )	pageScaleNum = Integer.parseInt(pageScale);
-		
-		int totalCount = spaceDAO.getTotalCount(subjectParam, inDateParam, outDateParam, maxGuest);
-		int totalPage = totalCount%scaleNum==0 ? totalCount/scaleNum : totalCount/scaleNum+1;
-		
-		int startNum = ((currentNum-1)*scaleNum);
-		int endNum = currentNum*scaleNum;
+		if( page==null || page.equals("") ) 	page = "1";
+		if( scale==null || scale.equals("") ) 	scale = "10";
 		
 		// Data
+		// - 페이징
+		int currentNum = Integer.parseInt(page); 	// 현재 페이지
+		int scaleNum = Integer.parseInt(scale); 	// 노출 갯수
+		int startNum = ((currentNum-1)*scaleNum); 	// 노출 시작점
+		int endNum = currentNum*scaleNum; 			// 노출 종료점
+		
+		int totalCount = spaceDAO.getTotalCount(subjectParam, inDateParam, outDateParam, maxGuest);
+		int seenCount = currentNum*scaleNum; 		// 노출된 데이터 갯수		
+		int remainCount = totalCount-seenCount; 	// 남은 데이터 갯수
+		
+		if( totalCount<=0 ) 		seenCount = 0;
+		if( seenCount>=totalCount )	seenCount = totalCount;
+		if( remainCount<=0 ) 		remainCount = 0;
+		
+		HashMap<String, Integer> pageInfo = new HashMap<String, Integer>();
+		pageInfo.put("totalCount", totalCount);
+		pageInfo.put("seenCount", seenCount);
+		pageInfo.put("remainCount", remainCount);
+		
 		// - 회원 정보
 		SmemberVO memberData = (SmemberVO)session.getAttribute("member");
 		
-		// - 가공
+		// - 공간 정보
 		ArrayList<HashMap<String, String>> spaceList = new ArrayList<HashMap<String, String>>();
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		
 		for(SpaceListVO data : spaceDAO.getList(startNum, endNum, subjectParam, inDateParam, outDateParam, maxGuest)) {
 			
 			// 회원 찜
@@ -99,6 +107,7 @@ public class SpaceListAction implements JsonAction {
 		
 		// Result
 		jsonObject.put("data", spaceList);
+		jsonObject.put("paging", pageInfo);
 		return jsonObject;
 	}
 	
