@@ -14,6 +14,7 @@ import com.spacehub.www.model.ActionCommand;
 import com.spacehub.www.model.HostMainAction;
 import com.spacehub.www.model.ReservCalenderCommand;
 import com.spacehub.www.model.ReservListCommand;
+import com.spacehub.www.model.SpaceModifyAction;
 
 @WebServlet("/mypage/host")
 public class MypageHostController extends HttpServlet{
@@ -35,6 +36,9 @@ public class MypageHostController extends HttpServlet{
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("reservList")) {
 			ActionCommand ac = new  ReservListCommand();
+			url = ac.execute(req, resp);
+		} else if(cmd.equals("spaceModify")) {
+			Action ac = new SpaceModifyAction();
 			url = ac.execute(req, resp);
 		}
 		
