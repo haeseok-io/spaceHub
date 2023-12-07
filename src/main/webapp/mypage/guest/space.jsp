@@ -45,7 +45,7 @@
 		<c:forEach var="vo" items="${list}">
  		 <div class="col">
 			<div class="card h-100" style="width: 18rem;">
-			  <a href="#"><img src="${vo.path}" alt="..."></a>
+			  <a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno}"><img src="${vo.path}" alt="..."></a>
 			  <div class="card-body">
 			    <h5 class="card-title">${vo.subject}</h5>
 			  </div>

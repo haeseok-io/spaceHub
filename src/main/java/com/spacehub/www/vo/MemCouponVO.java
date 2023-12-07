@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageMemSpaceVO {
+public class MemCouponVO {
 	private int memno;
-	private String name;
-	private String regdate;
-	private int bno;
-	private int spaceno;
-	private String subject;
+	private int couponno;
+	private String cDate;
+	private String eDate;
+	private int status;
 	private int reservno;
-
 }

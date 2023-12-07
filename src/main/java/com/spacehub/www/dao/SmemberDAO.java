@@ -26,7 +26,6 @@ public class SmemberDAO {
 		sb.append("From smember ");
 		sb.append("Where memno=?");
 		
-		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, memno);

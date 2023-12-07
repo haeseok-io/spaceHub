@@ -22,14 +22,9 @@
 	button{
 		float: right;
 	}
-	
-	#won{
-		float: right;
-	}
 </style>
 
 <script type="text/javascript">
-	
 	function requestPay() {
 		  IMP.init('imp06672844');
 		  
@@ -38,7 +33,7 @@
 		    pay_method: "card",
 		    merchant_uid : 'merchant_'+new Date().getTime(),
 		    name : "방",
-			amount : 100,
+			amount : 60000,
 		    buyer_email : 'iamport@siot.do',
 		    buyer_name : '구매자',
 		    buyer_tel : '010-1234-5678',
@@ -77,6 +72,22 @@
 			    }
 			  });
 		}
+	
+	function couchange(pid){
+		if(pid == "1"){
+			$("#coupon-price").text("10");
+		}else if(pid == "2"){
+			$("#coupon-price").text("15");
+		}else if(pid == "3"){
+			$("#coupon-price").text("10");
+		}else if(pid == "4"){
+			$("#coupon-price").text("15");
+		}else if(pid == "5"){
+			$("#coupon-price").text("10");
+		}else if(pid == "6"){
+			$("#coupon-price").text("0");
+		}
+	}
 </script>
 </head>
 <body>
@@ -105,6 +116,17 @@
 			    <p class="card-text">3명</p>
 			    <button type="button" class="btn">수정</button>
 			  </div>
+			   <div class="card-body">
+			    <h5 class="card-title">쿠폰</h5>
+			    <select class="form-select" onchange="couchange(value)" aria-label="Default select example">
+				  <option selected value="6">적용할 쿠폰</option>
+				  <option value="1">크리스마스 할인 쿠폰</option>
+				  <option value="2">생일 할인 쿠폰</option>
+				  <option value="3">부활절 할인  쿠폰</option>
+				  <option value="4">새해 맞이 할인 쿠폰</option>
+				  <option value="5">한가위 할인 쿠폰</option>
+				</select>
+			  </div>
 			</div>
 			<br>
 			<hr>
@@ -112,19 +134,24 @@
 			<div class="card">
 			  <h5 class="card-header">요금 세부 정보</h5>
 			  <div class="card-body">
-			    <p class="card-text" >130000 X 4박</p>
-			    <p class="card-text" id="won">₩ 520000</p>
+			    <p class="card-title" >${vo.price} X 3박</p>
+			    <p class="card-text" style="float: right" id="space-price">₩ ${vo.price*3}</p>
 			  </div>
 			  <div class="card-body">
-			    <p class="card-text">청소비</p>
-			    <p class="card-text" id="won">₩ 40000</p>
-			  </div>  
+			    <p class="card-title">서비스 수수료</p>
+			    <p class="card-text" style="float: right" id="service-price">₩ ${(vo.price*3)*0.03}</p>
+			  </div>
 			  <div class="card-body">
-			    <p class="card-text">서비스 수수료</p>
-			    <p class="card-text" id="won">₩ 40000</p>
+			    <p class="card-title">쿠폰 할인</p>
+			    <p class="card-text" style="float: right"> %</p>
+			    <p class="card-text" style="float: right" id="coupon-price">0</p>
+			  </div>
+			  <div class="card-body">
+			    <p class="card-title">할인</p>
+			    <p class="card-text" style="float: right" id="discount-price">₩ 0</p>
 			  </div>
 			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" id="won" name="price" value="600000">₩ 600000</p></li>
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >₩ ${(vo.price*3)+(vo.price*3)*0.03}</p></li>
 			  </ul>
 			  <div class="card-body">
 			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>

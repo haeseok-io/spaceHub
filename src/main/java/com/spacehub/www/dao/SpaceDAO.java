@@ -257,10 +257,9 @@ public class SpaceDAO {
 		ArrayList<JjimListVO> list = new ArrayList<JjimListVO>();
 
 		sb.setLength(0);
-		sb.append("select smember.memno, space_image.path, space.subject, space.spaceno, space_detail.bed, "
+		sb.append("select smember.memno, space.subject, space.spaceno, space_detail.bed, "
 				+ "space_detail.in_date, space_detail.out_date, space.price, jjim.jjimno ");
 		sb.append("from space ");
-		sb.append("join space_image on space.spaceno = space_image.spaceno ");
 		sb.append("join space_detail on space.spaceno = space_detail.spaceno ");
 		sb.append("join jjim on space.spaceno = jjim.spaceno ");
 		sb.append("join smember on space.memno = smember.memno ");
@@ -272,8 +271,7 @@ public class SpaceDAO {
 			pstmt.setInt(1, memno);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				String path = rs.getString("space_image.path");
+			while(rs.next()) {;
 				String subject = rs.getString("space.subject");
 				int spaceno = rs.getInt("space.spaceno");
 				int bed = rs.getInt("space_detail.bed");
@@ -282,7 +280,7 @@ public class SpaceDAO {
 				int price = rs.getInt("space.price");
 				int jjimno = rs.getInt("jjim.jjimno");
 				
-				JjimListVO vo = new JjimListVO(memno, path, subject, spaceno, bed, inDate, outDate, price, jjimno);
+				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, inDate, outDate, price, jjimno, null);
 				list.add(vo);
 			}
 		} catch (SQLException e) {
