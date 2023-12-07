@@ -14,12 +14,11 @@
 		.detail-subject .subject-etc button { background: #fff; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; color: #666; cursor: pointer; }
 		.detail-subject .subject-etc button:hover { background: #e0e0e0; }
 		
-		.detail-images { display: flex; justify-content: space-between; }
-		.detail-images img { width: 100%; }
-		.detail-images .images-main { width: 50%; }
-		.detail-images .images-sub { width: 49%; }
-		.detail-images .images-sub .images-list { display: flex; justify-content: space-between; flex-wrap: wrap; }
-		.detail-images .images-sub .images-list li { width: 49%; }
+		.detail-images { display: flex; }
+		.detail-images .images-main { width: 60%; }
+		.detail-images .images-main img {}
+		
+		.detail-images .images-sub { width: calc(40% - 10px); }
 	</style>
 	
 	<script src="/spaceHub/js/datepicker.js"></script>
