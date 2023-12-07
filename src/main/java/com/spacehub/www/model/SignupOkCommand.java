@@ -14,6 +14,7 @@ public class SignupOkCommand implements Action {
 		String email = req.getParameter("email");
 		String pw = req.getParameter("pw");
 		String name = req.getParameter("name");
+		String nickname = req.getParameter("nickname");
 		String post = req.getParameter("post");
 		String a = req.getParameter("address");
 		String da = req.getParameter("detailAddress");
@@ -21,12 +22,13 @@ public class SignupOkCommand implements Action {
 		String address = a+da+ea;
 		String accountNum = req.getParameter("accountNum");
 		
-		if(email != null || pw != null || name != null || post != null || address != null) {
+		if(email != null || pw != null || name != null || nickname != null || post != null || address != null) {
 		
 			SmemberVO vo = new SmemberVO();
 			vo.setEmail(email);
 			vo.setPassword(pw);
 			vo.setName(name);
+			vo.setNickname(nickname);
 			vo.setPost(post);
 			vo.setAddr(address);
 			vo.setAccountNum(accountNum);

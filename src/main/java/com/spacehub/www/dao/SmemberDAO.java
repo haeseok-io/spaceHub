@@ -125,11 +125,47 @@ public class SmemberDAO {
 		return vo;
 	}
 	
+	// 회원닉네임으로 정보 조회
+		public SmemberVO getNick(String nickname) {
+			SmemberVO vo = null;
+
+			sb.setLength(0);
+			sb.append("Select memno, email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status ");
+			sb.append("From smember ");
+			sb.append("Where nickname=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, nickname);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					int memno = rs.getInt("memno");
+					String password = rs.getString("password");
+					String name = rs.getString("name");
+					String email = rs.getString("email");
+					String profileImg = rs.getString("profile_img");
+					String post = rs.getString("post");
+					String addr = rs.getString("addr");
+					String accountNum = rs.getString("account_num");
+					String regdate = rs.getString("regdate");
+					int credits = rs.getInt("credits");
+					int status = rs.getInt("status");
+					
+					vo = new SmemberVO(memno, email, password, name, nickname, profileImg, post, addr, accountNum, regdate, credits, status);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return vo;
+		}
+	
 	// 추가
 	public void addOne(SmemberVO vo) {
 		sb.setLength(0);
-		sb.append("insert into xe.smember(email, password, name, post, addr, account_num, regdate, credits, status) ");
-		sb.append("values(?, ?, ?, ?, ?, ?, now(), ?, '1')");
+		sb.append("insert into xe.smember(email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status) ");
+		sb.append("values(?, ?, ?, ?, ?, ?, ?, now(), ?, '1')");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -137,6 +173,7 @@ public class SmemberDAO {
 			pstmt.setString(1, vo.getEmail());
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getName());
+			pstmt.setString(3, vo.getNickname());
 			pstmt.setString(4, vo.getPost());
 			pstmt.setString(5, vo.getAddr());
 			pstmt.setString(6, vo.getAccountNum());
