@@ -10,12 +10,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <style>
-	.img_wrap img{
+	img{
 		width: 200px;
-		heigth: auto;
+		height: 200px;
 		display: inline-block; /* 이미지를 옆으로 배열하려면 인라인 블록 요소로 설정 */
         margin-right: 20px;
-        bo
 	}
 	a {
 		color: black;
@@ -40,18 +39,19 @@
 				</div>
 			</div>
 			<div>
-				<c:forEach var="vo1" items="${list }">
+				<h2>등록한 숙소</h2>
+				<c:forEach var="vo" items="${list }">
 						<div class="spaceInfo">
 							<a href="/spaceHub/mypage/host?cmd=reservCalender">
 							<div class="img_wrap">
-								<c:forEach var="img" items="${vo1.imgList }">
+								<c:forEach var="img" items="${vo.imgList }">
 									<img src="${img.path }" alt="" />
 								</c:forEach> 
 							</div>
-								<p class="space_subject">${vo1.subject }</p>
+								<p class="space_subject">${vo.subject }</p>
 							</a>
-							<a href="/spaceHub/space?cmd=spaceModify&memno=${vo1.memno }&spaceno=${vo1.spaceno }">공간 수정</a>
-							<a href="/spaceHub/space?cmd=sapceDelete&memno=${vo1.memno }&spaceno=${vo1.spaceno }">공간 삭제</a>
+							<a href="/spaceHub/space?cmd=spaceModify&memno=${vo.memno }&spaceno=${vo.spaceno }">공간 수정</a>
+							<a href="/spaceHub/space?cmd=sapceDelete&memno=${vo.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
 						</div>
 				 </c:forEach>
 			</div>

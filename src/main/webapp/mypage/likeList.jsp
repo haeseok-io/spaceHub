@@ -13,6 +13,8 @@
 	img {
 		height: 200px;
 		width: 200px;
+		display: inline-block; /* 이미지를 옆으로 배열하려면 인라인 블록 요소로 설정 */
+        margin-right: 20px;
 	}
 </style>
 </head>
@@ -22,7 +24,9 @@
 			<a href="space?cmd=detail">
 				<div class="wrap">
 					<c:forEach var="vo" items="${list }">
-						<img src="${vo.path }" alt="" />			
+						<c:forEach var="img" items="${vo.imgList }">
+							<img src="${img.path }" alt="" />			
+						</c:forEach>
 						<p>${vo.subject }</p>
 						<p>침대 : ${vo.bed }개</p>
 						<p>${vo.inDate } ~ ${vo.outDate }</p>
