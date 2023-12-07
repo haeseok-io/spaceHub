@@ -41,7 +41,7 @@ public class MessageOkCommand implements ActionCommand {
 				}else {
 					for(MessageVO mvo : mlist) {
 						int a = mvo.getBno();
-						bno = a+1;
+							bno = a+1;
 					}
 				}
 			}

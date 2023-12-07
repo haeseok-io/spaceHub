@@ -17,7 +17,7 @@ public class SpaceListCommand implements ActionCommand {
 		ReservationDAO dao = new ReservationDAO();
 		HttpSession session = req.getSession();
 		
-		SmemberVO memberVO = (SmemberVO)session.getAttribute("vo");
+		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
 		ArrayList<ResevSpaceVO> list = dao.getAll(memberVO.getMemno());
 		
