@@ -17,12 +17,6 @@
 	}
 </style>
 <script>
-	$(()=>{
-		$("#ra1").on("click",()=>{
-			
-		})
-		
-	});
 </script>
 </head>
 <body>
