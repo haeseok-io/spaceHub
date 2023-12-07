@@ -22,7 +22,7 @@ public class SmemberDAO {
 		SmemberVO vo = null;
 
 		sb.setLength(0);
-		sb.append("Select memno, email, password, name, post, addr, account_num, regdate, credits, status ");
+		sb.append("Select memno, email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status ");
 		sb.append("From smember ");
 		sb.append("Where memno=?");
 		
@@ -35,6 +35,8 @@ public class SmemberDAO {
 				String email = rs.getString("email");
 				String password = rs.getString("password");
 				String name = rs.getString("name");
+				String nickname = rs.getString("nickname");
+				String profileImg = rs.getString("profile_img");
 				String post = rs.getString("post");
 				String addr = rs.getString("addr");
 				String accountNum = rs.getString("account_num");
@@ -42,7 +44,7 @@ public class SmemberDAO {
 				int credits = rs.getInt("credits");
 				int status = rs.getInt("status");
 				
-				vo = new SmemberVO(memno, email, password, name, post, addr, accountNum, regdate, credits, status);
+				vo = new SmemberVO(memno, email, password, name, nickname, profileImg, post, addr, accountNum, regdate, credits, status);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -56,7 +58,9 @@ public class SmemberDAO {
 		SmemberVO vo = null;
 
 		sb.setLength(0);
-		sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from xe.smember where email=?");
+		sb.append("Select memno, email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status ");
+		sb.append("From smember ");
+		sb.append("Where email=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -67,6 +71,8 @@ public class SmemberDAO {
 				int memno = rs.getInt("memno");
 				String password = rs.getString("password");
 				String name = rs.getString("name");
+				String nickname = rs.getString("nickname");
+				String profileImg = rs.getString("profile_img");
 				String post = rs.getString("post");
 				String addr = rs.getString("addr");
 				String accountNum = rs.getString("account_num");
@@ -74,7 +80,7 @@ public class SmemberDAO {
 				int credits = rs.getInt("credits");
 				int status = rs.getInt("status");
 				
-				vo = new SmemberVO(memno, email, password, name, post, addr, accountNum, regdate, credits, status);
+				vo = new SmemberVO(memno, email, password, name, nickname, profileImg, post, addr, accountNum, regdate, credits, status);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -88,7 +94,9 @@ public class SmemberDAO {
 		SmemberVO vo = null;
 
 		sb.setLength(0);
-		sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from xe.smember where email=? and password=?");
+		sb.append("Select memno, email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status ");
+		sb.append("From smember ");
+		sb.append("Where email=? and password=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -99,6 +107,8 @@ public class SmemberDAO {
 			while(rs.next()) {
 				int memno = rs.getInt("memno");
 				String name = rs.getString("name");
+				String nickname = rs.getString("nickname");
+				String profileImg = rs.getString("profile_img");
 				String post = rs.getString("post");
 				String addr = rs.getString("addr");
 				String accountNum = rs.getString("account_num");
@@ -106,7 +116,7 @@ public class SmemberDAO {
 				int credits = rs.getInt("credits");
 				int status = rs.getInt("status");
 				
-				vo = new SmemberVO(memno, email, password, name, post, addr, accountNum, regdate, credits, status);
+				vo = new SmemberVO(memno, email, password, name, nickname, profileImg, post, addr, accountNum, regdate, credits, status);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

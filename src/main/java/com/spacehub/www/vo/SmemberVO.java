@@ -13,6 +13,8 @@ public class SmemberVO {
 	String email;
 	String password;
 	String name;
+	String nickname;
+	String profileImg;
 	String post;
 	String addr;
 	String accountNum;
