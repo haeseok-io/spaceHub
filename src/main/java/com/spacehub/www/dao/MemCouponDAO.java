@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.MCouponVO;
 import com.spacehub.www.vo.MemCouponVO;
 
 public class MemCouponDAO {
@@ -69,6 +70,39 @@ public class MemCouponDAO {
 					rs.getInt("status"),
 					rs.getInt("reservno")
 				));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public ArrayList<MCouponVO> getMem(int memno) {
+		ArrayList<MCouponVO> list = new ArrayList<MCouponVO>();
+		
+		sb.setLength(0);
+		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and memno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				list.add(new MCouponVO(
+					rs.getInt("memno"),
+					rs.getInt("couponno"),
+					rs.getString("c_date"),
+					rs.getString("e_date"),
+					rs.getInt("status"),
+					rs.getInt("reservno"),
+					rs.getString("name"),
+					rs.getInt("dcratio")
+				));
+				System.out.println(list);
 			}
 			
 		} catch(SQLException e) {
