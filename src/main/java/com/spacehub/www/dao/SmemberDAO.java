@@ -165,7 +165,7 @@ public class SmemberDAO {
 	public void addOne(SmemberVO vo) {
 		sb.setLength(0);
 		sb.append("insert into xe.smember(email, password, name, nickname, profile_img, post, addr, account_num, regdate, credits, status) ");
-		sb.append("values(?, ?, ?, ?, ?, ?, ?, now(), ?, '1')");
+		sb.append("values(?, ?, ?, ?, null, ?, ?, ?, now(), ?, '1')");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -173,11 +173,11 @@ public class SmemberDAO {
 			pstmt.setString(1, vo.getEmail());
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getName());
-			pstmt.setString(3, vo.getNickname());
-			pstmt.setString(4, vo.getPost());
-			pstmt.setString(5, vo.getAddr());
-			pstmt.setString(6, vo.getAccountNum());
-			pstmt.setInt(7, vo.getCredits());
+			pstmt.setString(4, vo.getNickname());
+			pstmt.setString(5, vo.getPost());
+			pstmt.setString(6, vo.getAddr());
+			pstmt.setString(7, vo.getAccountNum());
+			pstmt.setInt(8, vo.getCredits());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

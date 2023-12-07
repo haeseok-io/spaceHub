@@ -102,6 +102,8 @@ function DaumPostcode() {
 						alert("사용 가능합니다.");
 					}else if(response.trim() == 'false'){
 						alert("다른 닉네임을 입력해주세요.");
+					}else {
+						alert("닉네임을 입력해주세요.")
 					}
 				}
 			});
