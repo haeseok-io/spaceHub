@@ -39,4 +39,4 @@ input { outline: none; }
 #header .header-search[data-status='Y'] .search-field { display: block; }
 #header .header-search[data-status='N'] .search-toggle .toggle-item[data-status='N'] { display: block; }
 
-#header .header-gnb { position: relative; z-index: 2; }
+#header .header-user { position: relative; z-index: 2; }
