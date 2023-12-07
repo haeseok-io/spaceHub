@@ -20,7 +20,7 @@ public class ReviewListCommand implements ActionCommand {
 		ReviewDAO dao = new ReviewDAO();
 		HttpSession session = req.getSession();
 		
-		SmemberVO memberVO = (SmemberVO)session.getAttribute("vo");
+		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
 		ArrayList<ReviewVO> list = dao.getAll(memberVO.getMemno());
 		req.setAttribute("list", list);		
