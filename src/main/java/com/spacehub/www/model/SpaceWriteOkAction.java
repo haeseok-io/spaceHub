@@ -34,33 +34,10 @@ public class SpaceWriteOkAction implements Action {
 		SpaceImageVO spaceImageVo = new SpaceImageVO();
 		SpaceFacVO spaceFacVo = new SpaceFacVO();
 		
-		//공간 정보(space)
-		String type = req.getParameter("type");	
-		//지역 앞부분만 잘라오기
-		String loc = req.getParameter("address");	
-		String[] locSplit = loc.split(" ");
-		//String loc1 = "경기 성남시 도곡동";
-		//String[] locSplit = loc1.split(" ");
-		String subject = req.getParameter("subject");		
-		String post = req.getParameter("post");		
-		String addr = req.getParameter("address");		
-		String price = req.getParameter("price");		
-		//String regdate = req.getParameter("regdate");		
-		try {
-			String ip = req.getParameter( Inet4Address.getLocalHost().getHostAddress());
-			System.out.println("spaceip:"+ip);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}		
+		
 		//String vStatus = req.getParameter("vStatus");		
 		//String status = req.getParameter("status");
-		System.out.println("spacetype:"+type);
-		System.out.println("spaceloc:"+loc);
-		System.out.println("spacesubject:"+subject);
-		System.out.println("spacepost:"+post);
-		System.out.println("spacetype:"+type);
-		System.out.println("spaceaddr:"+addr);
-		System.out.println("spaceprice:"+price);
+		
 		
 		//////////////////////////////////////
 		
@@ -125,104 +102,131 @@ public class SpaceWriteOkAction implements Action {
 		String[] disName = req.getParameterValues("disName");
 		System.out.println("dcRatio:"+dcRatio);
 		System.out.println("disName:"+disName);
+		
 		////////////////////////////////////////////////////
 		
-			System.out.println("ddddddddd");
-			spaceVo.setType(type);
-			spaceVo.setLoc(locSplit[0]);
-			spaceVo.setSubject(subject);
-			spaceVo.setPost(post);
-			spaceVo.setAddr(addr);
-			spaceVo.setPrice(Integer.parseInt(price));
-			//spaceVo.setRegdate(regdate);
-			try {
-				spaceVo.setIp(
-				 Inet4Address.getLocalHost().getHostAddress());
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			//spaceVo.setVStatus(Integer.parseInt(vStatus));
-			//spaceVo.setStatus(Integer.parseInt(status));
-			spaceVo.setMemno(11);
-			spaceDao.addOne(spaceVo);
+		//공간 정보(space) 추가
+//		spaceVo.setType(type);
+//		spaceVo.setLoc(locSplit[0]);
+//		spaceVo.setSubject(subject);
+//		spaceVo.setPost(post);
+//		spaceVo.setAddr(addr);
+//		spaceVo.setPrice(Integer.parseInt(price));
+//		//spaceVo.setRegdate(regdate);
+//		try {
+//			spaceVo.setIp(
+//			 Inet4Address.getLocalHost().getHostAddress());
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//		}
+//		//spaceVo.setVStatus(Integer.parseInt(vStatus));
+//		//spaceVo.setStatus(Integer.parseInt(status));
+//		spaceVo.setMemno(11);
+//		spaceDao.addOne(spaceVo);
 		
 		//LastInsertId
 		int lastInsert = spaceDao.getLastInsert();
 		System.out.println("마지막 번호 : " + lastInsert);
-//		
-//		
-//		if(detailType!=null&&detail!=null&&maxGuest!=null&&bed!=null&&bathroom!=null&&inOutDate!=null) {
-//			System.out.println("ddddddddd");
-//			spaceDetailVo.setSpaceno(lastInsert);
-//			spaceDetailVo.setType(detailType);
-//			spaceDetailVo.setDetail(detail);
-//			spaceDetailVo.setMaxGuest(Integer.parseInt(maxGuest));
-//			spaceDetailVo.setBed(Integer.parseInt(bed));
-//			spaceDetailVo.setBathroom(Integer.parseInt(bathroom));
-//			spaceDetailVo.setInDate(inDate);
-//			spaceDetailVo.setOutDate(outDate);
-//			spaceDetailVo.setX(x);
-//			spaceDetailVo.setY(y);
-//		}
-//		spcaeDetailDao.addOne(spaceDetailVo); 
-//		
-//		//공간 이미지(space_image)
-//		//업로드할 경로
-//		String saveFolder = "C:\\Users\\User\\git\\spaceHub\\src\\main\\webapp\\upload";
-//		//첨부파일 크기
-//		int size = 1024*1024*30;
-//		try {
-//			MultipartRequest mr = new MultipartRequest(req, saveFolder, size, "UTF-8", new DefaultFileRenamePolicy());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		String[] path = req.getParameterValues("path");
-//		if(path!=null) {
-//			
-//			spaceImageVo.setSpaceno(lastInsert);
-//			spaceImageVo.setImgno(1);
-//			for(int i=0; i<path.length; i++) {
-//				spaceImageVo.setPath(path[i]);
-//				spaceImageVo.setSeq(i);
-//			}
-//		}
-//		spcaeImageDao.addOne(spaceImageVo);
-//		
-//		spaceFacVo.setSpaceno(lastInsert);
-//		if(wifi!=null) spaceFacVo.setWifi(Integer.parseInt(wifi));
-//		if(tv!=null) spaceFacVo.setTv(Integer.parseInt(tv));
-//		if(kitchen!=null) spaceFacVo.setKitchen(Integer.parseInt(kitchen));
-//		if(wm!=null) spaceFacVo.setWm(Integer.parseInt(wm));
-//		if(aircon!=null) spaceFacVo.setAircon(Integer.parseInt(aircon));
-//		if(canpark!=null) spaceFacVo.setCanpark(Integer.parseInt(canpark));
-//		if(canfreepark!=null) spaceFacVo.setCanfreepark(Integer.parseInt(canfreepark));
-//		if(swim!=null) spaceFacVo.setSwim(Integer.parseInt(swim));
-//		if(bbq!=null) spaceFacVo.setBbq(Integer.parseInt(bbq));
-//		if(pooltable!=null) spaceFacVo.setPooltable(Integer.parseInt(pooltable));
-//		if(fireplace!=null) spaceFacVo.setFireplace(Integer.parseInt(fireplace));
-//		if(firealarm!=null) spaceFacVo.setFirealarm(Integer.parseInt(firealarm));
-//		if(aidkit!=null) spaceFacVo.setAidkit(Integer.parseInt(aidkit));
-//		if(firearm!=null) spaceFacVo.setFirearm(Integer.parseInt(firearm));
-//		spcaeFacDao.addOne(spaceFacVo);
-//		
-//		
-//		//System.out.println(dcRatio);
-//		if(dcRatio!=null&&disName!=null) {
-//			for(int i=0; i<dcRatio.length; i++)	{
-//				DiscountVO discountVo = new DiscountVO();
-//				discountVo.setSpaceno(lastInsert);
-//				discountVo.setName(disName[i]);
-//				discountVo.setDcratio(Integer.parseInt(dcRatio[i]));
-//				discountDao.addOne(discountVo);
-//			}
-//		}
-//		
-//		spaceDao.close();
-//		spcaeDetailDao.close();
-//		spcaeImageDao.close();
-//		spcaeFacDao.close();
-//		discountDao.close();
 		
-		return "/spaceHub/home";
+		//공간 상세정보(space_detail)
+		spaceDetailVo.setSpaceno(lastInsert);
+		spaceDetailVo.setType(detailType);
+		spaceDetailVo.setDetail(detail);
+		spaceDetailVo.setMaxGuest(Integer.parseInt(maxGuest));
+		spaceDetailVo.setBed(Integer.parseInt(bed));
+		spaceDetailVo.setBathroom(Integer.parseInt(bathroom));
+		spaceDetailVo.setInDate(inDate);
+		spaceDetailVo.setOutDate(outDate);
+		spaceDetailVo.setX(x);
+		spaceDetailVo.setY(y);
+		spcaeDetailDao.addOne(spaceDetailVo); 
+		
+		//업로드할 경로
+		String saveFolder = "C:\\Users\\User\\git\\spaceHub\\src\\main\\webapp\\upload";
+		//첨부파일 크기
+		int size = 1024*1024*30;
+		spaceImageVo.setSpaceno(lastInsert);
+		MultipartRequest mr;
+		try {
+			mr = new MultipartRequest(req, saveFolder, size, "UTF-8", new DefaultFileRenamePolicy());
+			//공간 이미지(space_image)
+			String[] path = mr.getParameterValues("path");
+			spaceImageVo.setImgno(1);
+			for(int i=0; i<path.length; i++) {
+				spaceImageVo.setPath(path[i]);
+				spaceImageVo.setSeq(i);
+			}
+			
+			spcaeImageDao.addOne(spaceImageVo);
+			
+			//공간 정보(space)
+			String type = mr.getParameter("type");	
+			//지역 앞부분만 잘라오기
+			String loc = mr.getParameter("address");	
+			String[] locSplit = loc.split(" ");
+			//String loc1 = "경기 성남시 도곡동";
+			//String[] locSplit = loc1.split(" ");
+			String subject = mr.getParameter("subject");		
+			String post = mr.getParameter("post");		
+			String addr = mr.getParameter("address");		
+			String price = mr.getParameter("price");		
+			//String regdate = req.getParameter("regdate");	
+			System.out.println("spacetype:"+type);
+			System.out.println("spaceloc:"+loc);
+			System.out.println("spacesubject:"+subject);
+			System.out.println("spacepost:"+post);
+			System.out.println("spacetype:"+type);
+			System.out.println("spaceaddr:"+addr);
+			System.out.println("spaceprice:"+price);
+			try {
+				String ip = mr.getParameter( Inet4Address.getLocalHost().getHostAddress());
+				System.out.println("spaceip:"+ip);
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}		
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		//공간 편의시설(space_fac)
+		spaceFacVo.setSpaceno(lastInsert);
+		if(wifi!=null) spaceFacVo.setWifi(Integer.parseInt(wifi));
+		if(tv!=null) spaceFacVo.setTv(Integer.parseInt(tv));
+		if(kitchen!=null) spaceFacVo.setKitchen(Integer.parseInt(kitchen));
+		if(wm!=null) spaceFacVo.setWm(Integer.parseInt(wm));
+		if(aircon!=null) spaceFacVo.setAircon(Integer.parseInt(aircon));
+		if(canpark!=null) spaceFacVo.setCanpark(Integer.parseInt(canpark));
+		if(canfreepark!=null) spaceFacVo.setCanfreepark(Integer.parseInt(canfreepark));
+		if(swim!=null) spaceFacVo.setSwim(Integer.parseInt(swim));
+		if(bbq!=null) spaceFacVo.setBbq(Integer.parseInt(bbq));
+		if(pooltable!=null) spaceFacVo.setPooltable(Integer.parseInt(pooltable));
+		if(fireplace!=null) spaceFacVo.setFireplace(Integer.parseInt(fireplace));
+		if(firealarm!=null) spaceFacVo.setFirealarm(Integer.parseInt(firealarm));
+		if(aidkit!=null) spaceFacVo.setAidkit(Integer.parseInt(aidkit));
+		if(firearm!=null) spaceFacVo.setFirearm(Integer.parseInt(firearm));
+		spcaeFacDao.addOne(spaceFacVo);
+		
+		
+		//할인등록(discount)
+		for(int i=0; i<dcRatio.length; i++)	{
+			DiscountVO discountVo = new DiscountVO();
+			discountVo.setSpaceno(lastInsert);
+			discountVo.setName(disName[i]);
+			discountVo.setDcratio(Integer.parseInt(dcRatio[i]));
+			discountDao.addOne(discountVo);
+		}
+		
+		spaceDao.close();
+		spcaeDetailDao.close();
+		spcaeImageDao.close();
+		spcaeFacDao.close();
+		discountDao.close();
+		
+		//return "/spaceHub/home";
+		return null;
 	}
 }// class end

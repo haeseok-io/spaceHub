@@ -30,20 +30,21 @@ public class SpaceControl extends HttpServlet {
 		boolean isRedirect = false;
 		String url = "";
 		
+		System.out.println(cmd);
 		if(cmd!=null && cmd.equals("writeOk")) {
 			Action ac = new SpaceWriteOkAction();
 			url = ac.execute(req, resp);
-			isRedirect = true;
+			//isRedirect = true;
 		}
 		
-		if( !url.equals("") ) {
-			if( isRedirect ) {
-				resp.sendRedirect(url);							
-			} else {
-				RequestDispatcher rd = req.getRequestDispatcher(url);
-				rd.forward(req, resp);
-			}
-		}
+//		if( !url.equals("") ) {
+//			if( isRedirect ) {
+//				resp.sendRedirect(url);							
+//			} else {
+//				RequestDispatcher rd = req.getRequestDispatcher(url);
+//				rd.forward(req, resp);
+//			}
+//		}
 		
 	}
 	

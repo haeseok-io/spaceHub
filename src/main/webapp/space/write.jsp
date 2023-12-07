@@ -25,9 +25,10 @@
 	    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	</style>
 </head>
+<!--  -->
 <body>
 	<div class="container">
-		<form name="spaceForm" action="/spaceHub/space" method="post" enctype="multipart/form-data">
+		<form name="spaceForm" action="/spaceHub/spaceRegister" method="post" enctype="multipart/form-data" >
 			<input type="hidden" name="cmd" value="writeOk" />
 			<input type="hidden" name="y" /> <!-- 위도  -->
 			<input type="hidden" name="x" /> <!-- 경도  -->
