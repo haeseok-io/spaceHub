@@ -23,10 +23,10 @@
 				<div class="wrap">
 					<c:forEach var="vo" items="${list }">
 						<img src="${vo.path }" alt="" />			
-					<p>${vo.subject }</p>
-					<p>침대 : ${vo.bed }개</p>
-					<p>${vo.inDate } ~ ${vo.outDate }</p>
-					<p>$${vo.price }/박 총액$${vo.price }</p>
+						<p>${vo.subject }</p>
+						<p>침대 : ${vo.bed }개</p>
+						<p>${vo.inDate } ~ ${vo.outDate }</p>
+						<p>$${vo.price }/박 총액$${vo.price }</p>
 					</c:forEach>
 				</div>
 			</a>

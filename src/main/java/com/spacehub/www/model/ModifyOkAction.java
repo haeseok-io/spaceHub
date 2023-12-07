@@ -31,7 +31,7 @@ public class ModifyOkAction implements Action{
 			dao.modifyOne(vo);
 			dao.close();
 		}
-		return "/space?cmd=list";
+		return "main.jsp";
 	}
 
 }

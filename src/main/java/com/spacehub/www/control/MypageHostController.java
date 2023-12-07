@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.spacehub.www.model.Action;
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.HostMainAction;
 import com.spacehub.www.model.ReservCalenderCommand;
 import com.spacehub.www.model.ReservListCommand;
-import com.spacehub.www.model.SpaceListCommand;
 
 @WebServlet("/mypage/host")
 public class MypageHostController extends HttpServlet{
@@ -26,7 +27,10 @@ public class MypageHostController extends HttpServlet{
 		String msg = "";
 		String url = "";
 		
-		if(cmd == null || cmd.equals("reservCalender")) {
+		if(cmd == null || cmd.equals("hostMain")) {
+			Action ac = new HostMainAction();
+			url = ac.execute(req, resp);
+		}else if(cmd.equals("reservCalender")) {
 			ActionCommand ac = new  ReservCalenderCommand();
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("reservList")) {

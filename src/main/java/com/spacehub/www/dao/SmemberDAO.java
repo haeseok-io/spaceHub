@@ -20,7 +20,7 @@ public class SmemberDAO {
 	// 1건 조회
 		public SmemberVO getOne(int memno) {
 			sb.setLength(0);
-			sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from xe.smember where smember=?");
+			sb.append("select memno,email,password,name,post,addr,account_num,regdate,credits,status from smember where memno=?");
 			SmemberVO vo = null;
 			
 			try {
