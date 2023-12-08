@@ -32,7 +32,8 @@ public class MessageControl extends HttpServlet {
 		if( cmd.equals("list") ) {
 			url = "/message/list.jsp";
 		} else if( cmd.equals("listData") ) {
-			
+			JsonAction ac = new MessageListAction();
+			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("contentData") ) {
 			
 		}
