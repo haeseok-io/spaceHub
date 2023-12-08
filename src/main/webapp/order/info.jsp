@@ -73,21 +73,14 @@
 			  });
 		}
 	
-	function couchange(pid){
-		if(pid == "1"){
-			$("#coupon-price").text("10");
-		}else if(pid == "2"){
-			$("#coupon-price").text("15");
-		}else if(pid == "3"){
-			$("#coupon-price").text("10");
-		}else if(pid == "4"){
-			$("#coupon-price").text("15");
-		}else if(pid == "5"){
-			$("#coupon-price").text("10");
-		}else if(pid == "6"){
-			$("#coupon-price").text("0");
-		}
+	function couchange(el){
+		let _this = $(el);
+		let dcratio = _this.val();
+		$("#coupon-price").text(dcratio);
+		$("#discount-price").text("0");
 	}
+	
+	
 </script>
 </head>
 <body>
@@ -118,15 +111,17 @@
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">쿠폰</h5>
-			    <select class="form-select" onchange="couchange(value)" aria-label="Default select example">
-				  <option selected value="6">적용할 쿠폰</option>
-				  <option value="1">크리스마스 할인 쿠폰</option>
-				  <option value="2">생일 할인 쿠폰</option>
-				  <option value="3">부활절 할인  쿠폰</option>
-				  <option value="4">새해 맞이 할인 쿠폰</option>
-				  <option value="5">한가위 할인 쿠폰</option>
+			    <select class="form-select" onchange="couchange(this)" aria-label="Default select example">
+				  <option selected value="0">적용 가능한 쿠폰</option>
+			    <c:forEach var="cvo" items="${list}">
+				  <option value="${cvo.dcratio}">${cvo.name}</option>
+				</c:forEach>
 				</select>
 			  </div>
+			  <div class="card-body">
+			    <h9 class="card-title">쿠폰과 호스트의 할인은 중복 적용이 불가능합니다.</h9>
+			  </div>
+			  <br />
 			</div>
 			<br>
 			<hr>
@@ -135,11 +130,13 @@
 			  <h5 class="card-header">요금 세부 정보</h5>
 			  <div class="card-body">
 			    <p class="card-title" >${vo.price} X 3박</p>
-			    <p class="card-text" style="float: right" id="space-price">₩ ${vo.price*3}</p>
+			    <p class="card-text" style="float: right" id="space-price">${vo.price*3}</p>
+			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">서비스 수수료</p>
-			    <p class="card-text" style="float: right" id="service-price">₩ ${(vo.price*3)*0.03}</p>
+			    <p class="card-text" style="float: right" id="service-price">${(vo.price*3)*0.03}</p>
+			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">쿠폰 할인</p>
@@ -147,8 +144,9 @@
 			    <p class="card-text" style="float: right" id="coupon-price">0</p>
 			  </div>
 			  <div class="card-body">
-			    <p class="card-title">할인</p>
-			    <p class="card-text" style="float: right" id="discount-price">₩ 0</p>
+			    <p class="card-title" id="dis">할인</p>
+			    <p class="card-text" style="float: right"> %</p>
+			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
 			  </div>
 			  <ul class="list-group list-group-flush">
 			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >₩ ${(vo.price*3)+(vo.price*3)*0.03}</p></li>
