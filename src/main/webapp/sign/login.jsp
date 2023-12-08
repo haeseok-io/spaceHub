@@ -63,7 +63,7 @@
 			</div>
 			<br />
 			<p>
-				<a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">비밀번호 찾기</a>
+				<a href="/spaceHub/sign?cmd=pwFind" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">비밀번호 찾기</a>
 				<a href="/spaceHub/sign?cmd=signup" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">회원가입</a>
 			</p>
 		<hr />
