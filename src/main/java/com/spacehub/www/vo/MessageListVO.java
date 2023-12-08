@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 public class MessageListVO {
 	private int messageno;
 	private int bno;
-	private String content;
+	private String contents;
 	private String regdate;
 	private int status;
 	private int spaceno;
 	private int memno;
 	
-	private String userType;
-	private String statusHan;
-	private String regdateFormat;
+	private int ownStatus; // 본인게시물 여부
 }

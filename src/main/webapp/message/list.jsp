@@ -57,16 +57,28 @@
 				<div class="message-title">
 					<p class="title-name">내용</p>
 				</div>
+				<div class="content-wrap">
+					<div class="content-viewer">
+						<ul class="viewer-list">
+							<li>
+								
+							</li>
+						</ul>
+					</div>
+					<div class="content-write">
+						
+					</div>
+				</div>
 			</div>
-			<div class="message-space-detail">
+			<div class="message-space_detail">
 				<div class="message-title">
 					<p class="title-name">숙소 상세정보</p>
 				</div>
+				<div class="space_detail-wrap">
+					
+				</div>
 			</div>
 		</div>
-		
-			${sessionScope.member}
-			<h2>message.jsp</h2>
 	</div>
 
 </body>
