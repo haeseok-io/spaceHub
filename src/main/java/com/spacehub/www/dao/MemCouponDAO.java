@@ -83,7 +83,7 @@ public class MemCouponDAO {
 		ArrayList<MCouponVO> list = new ArrayList<MCouponVO>();
 		
 		sb.setLength(0);
-		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.memno=?");
+		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.memno=? order by m.status asc, m.e_date asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -115,7 +115,7 @@ public class MemCouponDAO {
 		ArrayList<MCouponVO> list = new ArrayList<MCouponVO>();
 		
 		sb.setLength(0);
-		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.status=? and m.memno=?");
+		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.status=? and m.memno=? order by m.status asc, m.e_date asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
