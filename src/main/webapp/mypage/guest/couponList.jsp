@@ -28,27 +28,15 @@
 		});
 		
 		$("#btnradio2").on("click",()=>{
-			$("#ta1").css({ 
-				"display": "none "
-			});
-			$("#ta2").css({ 
-				"display": "block"
-			});
-			$("#ta3").css({ 
-				"display": "none"
-			});
+			$("#ta1").hide();
+			$("#ta2").show();
+			$("#ta3").hide();
 		});
 		
 		$("#btnradio3").on("click",()=>{
-			$("#ta1").css({ 
-				"display": "none "
-			});
-			$("#ta2").css({ 
-				"display": "none"
-			});
-			$("#ta3").css({ 
-				"display": "block"
-			});
+			$("#ta1").hide();
+			$("#ta2").hide();
+			$("#ta3").show();
 		}); 
 		
 	});
@@ -68,41 +56,49 @@
 			  <input type="radio" class="btn-check" name="btnradio" value="btn3" id="btnradio3" autocomplete="off">
 			  <label class="btn btn-outline-secondary" for="btnradio3">사용불가</label>
 			</div>
+			
 			<table class="table">
+			
 			  <thead>
 			    <tr>
-			      <th scope="col">쿠폰번호</th>
-			      <th scope="col">쿠폰종류</th>
-			      <th scope="col">할인율</th>
-			      <th scope="col">만료일</th>
+			      <th>쿠폰번호</th>
+			      <th>쿠폰종류</th>
+			      <th>할인율</th>
+			      <th>만료일</th>
 			    </tr>
 			  </thead>
+			  
 			  <tbody>
+			  
 			  <c:forEach var="vo" items="${list}">
 			    <tr id="ta1">
-			      <td>${vo.couponno}</td>
-			      <td>${vo.name}</td>
-			      <td>${vo.dcratio}</td>
-			      <td>${vo.EDate}</td>
+				  	<td>${vo.couponno}</td>
+				  	<td>${vo.name}</td>
+				  	<td>${vo.dcratio}</td>
+				  	<td>${vo.EDate}</td>
 			    </tr>
-			   </c:forEach>
-			  <c:forEach var="vo" items="${slist}">
+			  </c:forEach>
+			   
+			  <c:forEach var="so" items="${slist}">
 			    <tr id="ta2">
-			      <td>${vo.couponno}</td>
-			      <td>${vo.name}</td>
-			      <td>${vo.dcratio}</td>
-			      <td>${vo.EDate}</td>
+				  	<td>${so.couponno}</td>
+				  	<td>${so.name}</td>
+				  	<td>${so.dcratio}</td>
+				  	<td>${so.EDate}</td>
 			    </tr>
 			   </c:forEach>
-			  <c:forEach var="vo" items="${elist}">
+			   
+			  <c:forEach var="eo" items="${elist}">
 			    <tr id="ta3">
-			      <td>${vo.couponno}</td>
-			      <td>${vo.name}</td>
-			      <td>${vo.dcratio}</td>
-			      <td>${vo.EDate}</td>
+				  	<td>${eo.couponno}</td>
+				  	<td>${eo.name}</td>
+				  	<td>${eo.dcratio}</td>
+				  	<td>${eo.EDate}</td>
 			    </tr>
 			   </c:forEach>
-			  </tbody>
+			   
+			   </tbody>
+			   
 			</table>
 		</form>
 	</div>

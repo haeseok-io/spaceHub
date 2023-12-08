@@ -83,7 +83,7 @@ public class MemCouponDAO {
 		ArrayList<MCouponVO> list = new ArrayList<MCouponVO>();
 		
 		sb.setLength(0);
-		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and memno=?");
+		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.memno=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -102,7 +102,6 @@ public class MemCouponDAO {
 					rs.getString("name"),
 					rs.getInt("dcratio")
 				));
-				System.out.println(list);
 			}
 			
 		} catch(SQLException e) {
@@ -116,7 +115,7 @@ public class MemCouponDAO {
 		ArrayList<MCouponVO> list = new ArrayList<MCouponVO>();
 		
 		sb.setLength(0);
-		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.status=? and memno=?");
+		sb.append("select m.memno, m.couponno, m.c_date, m.e_date, m.status, m.reservno, c.name, c.dcratio from coupon c, mem_coupon m where c.couponno=m.couponno and m.status=? and m.memno=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -136,7 +135,6 @@ public class MemCouponDAO {
 					rs.getString("name"),
 					rs.getInt("dcratio")
 				));
-				System.out.println(list);
 			}
 			
 		} catch(SQLException e) {
