@@ -21,8 +21,13 @@ public class CouponCommand implements ActionCommand {
 //		System.out.println(memberVO.getMemno());
 		ArrayList<MCouponVO> list = dao.getMem(memberVO.getMemno());
 		
-		dao.close();
+		ArrayList<MCouponVO> slist = dao.getCMem(1, memberVO.getMemno());
+		ArrayList<MCouponVO> elist = dao.getCMem(2, memberVO.getMemno());
+		
 		req.setAttribute("list", list);
+		req.setAttribute("slist", slist);
+		req.setAttribute("elist", elist);
+		dao.close();
 		
 		return "guest/couponList.jsp";
 	}
