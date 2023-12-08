@@ -9,12 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.ActionCommand;
 import com.spacehub.www.model.HostMainAction;
+import com.spacehub.www.model.ImageDeleteOkAction;
+import com.spacehub.www.model.JsonAction;
 import com.spacehub.www.model.ReservCalenderCommand;
 import com.spacehub.www.model.ReservListCommand;
 import com.spacehub.www.model.SpaceModifyAction;
+import com.spacehub.www.model.SpaceModifyOkAction;
 
 @WebServlet("/mypage/host")
 public class MypageHostController extends HttpServlet{
@@ -24,8 +29,8 @@ public class MypageHostController extends HttpServlet{
 		resp.setContentType("text/html;charset=UTF-8");
 		
 		String cmd = req.getParameter("cmd");
-		
-		String msg = "";
+		boolean isRedirect = false;
+		JSONObject jsonObject = new JSONObject();
 		String url = "";
 		
 		if(cmd == null || cmd.equals("hostMain")) {
@@ -40,10 +45,25 @@ public class MypageHostController extends HttpServlet{
 		} else if(cmd.equals("spaceModify")) {
 			Action ac = new SpaceModifyAction();
 			url = ac.execute(req, resp);
+		} else if(cmd.equals("spaceModifyOk")) {
+			Action ac = new SpaceModifyOkAction();
+			url = ac.execute(req, resp);		
+		} else if(cmd.equals("imgDeleteOk")) {
+			JsonAction ac = new ImageDeleteOkAction();
+			jsonObject = ac.execute(req, resp);
 		}
 		
-		RequestDispatcher rd = req.getRequestDispatcher(url);
-		rd.forward(req, resp);
+		if( !url.equals("") ) {
+			if( isRedirect ) {
+				resp.sendRedirect(url);							
+			} else {
+				RequestDispatcher rd = req.getRequestDispatcher(url);
+				rd.forward(req, resp);
+			}
+		} else {
+			resp.getWriter().print(jsonObject.toJSONString());
+            resp.getWriter().flush();
+		}
 		
 	}
 	

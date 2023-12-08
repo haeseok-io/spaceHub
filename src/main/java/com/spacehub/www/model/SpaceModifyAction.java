@@ -20,11 +20,12 @@ public class SpaceModifyAction implements Action {
 		if(memno!=null && spaceno!=null) {
 			SpaceDAO spaceDao = new SpaceDAO();
 			SpaceImageDAO spaceImageDao = new SpaceImageDAO();
-			SpaceVO spaecVo = spaceDao.getOne(Integer.parseInt(spaceno));
+			SpaceVO spaceVo = spaceDao.getOne(Integer.parseInt(spaceno));
 			ArrayList<HostSpaceImageVO> list = spaceImageDao.getSpaceImages(Integer.parseInt(spaceno),Integer.parseInt(memno));
-			req.setAttribute("spaceVo", spaecVo);
+			req.setAttribute("spaceVo", spaceVo);
 			req.setAttribute("list", list);
 			spaceDao.close();
+			spaceImageDao.close();;
 		}
 		return "/space/spaceModifyForm.jsp";
 	}

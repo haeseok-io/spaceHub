@@ -19,6 +19,30 @@ public class SpaceImageDAO {
 		conn = DBConnection.getConnection();
 	}
 	
+	//공간 이미지 삭제
+	public void deleteOne(SpaceImageVO vo) {
+		sb.setLength(0);
+		sb.append("delete from space_image where imgno=? ");
+	}
+	
+	// 공간 이미지 수정
+	public void modifyOne(SpaceImageVO vo) {
+		sb.setLength(0);
+		sb.append("update space_image ");
+		sb.append("set path=?, seq=? ");
+		sb.append("where imgno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1,vo.getPath());
+			pstmt.setInt(2, vo.getSeq());
+			pstmt.setInt(3, vo.getImgno());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("SpaceImageDAO 업데이트 실패");
+		}
+		
+	}
+	
 	// 공간 전체 이미지 조회
 	public ArrayList<SpaceImageVO> getSpaceImages(int spaceno) {
 		ArrayList<SpaceImageVO> list = new ArrayList<SpaceImageVO>();

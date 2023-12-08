@@ -32,6 +32,7 @@ public class HostMainAction implements Action{
 			
 			
 			req.setAttribute("list", list);
+			imgDao.close();
 			dao.close();
 			
 		}
