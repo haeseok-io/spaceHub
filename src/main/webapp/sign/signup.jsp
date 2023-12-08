@@ -202,6 +202,15 @@ function DaumPostcode() {
 		   <br />   
 		  <div class="mb-3">
 			  <label for="exampleFormControlInput1" class="form-label">계좌번호 (선택)</label>
+			  <select class="form-select" aria-label="Default select example">
+				  <option selected>은행 선택</option>
+				  <option value="1">신한은행</option>
+				  <option value="2">KB국민은행</option>
+				  <option value="3">우리은행</option>
+				  <option value="4">하나은행</option>
+				  <option value="5">NH농협은행</option>
+				  <option value="6">외환은행</option>
+				</select>
 			  <input type="text" class="form-control" id="accountNum" name="accountNum" placeholder="accountNum">
 		  </div>
 		   <div>

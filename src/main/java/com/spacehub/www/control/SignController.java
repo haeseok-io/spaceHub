@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.Action;
+import com.spacehub.www.model.AuthOkCommand;
 import com.spacehub.www.model.LoginOkCommand;
 import com.spacehub.www.model.LogoutCommand;
+import com.spacehub.www.model.PwfindOkCommand;
 import com.spacehub.www.model.SignupOkCommand;
 
 @WebServlet("/sign")
@@ -44,6 +46,14 @@ public class SignController extends HttpServlet{
 		} else if(cmd.equals("signupOk")) {
 			Action ac = new SignupOkCommand();
 			url = ac.execute(req, resp);
+		} else if(cmd.equals("pwModifyOk")) {
+			Action ac = new PwfindOkCommand();
+			url = ac.execute(req, resp);
+		}else if(cmd.equals("authOk")) {
+			Action ac = new AuthOkCommand();
+			url = ac.execute(req, resp);
+		}else if(cmd.equals("pwFind")) {
+			url = "/sign/pwFind.jsp";
 		}
 		
 
