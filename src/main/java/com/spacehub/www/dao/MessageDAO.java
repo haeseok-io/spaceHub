@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.spacehub.www.vo.MessageMemSpaceVO;
+import com.spacehub.www.vo.MessageListVO;
 import com.spacehub.www.vo.MessageVO;
-import com.spacehub.www.vo.ReservMessageVO;
 
 public class MessageDAO {
 	Connection conn = null;
@@ -20,133 +19,106 @@ public class MessageDAO {
 		conn = DBConnection.getConnection();
 	}
 	
-	//전체 가져오기
-	public ArrayList<MessageVO> getAll(){
+	// 본인의 메시지 리스트 가져오기
+	// - 본인한테 온 메시지와 본인이 올린 공간에 온 메시지 모두 추출
+	// - 최근 작성자 정보, 최초 작성자 정보, 호스트 정보 추출
+	public ArrayList<MessageListVO> getList(int memno) {
+		ArrayList<MessageListVO> list = new ArrayList<MessageListVO>();
+		
+		sb.setLength(0);
+		sb.append("Select m.messageno, m.bno, m.contents, m.regdate, m.status, m.ip, m.spaceno, m.memno, hs.subject as space_name, ");
+		sb.append("Case When s.memno=hm.memno Then 1 Else 0 End As space_own_status, ");
+		sb.append("mm.memno as mmemno, mm.name as mname, mm.nickname as mnickname, mm.profile_img as mprofile_img, ");
+		sb.append("wm.memno as wmemno, wm.name as wname, wm.nickname as wnickname, wm.profile_img as wprofile_img, ");
+		sb.append("hm.memno as hmemno, hm.name as hname, hm.nickname as hnickname, hm.profile_img as hprofile_img ");
+		sb.append("From message m ");
+		sb.append("Join space s On s.memno=? ");
+		sb.append("Join space ms On ms.memno=m.memno ");
+		sb.append("Join smember mm On mm.memno=m.memno ");
+		sb.append("Join smember wm On wm.memno=(Select memno From message Where bno=m.bno order by messageno asc limit 1) ");
+		sb.append("Join space hs On hs.spaceno=m.spaceno ");
+		sb.append("Join smember hm On hm.memno=hs.memno ");
+		sb.append("Where (s.spaceno=m.spaceno or wm.memno=?) ");
+		sb.append("And m.messageno=(Select max(messageno) From message Where bno=m.bno) ");
+		sb.append("Group By m.bno");
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			pstmt.setInt(2, memno);
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				MessageListVO data = new MessageListVO();
+				data.setMessageno(rs.getInt("messageno"));
+				data.setBno(rs.getInt("bno"));
+				data.setContents(rs.getString("contents"));
+				data.setRegdate(rs.getString("regdate"));
+				data.setStatus(rs.getInt("status"));
+				
+				
+				data.setSpaceno(rs.getInt("spaceno"));
+				data.setSpaceName(rs.getString("space_name"));
+				data.setSpaceOwnStatus(rs.getInt("space_own_status"));
+				
+				data.setMmemno(rs.getInt("mmemno"));
+				data.setMname(rs.getString("mname"));
+				data.setMnickname(rs.getString("mnickname"));
+				data.setMprofileImg(rs.getString("mprofile_img"));
+				
+				data.setWmemno(rs.getInt("wmemno"));
+				data.setWname(rs.getString("wname"));
+				data.setWnickname(rs.getString("wnickname"));
+				data.setWprofileImg(rs.getString("wprofile_img"));
+				
+				data.setHmemno(rs.getInt("hmemno"));
+				data.setHname(rs.getString("hname"));
+				data.setHnickname(rs.getString("hnickname"));
+				data.setHprofileImg(rs.getString("hprofile_img"));
+				
+				list.add(data);
+			}
+			
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+	
+	// 메세지 리스트 가져오기
+	public ArrayList<MessageVO> getContents(int bno) {
 		ArrayList<MessageVO> list = new ArrayList<MessageVO>();
+		
 		sb.setLength(0);
-		sb.append("select messageno, bno, contents, regdate, status, ip, spaceno, memno from message ");
+		sb.append("Select * From message Where bno=?");
+		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, bno);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			
+			while( rs.next() ) {
 				list.add(new MessageVO(
-						rs.getInt("messageno"),rs.getInt("bno"), rs.getString("contents"),
-						rs.getString("regdate"), rs.getInt("status"), rs.getString("ip"),
-						rs.getInt("spaceno"), rs.getInt("memno")
-						));
+					rs.getInt("messageno"),
+					rs.getInt("bno"),
+					rs.getString("contents"),
+					rs.getString("regdate"),
+					rs.getInt("status"),
+					rs.getString("ip"),
+					rs.getInt("spaceno"),
+					rs.getInt("memno")
+				));
 			}
-		} catch (SQLException e) {
+			
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return list;
-	}
-	
-		public ArrayList<MessageVO> getAllBno(){
-			ArrayList<MessageVO> list = new ArrayList<MessageVO>();
-			sb.setLength(0);
-			sb.append("select messageno, max(bno) as bno, contents, regdate, status, ip, spaceno, memno from message");
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				rs = pstmt.executeQuery();
-				while(rs.next()) {
-					list.add(new MessageVO(
-							rs.getInt("messageno"),rs.getInt("bno"), rs.getString("contents"),
-							rs.getString("regdate"), rs.getInt("status"), rs.getString("ip"),
-							rs.getInt("spaceno"), rs.getInt("memno")
-							));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return list;
-		}
-	
-	public ArrayList<MessageMemSpaceVO> getMsg(int reservno){
-		ArrayList<MessageMemSpaceVO> list = new ArrayList<MessageMemSpaceVO>();
-		sb.setLength(0);
-		sb.append("select m.memno, m.name, e.regdate, e.bno, r.spaceno, s.subject, r.reservno from smember m, message e, space s, reservation r where r.spaceno=s.spaceno and s.memno=m.memno and r.spaceno=e.spaceno  and reservno=? order by e.regdate desc limit 1");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, reservno);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				int memno = rs.getInt("memno");
-				String name = rs.getString("name");
-				String regdate = rs.getString("regdate");
-				int bno = rs.getInt("bno");
-				int spaceno = rs.getInt("spaceno");
-				String subject = rs.getString("subject");
-				MessageMemSpaceVO vo = new MessageMemSpaceVO(memno, name, regdate, bno, spaceno, subject, reservno);
-				list.add(vo);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	public ArrayList<ReservMessageVO> getMC(int reservno){
-		ArrayList<ReservMessageVO> list = new ArrayList<ReservMessageVO>();
-		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, m.memno, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno,s.name, m.messageno, m.bno, m.contents from reservation r, message m, smember s where r.spaceno=m.spaceno and m.memno=s.memno and r.reservno=? order by m.regdate");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, reservno);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				String checkin = rs.getString("checkin");
-				String checkout = rs.getString("checkout");
-				String name = rs.getString("name");
-				String phone = rs.getString("phone");
-				int price = rs.getInt("price");
-				int guest = rs.getInt("guest");
-				int dcratio = rs.getInt("dcratio");
-				String regdate = rs.getString("regdate");
-				int status = rs.getInt("status");
-				String ip = rs.getString("ip");
-				int spaceno = rs.getInt("spaceno");
-				int memno = rs.getInt("memno");
-				int messageno = rs.getInt("messageno");
-				int bno = rs.getInt("bno");
-				String contents = rs.getString("contents");
-				ReservMessageVO vo = new ReservMessageVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno, messageno, bno, contents);
-				list.add(vo);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	//추가
-	public void addOne(MessageVO vo) {
-		sb.setLength(0);
-		sb.append("insert into message(bno, contents, regdate, status, ip, spaceno, memno) ");
-		sb.append("values(?,?,now(),1,?,?,?) ");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, vo.getBno());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setString(3, vo.getIp());
-			pstmt.setInt(4, vo.getSpaceno());
-			pstmt.setInt(5, vo.getMemno());
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	//삭제 
-	public void deleteOne(int messageno) {
-		sb.setLength(0);
-		sb.append("delete from message where messageno = ? ");
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, messageno);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	//종료

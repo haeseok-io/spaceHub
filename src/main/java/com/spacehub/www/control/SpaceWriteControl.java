@@ -5,6 +5,7 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,7 @@ import com.spacehub.www.vo.SpaceImageVO;
 import com.spacehub.www.vo.SpaceVO;
 
 @WebServlet("/spaceRegister")
-public class SpaceRegister extends HttpServlet {
+public class SpaceWriteControl extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		SpaceDAO spaceDao = new SpaceDAO();
@@ -41,7 +42,7 @@ public class SpaceRegister extends HttpServlet {
 		String saveFolder = req.getRealPath("/upload");
 		System.out.println(saveFolder);
 		//첨부파일 크기
-		int size = 1024*1024*30;
+		int size = 1024*1024*100;
 		
 		MultipartRequest mr;
 		try {
@@ -175,8 +176,8 @@ public class SpaceRegister extends HttpServlet {
 //			String[] path = mr.getParameterValues("path");
 			
 			System.out.println(mr.getFileNames());
-			System.out.println(mr.getFilesystemName("path"));
-			System.out.println(mr.getOriginalFileName("path"));
+			System.out.println(mr.getFilesystemName("img1"));
+			System.out.println(mr.getOriginalFileName("img1"));
 			
 			 // 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
@@ -191,12 +192,12 @@ public class SpaceRegister extends HttpServlet {
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
 		            spaceImageVo.setSpaceno(lastInsert); // 공간 번호 설정
 		            //spaceImageVo.setImgno(1); // 이미지 번호 설정
-		            spaceImageVo.setPath(uploadedFilePath); // 파일 경로 설정
-		            System.out.println(seq);
+		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
 		            spaceImageVo.setSeq(seq++); // 순서 설정
 
 		            // 해당 파일 정보를 DB에 추가
 		            spcaeImageDao.addOne(spaceImageVo);
+		            System.out.println(seq);
 		        }
 		    }
 			
@@ -238,6 +239,8 @@ public class SpaceRegister extends HttpServlet {
 		spcaeFacDao.close();
 		discountDao.close();
 		
-		//return "/spaceHub/home";
+		// 처리가 끝난 후 /spaceHub/home 으로 이동
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/home");
+		dispatcher.forward(req, resp);
 	}
 }

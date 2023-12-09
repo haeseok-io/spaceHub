@@ -172,7 +172,7 @@
 					
 					// 데이터 추가
 					appendEl.show();
-					result.data.forEach(obj => {
+					spaceData.forEach(obj => {
 						let appendHtml = $(appendTemplate);
 						
 						appendHtml.attr("data-spaceno", obj.spaceno);

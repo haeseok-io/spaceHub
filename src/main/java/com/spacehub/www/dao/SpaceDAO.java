@@ -224,7 +224,7 @@ public class SpaceDAO {
 		return data;
 	}
 	
-	//하나 가져오기
+		//하나 가져오기
 		public SpaceVO getOne(int spaceno) {
 			SpaceVO data = null;
 			sb.setLength(0);
