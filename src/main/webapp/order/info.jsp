@@ -27,18 +27,26 @@
 <script type="text/javascript">
 	function requestPay() {
 		  IMP.init('imp06672844');
+
+			let price = $("#price").text();
+			let space = $("#sname").text();
+			const pricenum = Number(price);
+			let memname = $("#memname").text();
+			let email = $("#email").text();
+			let post = $("#post").text();
+			let addr = $("#addr").text();
 		  
 		  IMP.request_pay({
 		    pg: "inicis",
 		    pay_method: "card",
 		    merchant_uid : 'merchant_'+new Date().getTime(),
-		    name : "방",
-			amount : 60000,
-		    buyer_email : 'iamport@siot.do',
-		    buyer_name : '구매자',
-		    buyer_tel : '010-1234-5678',
-		    buyer_addr : '서울특별시 강남구 삼성동',
-		    buyer_postcode : '123-456'
+		    name : space,
+			amount : pricenum,
+		    buyer_email : email,
+		    buyer_name : memname,
+		    buyer_tel : ' ',
+		    buyer_addr : addr,
+		    buyer_postcode : post
 		  }, function (rsp) {
 			    console.log(rsp);
 			    if (rsp.success) {
@@ -54,13 +62,19 @@
 							//고객 번호,
 							orderno : rsp.merchant_uid,
 							amount : rsp.paid_amount,
-							cardCondirmno : rsp.apply_num
+							cardCondirmno : rsp.apply_num,
+							name : rsp.buyer_name,
+							email : rsp.buyer_email,
+							addr : rsp.buyer_addr,
+							postcode : rsp.buyer_postcode,
+							cardnum : rsp.card_number
+							
 						},
 						success : function(result){
 							if(result == "y"){
-								location.href="/ordercomplete.jsp";
+								location.href="/spaceHub/home";
 							}else{
-								alert("DB 입력 실패");
+								alert("결제 실패");
 								return false;
 							}
 						}
@@ -73,21 +87,24 @@
 			  });
 		}
 	
-	function couchange(pid){
-		if(pid == "1"){
-			$("#coupon-price").text("10");
-		}else if(pid == "2"){
-			$("#coupon-price").text("15");
-		}else if(pid == "3"){
-			$("#coupon-price").text("10");
-		}else if(pid == "4"){
-			$("#coupon-price").text("15");
-		}else if(pid == "5"){
-			$("#coupon-price").text("10");
-		}else if(pid == "6"){
-			$("#coupon-price").text("0");
+	function couchange(el){
+		let _this = $(el);
+		let dcratio = _this.val();
+		let a = $("#dcp").val();
+		let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
+		let dprice = ($("#cprice").val())*((100-a)*0.01);
+		if(dcratio != 0){
+			$("#coupon-price").text(dcratio);
+			$("#discount-price").text("0");
+			$("#price").text(cprice);
+		}else{
+			$("#coupon-price").text(0);
+			$("#discount-price").text(a);
+			$("#price").text(dprice);
 		}
 	}
+	
+	
 </script>
 </head>
 <body>
@@ -99,6 +116,10 @@
 			  <div class="card-body">
 			    <h5 class="card-title">예약 공간</h5>
 			    <p class="card-text" id="sname">${vo.subject}</p>
+			    <input type="hidden" name="memname" id="memname" value="${smvo.name}" />
+			    <input type="hidden" name="email" id="email" value="${smvo.email}" />
+			    <input type="hidden" name="post" id="post" value="${smvo.post}" />
+			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
@@ -118,15 +139,17 @@
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">쿠폰</h5>
-			    <select class="form-select" onchange="couchange(value)" aria-label="Default select example">
-				  <option selected value="6">적용할 쿠폰</option>
-				  <option value="1">크리스마스 할인 쿠폰</option>
-				  <option value="2">생일 할인 쿠폰</option>
-				  <option value="3">부활절 할인  쿠폰</option>
-				  <option value="4">새해 맞이 할인 쿠폰</option>
-				  <option value="5">한가위 할인 쿠폰</option>
+			    <select class="form-select" onchange="couchange(this)" aria-label="Default select example">
+				  <option selected value="0">적용 가능한 쿠폰</option>
+			    <c:forEach var="cvo" items="${list}">
+				  <option value="${cvo.dcratio}">${cvo.name}</option>
+				</c:forEach>
 				</select>
 			  </div>
+			  <div class="card-body">
+			    <h9 class="card-title">쿠폰과 호스트의 할인은 중복 적용이 불가능합니다.</h9>
+			  </div>
+			  <br />
 			</div>
 			<br>
 			<hr>
@@ -135,11 +158,13 @@
 			  <h5 class="card-header">요금 세부 정보</h5>
 			  <div class="card-body">
 			    <p class="card-title" >${vo.price} X 3박</p>
-			    <p class="card-text" style="float: right" id="space-price">₩ ${vo.price*3}</p>
+			    <p class="card-text" style="float: right" id="space-price">${vo.price*3}</p>
+			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">서비스 수수료</p>
-			    <p class="card-text" style="float: right" id="service-price">₩ ${(vo.price*3)*0.03}</p>
+			    <p class="card-text" style="float: right" id="service-price">${(vo.price*3)*0.03}</p>
+			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">쿠폰 할인</p>
@@ -147,11 +172,14 @@
 			    <p class="card-text" style="float: right" id="coupon-price">0</p>
 			  </div>
 			  <div class="card-body">
-			    <p class="card-title">할인</p>
-			    <p class="card-text" style="float: right" id="discount-price">₩ 0</p>
+			    <p class="card-title" id="dis">호스트의 할인</p>
+			    <p class="card-text" style="float: right"> %</p>
+			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
+			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>
+			    <input type="hidden" name="cprice" id="cprice" value="${((vo.price*3)+(vo.price*3)*0.03)}"/>
 			  </div>
 			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >₩ ${(vo.price*3)+(vo.price*3)*0.03}</p></li>
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*3)+(vo.price*3)*0.03)*((100-dc)*0.01)}</p><p class="card-text" style="float: right"> ₩</p></li>
 			  </ul>
 			  <div class="card-body">
 			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>
@@ -167,7 +195,7 @@
 			<hr>
 			<div>
 				<h5>기본 규칙</h5><br />
-				<p>훌륭한 게스트가 되기 위한 몇 가지 간단한 규칙을 지켜주실 것을 모든 게스트에게 당부드리고 있습니다.</p>
+				<span>훌륭한 게스트가 되기 위한 몇 가지 간단한 규칙을 지켜주실 것을 모든 게스트에게 당부드리고 있습니다.</span>
 				<ul>
 					<li>숙소 이용규칙을 준수하세요.</li>
 					<li>호스트의 집도 자신의 집처럼 아껴주세요.</li>				

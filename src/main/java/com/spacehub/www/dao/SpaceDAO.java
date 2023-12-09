@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.spacehub.www.vo.JjimListVO;
+import com.spacehub.www.vo.SpaceDiscountVO;
 import com.spacehub.www.vo.SpaceListVO;
 import com.spacehub.www.vo.SpaceVO;
 
@@ -251,6 +252,43 @@ public class SpaceDAO {
 			}
 			return data;
 		}
+		
+		//예약한 하나 가져오기
+				public SpaceDiscountVO getRes(int memno, int spaceno) {
+					SpaceDiscountVO data = null;
+					sb.setLength(0);
+					sb.append("SELECT s.spaceno, s.type, s.loc, s.subject, s.post, s.addr, s.price, s.regdate, s.ip, s.v_status, s.status, r.memno, d.disno, d.name, d.dcratio, count(distinct r.reservno) as reservno, r.checkin, r.checkout, r.phone, r.guest from space s, discount d, reservation r where s.spaceno=d.spaceno AND s.spaceno=r.spaceno AND r.memno=? and s.spaceno=? ");
+					try {
+						pstmt = conn.prepareStatement(sb.toString());
+						pstmt.setInt(1, memno);
+						pstmt.setInt(2, spaceno);
+						rs = pstmt.executeQuery();
+						while(rs.next()) {
+							String type = rs.getString("type");
+							String loc = rs.getString("loc");
+							String subject = rs.getString("subject");
+							String post = rs.getString("post");
+							String addr = rs.getString("addr");
+							int price = rs.getInt("price");
+							String regdate = rs.getString("regdate");
+							String ip = rs.getString("ip");
+							int vStatus = rs.getInt("v_status");
+							int status = rs.getInt("status");
+							int disno = rs.getInt("disno");
+							String name = rs.getString("name");
+							int dcratio = rs.getInt("dcratio");
+							int reservno = rs.getInt("reservno");
+							String checkin = rs.getString("checkin");
+							String checkout = rs.getString("checkout");
+							String phone = rs.getString("phone");
+							int guest = rs.getInt("guest");
+							data = new SpaceDiscountVO(spaceno, type, loc, subject, post, addr, price, regdate, ip, vStatus, status, memno, disno, name, dcratio, reservno, checkin, checkout, phone, guest);
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					return data;
+				}
 	
 	// 찜 리스트
 	public ArrayList<JjimListVO> getJjimList(int memno) {

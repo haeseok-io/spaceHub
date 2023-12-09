@@ -41,6 +41,7 @@
 <body>
 	<div class="container">
 		<form action="">
+		<h2>예약확인</h2>
 		<div class="row row-cols-1 row-cols-md-4 g-3">
 		<c:forEach var="vo" items="${list}">
  		 <div class="col">
