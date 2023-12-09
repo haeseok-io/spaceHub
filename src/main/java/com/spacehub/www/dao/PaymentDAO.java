@@ -123,7 +123,7 @@ public class PaymentDAO {
 	// 데이터 삭제
 	public void deleteOne(int paymentno) {
 		sb.setLength(0);
-		sb.append("Delete From payment Where paymenrno=?");
+		sb.append("Delete From payment Where paymentno=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
