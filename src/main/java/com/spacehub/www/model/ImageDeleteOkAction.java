@@ -37,7 +37,7 @@ public class ImageDeleteOkAction implements JsonAction {
 		
 		// Process
 		SpaceImageDAO spaceImageDao = new SpaceImageDAO();
-		spaceImageDao.
+		
 		
 		
 		return null;
