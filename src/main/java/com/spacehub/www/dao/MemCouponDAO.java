@@ -186,6 +186,26 @@ public class MemCouponDAO {
 		}
 	}
 	
+	// 상태 수정
+		public void modifyStatus(MemCouponVO vo) {
+			sb.setLength(0);
+			sb.append("Update mem_coupon Set ");
+			sb.append("status=?, reservno=? ");
+			sb.append("Where memno=? && couponno=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, vo.getStatus());
+				pstmt.setInt(2, vo.getReservno());
+				pstmt.setInt(3, vo.getMemno());
+				pstmt.setInt(4, vo.getCouponno());
+				
+				pstmt.executeUpdate();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	
 	// 데이터 컬럼 수정
 	public void modifyOnePart(int memno, int couponno, String field, String value) {
 		sb.setLength(0);

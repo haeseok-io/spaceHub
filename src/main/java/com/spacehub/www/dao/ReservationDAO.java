@@ -59,7 +59,7 @@ public class ReservationDAO {
 		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
 		
 		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.memno=? and i.seq=1");
+		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.memno=? and i.seq=1 order by checkin asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());

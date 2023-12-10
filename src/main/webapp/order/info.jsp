@@ -31,10 +31,19 @@
 			let price = $("#price").text();
 			let space = $("#sname").text();
 			const pricenum = Number(price);
-			let memname = $("#memname").text();
-			let email = $("#email").text();
-			let post = $("#post").text();
-			let addr = $("#addr").text();
+			let memname = $("#memname").val();
+			let email = $("#email").val();
+			let post = $("#post").val();
+			let addr = $("#addr").val();
+			let spaceno = $("#spaceno").val();
+			let checkin = $("#checkin").text();
+			let checkout = $("#checkout").text();
+			let guest = $("#guest").text();
+			let phone = $("#phone").val();
+			let cprice = $("#coupon-price").text();
+			let dprice = $("#discount-price").text();
+			let couponname = $("#couponselect option:selected").text();
+			
 		  
 		  IMP.request_pay({
 		    pg: "inicis",
@@ -67,7 +76,15 @@
 							email : rsp.buyer_email,
 							addr : rsp.buyer_addr,
 							postcode : rsp.buyer_postcode,
-							cardnum : rsp.card_number
+							cardnum : rsp.card_number,
+							spaceno : spaceno,
+							checkin : checkin,
+							checkout : checkout,
+							guest : guest,
+							phone : phone,
+							cprice : cprice,
+							dprice : dprice,
+							couponname : couponname
 							
 						},
 						success : function(result){
@@ -120,26 +137,28 @@
 			    <input type="hidden" name="email" id="email" value="${smvo.email}" />
 			    <input type="hidden" name="post" id="post" value="${smvo.post}" />
 			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
+			    <input type="hidden" name="spaceno" id="spaceno" value="${vo.spaceno}" />
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
-			    <p class="card-text">2023-11-27</p>
+			    <p class="card-text" id="checkin">2023-11-27</p>
 			    <button type="button" class="btn">수정</button>
 			    <input type="hidden" name="cmd" value="orderOk" />
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">체크아웃</h5>
-			    <p class="card-text">2023-11-30</p>
+			    <p class="card-text" id="checkout">2023-11-30</p>
 			    <button type="button" class="btn">수정</button>
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">게스트</h5>
-			    <p class="card-text">3명</p>
+			    <p class="card-text" id="guest">3</p>
+			    <p class="card-text">명</p>
 			    <button type="button" class="btn">수정</button>
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">쿠폰</h5>
-			    <select class="form-select" onchange="couchange(this)" aria-label="Default select example">
+			    <select class="form-select" onchange="couchange(this)" id="couponselect" aria-label="Default select example">
 				  <option selected value="0">적용 가능한 쿠폰</option>
 			    <c:forEach var="cvo" items="${list}">
 				  <option value="${cvo.dcratio}">${cvo.name}</option>
@@ -149,7 +168,12 @@
 			  <div class="card-body">
 			    <h9 class="card-title">쿠폰과 호스트의 할인은 중복 적용이 불가능합니다.</h9>
 			  </div>
-			  <br />
+			   <div class="card-body">
+			  <div class="mb-3">
+				   <h5 class="card-title">전화번호 입력</h5>
+				  <input type="text" class="form-control" id="phone" placeholder="phone">
+				</div>
+			  </div>
 			</div>
 			<br>
 			<hr>
