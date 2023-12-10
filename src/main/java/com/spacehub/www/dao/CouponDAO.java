@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.spacehub.www.vo.CouponVO;
+import com.spacehub.www.vo.PaymentVO;
 
 public class CouponDAO {
 	Connection conn = null;
@@ -42,6 +43,31 @@ public class CouponDAO {
 		}
 		
 		return list;
+	}
+	
+	//이름으로 검색
+	public CouponVO getOne(String name) {
+		CouponVO data = new CouponVO();
+		
+		sb.setLength(0);
+		sb.append("Select couponno, name, dcratio From coupon Where name=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				data.setCouponno(rs.getInt("couponno"));
+				data.setName(rs.getString("name"));
+				data.setDcratio(rs.getInt("dcratio"));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return data;
 	}
 	
 	// 데이터 추가
