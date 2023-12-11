@@ -21,27 +21,25 @@
 	<div class="container">
 		<form action="">
 			<h2>리스트</h2>
-			<c:forEach var="vo" items="${list}">
 			<div class="btn-group">
-			  <a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${vo.spaceno}" class="btn btn-outline-secondary" aria-current="page">달력</a>
+			  <a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${spaceno}" class="btn btn-outline-secondary" aria-current="page">달력</a>
 			  <a href="#" class="btn btn-outline-secondary active">리스트</a>
 			</div>
-			</c:forEach>
 			<c:forEach var="vo" items="${list}">
 			<table class="table">
 			  <thead>
 			    <tr>
 			      <th scope="col">예약번호</th>
+			      <td scope="row">${vo.reservno}</td>
 			      <th scope="col">이름</th>
-			      <th scope="col">체크인</th>
-			      <th scope="col">체크아웃</th>
+			      <td>${vo.name}</td>
 			    </tr>
 			  </thead>
 			  <tbody>
 			    <tr>
-			      <td scope="row">${vo.reservno}</td>
-			      <td>${vo.name}</td>
+			      <th scope="col">체크인</th>
 			      <td>${vo.checkin}</td>
+			      <th scope="col">체크아웃</th>
 			      <td>${vo.checkout}</td>
 			    </tr>
 			    <tr>

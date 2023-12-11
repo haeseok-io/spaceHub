@@ -20,6 +20,7 @@ public class ReservListCommand implements ActionCommand {
 			ReservationDAO dao = new ReservationDAO();
 			ArrayList<ReservationVO> list = dao.getSpace(spaceno);
 			
+			req.setAttribute("spaceno", spaceno);
 			req.setAttribute("list", list);		
 			dao.close();
 			

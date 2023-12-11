@@ -21,38 +21,16 @@
             text-align: center;
             margin: 0 auto; 
         }
-
-        .Calendar>thead>tr:first-child>td { font-weight: bold; }  
-
-        .pastDay{ background-color: lightgray; }
-
-        .today{            
-            background-color: #FFCA64;            
-            cursor: pointer;
-        }
-
-        .futureDay{            
-            background-color: #FFFFFF;
-            cursor: pointer;
-        }
-
-        .futureDay.choiceDay, .today.choiceDay{            
-            background-color: #3E85EF;            
-            color: #fff;
-            cursor: pointer;
-        }
 </style>
 </head>
 <body>
 	<div class="container">
 		<form action="">
 			<h2>달력</h2>
-			<c:forEach var="vo" items="${list}">
 			<div class="btn-group">
 			  <a href="#" class="btn btn-outline-secondary active" aria-current="page">달력</a>
-			  <a href="/spaceHub/mypage/host?cmd=reservList&spaceno=${vo.spaceno}" class="btn btn-outline-secondary">리스트</a>
+			  <a href="/spaceHub/mypage/host?cmd=reservList&spaceno=${spaceno}" class="btn btn-outline-secondary">리스트</a>
 			</div>
-			</c:forEach>
 			<table class="Calendar">
 				<thead>
 					<tr>
