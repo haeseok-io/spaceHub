@@ -87,9 +87,9 @@
 				let _this = $(e.currentTarget);
 				let classList = _this.attr("class").split(" ");
 				
-				let spaceno = _this.parents(".list-item").data("spaceno");
-				let processType = classList[1]=="bi-heart" ? "likeWriteOk" : "likeDeleteOk";
-				let iconName = classList[1]=="bi-heart" ? "bi-heart-fill" : "bi-heart";
+				let spaceno = _this.parents(".list-item").attr("data-spaceno");
+				let processType = classList[2]=="bi-heart" ? "likeWriteOk" : "likeDeleteOk";
+				let iconName = classList[2]=="bi-heart" ? "bi-heart-fill" : "bi-heart";
 				
 				// Process
 				$.ajax({
@@ -110,7 +110,7 @@
 						
 						// 찜 아이콘 변경
 						let className = _this.attr("class");
-						className = className.replace(classList[1], iconName);
+						className = className.replace(classList[2], iconName);
 						_this.attr("class", className);
 					}
 				});
@@ -153,8 +153,6 @@
 				data: form.serialize(),
 				dataType: "json",
 				success: result => {
-					console.log(result);
-					
 					let spaceData = result.data;
 					let pageData = result.paging;
 					
@@ -185,7 +183,7 @@
 						appendHtml.find(".price-value").text(obj.priceFormat);
 						
 						// 찜 아이콘
-						let jjimIconClass = obj.jjimStatus=='Y' ? "bi-heart-fill" : "bi-heart";
+						let jjimIconClass = obj.userJjimStatus=='Y' ? "bi-heart-fill" : "bi-heart";
 						appendHtml.find(".jjim-icon").addClass(jjimIconClass);
 						
 						// html 추가
