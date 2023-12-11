@@ -50,7 +50,7 @@
 		    pay_method: "card",
 		    merchant_uid : 'merchant_'+new Date().getTime(),
 		    name : space,
-			amount : 1,
+		    amount : pricenum,
 		    buyer_email : email,
 		    buyer_name : memname,
 		    buyer_tel : ' ',
