@@ -5,7 +5,7 @@
 <jsp:include page="./common/common.jsp" />
 	
 	<title>spaceHub</title>
-	<link rel="stylesheet" href="/spaceHub/css/datepicker.css" />
+	<link rel="stylesheet" href="/spaceHub/css/air-datepicker.css" />
 	<style>
 		.space { padding: 30px 0; }
 		
@@ -33,8 +33,7 @@
 		.space-more button { background: #333; border: none; border-radius: 10px; padding: 10px 20px; font-size: 16px; color: #fff; cursor: pointer; }
 	</style>
 	
-	<script src="/spaceHub/js/datepicker.js"></script>
-	<script src="/spaceHub/js/datepicker.kr.js"></script>
+	<script src="/spaceHub/js/air-datepicker.js"></script>
 	<script>
 		let moreViewStatus = false;
 	
@@ -43,9 +42,9 @@
 			callList();
 			
 			// datepicker
-			$("input[name='in_date']").datepicker({language: 'kr', autoClose: true});
-			$("input[name='out_date']").datepicker({language: 'kr', autoClose: true});
-			
+			const datepickerOption = {autoClose: true};
+			const inDatepicker = new AirDatepicker("input[name='in_date']", datepickerOption);
+			const outDatepicker = new AirDatepicker("input[name='out_date']", datepickerOption);
 			
 			// 상세검색
 			$(".search-toggle .toggle-item").click(e => {
@@ -88,9 +87,9 @@
 				let _this = $(e.currentTarget);
 				let classList = _this.attr("class").split(" ");
 				
-				let spaceno = _this.parents(".list-item").data("spaceno");
-				let processType = classList[1]=="bi-heart" ? "likeWriteOk" : "likeDeleteOk";
-				let iconName = classList[1]=="bi-heart" ? "bi-heart-fill" : "bi-heart";
+				let spaceno = _this.parents(".list-item").attr("data-spaceno");
+				let processType = classList[2]=="bi-heart" ? "likeWriteOk" : "likeDeleteOk";
+				let iconName = classList[2]=="bi-heart" ? "bi-heart-fill" : "bi-heart";
 				
 				// Process
 				$.ajax({
@@ -111,7 +110,7 @@
 						
 						// 찜 아이콘 변경
 						let className = _this.attr("class");
-						className = className.replace(classList[1], iconName);
+						className = className.replace(classList[2], iconName);
 						_this.attr("class", className);
 					}
 				});
@@ -184,7 +183,7 @@
 						appendHtml.find(".price-value").text(obj.priceFormat);
 						
 						// 찜 아이콘
-						let jjimIconClass = obj.jjimStatus=='Y' ? "bi-heart-fill" : "bi-heart";
+						let jjimIconClass = obj.userJjimStatus=='Y' ? "bi-heart-fill" : "bi-heart";
 						appendHtml.find(".jjim-icon").addClass(jjimIconClass);
 						
 						// html 추가

@@ -8,7 +8,9 @@
 		<div class="inner">
 			<div class="header-logo">
 				<h1>
-					<a href="/spaceHub/home">spaceHub</a>
+					<a href="/spaceHub/home">
+						<img src="/spaceHub/upload/spaceHub-logo.png">
+					</a>
 				</h1>
 			</div>
 			<c:if test="${requestScope['javax.servlet.forward.servlet_path']=='/home'}">

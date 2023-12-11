@@ -20,36 +20,38 @@ public class ReviewDAO {
 	}
 	
 	// 공간에 대한 후기 가져오기
-		public ArrayList<ReviewListVO> getSpaceAll(int spaceno) {
-			ArrayList<ReviewListVO> list = new ArrayList<ReviewListVO>();
+	public ArrayList<ReviewListVO> getSpaceAll(int spaceno) {
+		ArrayList<ReviewListVO> list = new ArrayList<ReviewListVO>();
+		
+		sb.setLength(0);
+		sb.append("Select rv.reviewno, rv.subject, rv.contents, rv.rating, rv.regdate, s.name, s.nickname, s.profile_img ");
+		sb.append("From review rv, reservation r, smember s ");
+		sb.append("Where rv.reservno=r.reservno And r.memno=s.memno And r.spaceno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
 			
-			sb.setLength(0);
-			sb.append("Select rv.reviewno, rv.subject, rv.contents, rv.rating, rv.regdate, r.name ");
-			sb.append("From review rv, reservation r ");
-			sb.append("Where rv.reservno=r.reservno And r.spaceno=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				while( rs.next() ) {
-					list.add(new ReviewListVO(
-						rs.getInt("reviewno"),
-						rs.getString("subject"),
-						rs.getString("contents"),
-						rs.getInt("rating"),
-						rs.getString("regdate"),
-						rs.getString("name")
-					));
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
+			while( rs.next() ) {
+				list.add(new ReviewListVO(
+					rs.getInt("reviewno"),
+					rs.getString("subject"),
+					rs.getString("contents"),
+					rs.getInt("rating"),
+					rs.getString("regdate"),
+					rs.getString("name"),
+					rs.getString("nickname"),
+					rs.getString("profile_img")
+				));
 			}
 			
-			return list;
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
+		
+		return list;
+	}
 	
 	public ArrayList<ReviewVO> getAll(int memno){
 		ArrayList<ReviewVO> list = new ArrayList<ReviewVO>();
@@ -96,7 +98,7 @@ public class ReviewDAO {
 		return data;
 	}
 	
-	//추가
+	// 추가
 	public void addOne(ReviewVO vo) {
 		sb.setLength(0);
 		sb.append("insert into review(subject, contents, rating, regdate, status, ip, memno, reservno) ");
@@ -115,7 +117,57 @@ public class ReviewDAO {
 		}
 	}
 	
-	//종료
+	// 공간 번호에 대한 후기 갯수 가져오기
+	public Integer getSpaceTotal(int spaceno) {
+		Integer total = 0;
+		
+		sb.setLength(0);
+		sb.append("Select count(*) as total ");
+		sb.append("From reservation r, review rv ");
+		sb.append("Where r.reservno=rv.reservno And r.spaceno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				total = rs.getInt("total");
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return total;
+	}
+	
+	// 공간 번호에 대한 평균후기 점수 가져오기
+	public float getAvgRating(int spaceno) {
+		float avgRating = 0;
+		
+		sb.setLength(0);
+		sb.append("Select avg(rv.rating) as rating ");
+		sb.append("From reservation r, review rv ");
+		sb.append("Where r.reservno=rv.reservno And r.spaceno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				avgRating = rs.getFloat("rating");
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return avgRating;
+	}
+	
+	// 종료
 	public void close()	{
 		try {
 			if(conn!=null) conn.close();
