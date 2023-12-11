@@ -37,25 +37,15 @@
 	.col{
 		margin-right:150px;
 	}
-	#btndiv{
-		text-align: center;
-	}
 	#can{
-		display: inline-block;
+		text-align: center;
+		display: block;
 	}
 </style>
 <script type="text/javascript">
-	function cans(el){
-		let _this = $(el);
-		let reservno = _this.val();
-			console.log("dkdk");
-			/* if(!confirm('정말 예약을 취소하시겠습니까?.\n취소 후에 복구는 불가능합니다.')){
-				return false;
-			}else{
-				let reserv = $("#res").val();
-				alert("예약이 취소되었습니다.");
-				location.href="/spaceHub/order?cmd=cancel&reservno="reserv;
-			} */
+
+	function delchk(){
+			return confirm("취소하시겠습니까?");
 	}
 </script>
 </head>
@@ -63,6 +53,14 @@
 	<div class="container">
 		<form action="">
 		<h2>예약확인</h2>
+		<div class="btn-group" style="float: right;">
+		  <a href="#" class="btn btn-secondary active" aria-current="page">여행 예정</a>
+		  <a href="/spaceHub/mypage/guest?cmd=spaceEnd" class="btn btn-secondary">지난 여행</a>
+		  <a href="/spaceHub/mypage/guest?cmd=spaceCancel" class="btn btn-secondary">취소한 여행</a>
+		</div>
+		<br />
+		<br />
+		<br />
 		<div class="row row-cols-1 row-cols-md-4 g-3">
 		<c:forEach var="vo" items="${list}">
  		 <div class="col">
@@ -70,7 +68,6 @@
 			  <a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno}"><img src="${vo.path}" alt="..."></a>
 			  <div class="card-body">
 			    <h5 class="card-title">${vo.subject}</h5>
-			    <input type="hidden" name="reser" id="res" value="${vo.reservno}" />
 			  </div>
 			  <div class="card-body">
 			    <p class="card-text">체크인날짜</p>
@@ -82,15 +79,15 @@
 			  </div>
 			  <ul class="list-group list-group-flush">
 			    <li class="list-group-item">게스트 인원 <p class="card-text" id="re">${vo.guest}</p></li>
-			    <li class="list-group-item">예약 번호 <p class="card-text" id="re">${vo.reservno}</p></li>
+			    <li class="list-group-item">예약 번호 <p class="card-text" id="sreserv" style="float: right;">${vo.reservno}</p></li>
 			    <li class="list-group-item">결제 가격 <p class="card-text" id="re">₩ ${vo.price}</p></li>
 			  </ul>
 			  <div class="card-footer">
 			    <a href="/spaceHub/message" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="hm">호스트에게메세지</a>
 			    <a href="/spaceHub/review?cmd=review&reservno=${vo.reservno}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="de">후기쓰기</a>
 			  </div>
-			  <div class="card-footer" id="btndiv">
-			   <button type="button" class="btn btn-outline-danger" id="cans" value="${vo.reservno} onclick="cans(this);">예약 취소</button>
+			  <div class="card-footer">
+			   <a href="/spaceHub/order?cmd=cancel&reservno=${vo.reservno}" id="can" onclick="return delchk();" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">예약 취소</a>
 			  </div>
 			</div>
 			</div>

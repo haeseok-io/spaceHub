@@ -161,18 +161,18 @@
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
-			    <p class="card-text" id="checkin">2023-11-27</p>
+			    <p class="card-text" id="checkin">${checkin}</p>
 			    <button type="button" class="btn">수정</button>
 			    <input type="hidden" name="cmd" value="orderOk" />
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">체크아웃</h5>
-			    <p class="card-text" id="checkout">2023-11-30</p>
+			    <p class="card-text" id="checkout">${checkout}</p>
 			    <button type="button" class="btn">수정</button>
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">게스트</h5>
-			    <p class="card-text" id="guest">1</p>
+			    <p class="card-text" id="guest">${guest}</p>
 			    <p class="card-text">명</p>
 			    <div class="btn-group" role="group" aria-label="Basic example">
 				  <button type="button" class="btn btn-outline-secondary" id="minus">-</button>

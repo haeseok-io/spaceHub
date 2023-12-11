@@ -1,5 +1,9 @@
 package com.spacehub.www.model;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +27,14 @@ public class OrderCommand implements ActionCommand {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		String s = req.getParameter("spaceno");
+		String checkin = req.getParameter("checkin");
+		String checkout = req.getParameter("checkout");
+		String guest = req.getParameter("guest");
 		
 		HttpSession session = req.getSession();
 		
 		if((SmemberVO)session.getAttribute("member") != null) {
-			if(s != null) {
+			if(s != null || checkin != null || checkout != null || guest != null) {
 				int Spaceno = Integer.parseInt(s);
 				SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 				MemCouponDAO mdao = new MemCouponDAO();
@@ -72,6 +79,9 @@ public class OrderCommand implements ActionCommand {
 					dc = 0;
 				}
 				
+				req.setAttribute("checkin", checkin);
+				req.setAttribute("checkout", checkout);
+				req.setAttribute("guest", guest);
 				req.setAttribute("sddvo", sddvo);
 				req.setAttribute("dc", dc);
 				req.setAttribute("vo", vo);
