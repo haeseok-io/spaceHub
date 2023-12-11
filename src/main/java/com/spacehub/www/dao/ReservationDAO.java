@@ -55,6 +55,40 @@ public class ReservationDAO {
 		return list;
 	}
 	
+	public ReservationVO getSpaceOne(int spaceno) {
+			
+			sb.setLength(0);
+			sb.append("SELECT max(reservno) AS reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno From reservation where spaceno=?");
+			ReservationVO vo = null;
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, spaceno);
+				rs = pstmt.executeQuery();
+				
+				while( rs.next() ) {
+					String checkin = rs.getString("checkin");
+					String checkout = rs.getString("checkout");
+					String name = rs.getString("name");
+					String phone = rs.getString("phone");
+					int price = rs.getInt("price");
+					int guest = rs.getInt("guest");
+					int dcratio = rs.getInt("dcratio");
+					String regdate = rs.getString("regdate");
+					int status = rs.getInt("status");
+					String ip = rs.getString("ip");
+					int reservno = rs.getInt("reservno");
+					int memno = rs.getInt("memno");
+					vo = new ReservationVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno);
+				}
+				
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return vo;
+		}
+	
 	public ArrayList<ResevSpaceVO> getAll(int memno){
 		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
 		

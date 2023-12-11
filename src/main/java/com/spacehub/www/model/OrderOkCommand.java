@@ -1,5 +1,7 @@
 package com.spacehub.www.model;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -66,38 +68,38 @@ public class OrderOkCommand implements ActionCommand {
 			  rvo.setMemno(memberVO.getMemno());
 			  
 			  rdao.addOne(rvo);
-			  rdao.close();
+			  
+			  ReservationVO rsvo = rdao.getSpaceOne(spaceno);
 			  
 			  if(cprice != 0) {
 				  MemCouponDAO mdao = new MemCouponDAO();
 				  MemCouponVO mvo = new MemCouponVO();
 				  mvo.setStatus(2);
-				  mvo.setReservno(0);
+				  mvo.setReservno(rsvo.getReservno());
 				  mvo.setMemno(memberVO.getMemno());
 				  mvo.setCouponno(cvo.getCouponno());
 				  
-				  mdao.addOne(mvo);
+				  mdao.modifyStatus(mvo);
 				  mdao.close();
 			  }
 			  
 			  if(orderno!= null || cardConfirmno != null || email != null || cardnum != null){
 				  PaymentDAO dao = new PaymentDAO();
 				  PaymentVO vo = new PaymentVO();
-				  vo.setApprovalNum(orderno);
+				  vo.setApprovalNum(cardConfirmno);
 				  vo.setCardNum(cardnum);
 				  vo.setName(name);
 				  vo.setEmail(email);
 				  vo.setPrice(price);
-				  vo.setReservno(0);
+				  vo.setReservno(rsvo.getReservno());
 				  
 				  dao.addOne(vo);
 				  dao.close();
 			  }
+			  rdao.close();
 		  }
-		  
-		 
 		
-		return "main.jsp";
+		return "y";
 	}
 
 }
