@@ -14,4 +14,6 @@ public class ReviewListVO {
 	private int rating;
 	private String regdate;
 	private String name;
+	private String nickname;
+	private String profileImg;
 }
