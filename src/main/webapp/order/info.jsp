@@ -50,7 +50,7 @@
 		    pay_method: "card",
 		    merchant_uid : 'merchant_'+new Date().getTime(),
 		    name : space,
-			amount : pricenum,
+			amount : 1,
 		    buyer_email : email,
 		    buyer_name : memname,
 		    buyer_tel : ' ',
@@ -89,6 +89,7 @@
 						},
 						success : function(result){
 							if(result == "y"){
+								alert("예약이 완료되었습니다.");
 								location.href="/spaceHub/home";
 							}else{
 								alert("결제 실패");
