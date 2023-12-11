@@ -5,7 +5,7 @@
 <jsp:include page="./common/common.jsp" />
 	
 	<title>spaceHub</title>
-	<link rel="stylesheet" href="/spaceHub/css/datepicker.css" />
+	<link rel="stylesheet" href="/spaceHub/css/air-datepicker.css" />
 	<style>
 		.space { padding: 30px 0; }
 		
@@ -33,8 +33,7 @@
 		.space-more button { background: #333; border: none; border-radius: 10px; padding: 10px 20px; font-size: 16px; color: #fff; cursor: pointer; }
 	</style>
 	
-	<script src="/spaceHub/js/datepicker.js"></script>
-	<script src="/spaceHub/js/datepicker.kr.js"></script>
+	<script src="/spaceHub/js/air-datepicker.js"></script>
 	<script>
 		let moreViewStatus = false;
 	
@@ -43,9 +42,9 @@
 			callList();
 			
 			// datepicker
-			$("input[name='in_date']").datepicker({language: 'kr', autoClose: true});
-			$("input[name='out_date']").datepicker({language: 'kr', autoClose: true});
-			
+			const datepickerOption = {autoClose: true};
+			const inDatepicker = new AirDatepicker("input[name='in_date']", datepickerOption);
+			const outDatepicker = new AirDatepicker("input[name='out_date']", datepickerOption);
 			
 			// 상세검색
 			$(".search-toggle .toggle-item").click(e => {
@@ -154,6 +153,8 @@
 				data: form.serialize(),
 				dataType: "json",
 				success: result => {
+					console.log(result);
+					
 					let spaceData = result.data;
 					let pageData = result.paging;
 					

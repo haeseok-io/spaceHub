@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.spacehub.www.dao.DiscountDAO;
 import com.spacehub.www.dao.ReviewDAO;
 import com.spacehub.www.dao.SmemberDAO;
 import com.spacehub.www.dao.SpaceDAO;
@@ -43,14 +44,39 @@ public class SpaceDetailAction implements Action {
 		SpaceDetailVO detailData = spaceDetailDAO.getOne(spaceno);
 		SpaceFacVO factoryData = spaceFacDAO.getOne(spaceno);
 		ArrayList<SpaceImageVO> imageList = imageDAO.getSpaceImages(spaceno);
-		ArrayList<ReviewListVO> reviewList = reviewDAO.getSpaceAll(spaceno);
+		int reviewCount = reviewDAO.getSpaceTotal(spaceno);
+		float avgRating = Math.round(reviewDAO.getAvgRating(spaceno)*100)/100.0f;
+		ArrayList<ReviewListVO> reviewList = new ArrayList<ReviewListVO>();
 		
-		req.setAttribute("data", spaceData);
-		req.setAttribute("host", hostData);
-		req.setAttribute("detail", detailData);
-		req.setAttribute("factory", factoryData);
-		req.setAttribute("images", imageList);
-		req.setAttribute("review", reviewList);
+		// 회원정보 가공
+		if( hostData.getNickname()==null ) 		hostData.setNickname(hostData.getName());
+		if( hostData.getProfileImg()==null )	hostData.setProfileImg("/spaceHub/upload/profile_empty.jpeg");
+		
+		// 리뷰 가공
+		for(ReviewListVO reviewData : reviewDAO.getSpaceAll(spaceno)) {
+			
+			// 회원 프로필사진이 없을경우 대체이미지로 변경
+			if( reviewData.getProfileImg()==null ) {
+				reviewData.setProfileImg("/spaceHub/upload/profile_empty.jpeg");
+			}
+			
+			// 닉네임이 없을경우 이름으로 대체
+			if( reviewData.getNickname()==null ) {
+				reviewData.setNickname(reviewData.getName());
+			}
+			
+			reviewList.add(reviewData);
+		}
+
+		
+		req.setAttribute("spaceData", spaceData);
+		req.setAttribute("hostData", hostData);
+		req.setAttribute("detailData", detailData);
+		req.setAttribute("factoryData", factoryData);
+		req.setAttribute("imageList", imageList);
+		req.setAttribute("reviewList", reviewList);
+		req.setAttribute("reviewCount", reviewCount);
+		req.setAttribute("avgRating", avgRating);
 		
 		
 		spaceDAO.close();
