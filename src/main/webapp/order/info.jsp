@@ -89,6 +89,7 @@
 						},
 						success : function(result){
 							if(result == "y"){
+								alert("예약이 완료되었습니다.");
 								location.href="/spaceHub/home";
 							}else{
 								alert("결제 실패");
