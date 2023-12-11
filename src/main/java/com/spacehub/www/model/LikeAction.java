@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.JjimListVO;
 
 public class LikeAction implements Action{
@@ -18,11 +19,18 @@ public class LikeAction implements Action{
 			int memno = Integer.parseInt(m);
 			
 			SpaceDAO dao = new SpaceDAO();
+			SpaceImageDAO imgDao = new SpaceImageDAO();
 			
 			ArrayList<JjimListVO> list = dao.getJjimList(memno);
 			
-			dao.close();
+			for(JjimListVO jjimData : list) {
+				int spaceno = jjimData.getSpaceno();
+				
+				jjimData.setImgList(imgDao.getSpaceImages(spaceno, memno));
+			}
+			
 			req.setAttribute("list", list);
+			dao.close();
 			
 		}
 		return "/mypage/likeList.jsp";

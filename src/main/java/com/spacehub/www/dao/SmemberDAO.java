@@ -225,25 +225,25 @@ public class SmemberDAO {
 		}
 	}
 	
-	// 비밀번호 수정
-		public void modifyPw(SmemberVO vo) {
-			sb.setLength(0);
-			sb.append("update smember ");
-			sb.append("set password=? ");
-			sb.append("where email=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setString(1, vo.getPassword());
-				pstmt.setString(2, vo.getEmail());
-				
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	
+	// 비밀번호 변경
+	public void modifyPw(SmemberVO vo) {
+		sb.setLength(0);
+		sb.append("update smember ");
+		sb.append("set password=? ");
+		sb.append("where memno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, vo.getPassword());
+			pstmt.setInt(2, vo.getMemno());
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	// 종료
 	public void close() {
 		try {

@@ -8,6 +8,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script type="text/javascript">
+</script>
 </head>
 <body>
 <div class="container">
@@ -26,10 +28,12 @@
 			</tr>
 			
 			<tr>
-				<th>비밀번호</th>
-				<td><input type="password" name="password" id="password" value="${vo.password }"/></td>
+				<td>
+					<a href="/spaceHub/mypage?cmd=pwAuth&memno=${vo.memno }">
+						<input type="button" value="비밀번호 변경" />
+					</a>
+				</td>
 			</tr>
-			
 			<tr>
 				<th>우편번호</th>
 				<td><input type="text" name="post" id="post" value="${vo.post }"/></td>
