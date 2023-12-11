@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
@@ -36,7 +37,27 @@
 	.col{
 		margin-right:150px;
 	}
+	#btndiv{
+		text-align: center;
+	}
+	#can{
+		display: inline-block;
+	}
 </style>
+<script type="text/javascript">
+	function cans(el){
+		let _this = $(el);
+		let reservno = _this.val();
+			console.log("dkdk");
+			/* if(!confirm('정말 예약을 취소하시겠습니까?.\n취소 후에 복구는 불가능합니다.')){
+				return false;
+			}else{
+				let reserv = $("#res").val();
+				alert("예약이 취소되었습니다.");
+				location.href="/spaceHub/order?cmd=cancel&reservno="reserv;
+			} */
+	}
+</script>
 </head>
 <body>
 	<div class="container">
@@ -49,6 +70,7 @@
 			  <a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno}"><img src="${vo.path}" alt="..."></a>
 			  <div class="card-body">
 			    <h5 class="card-title">${vo.subject}</h5>
+			    <input type="hidden" name="reser" id="res" value="${vo.reservno}" />
 			  </div>
 			  <div class="card-body">
 			    <p class="card-text">체크인날짜</p>
@@ -64,8 +86,11 @@
 			    <li class="list-group-item">결제 가격 <p class="card-text" id="re">₩ ${vo.price}</p></li>
 			  </ul>
 			  <div class="card-footer">
-			    <a href="/spaceHub/message?cmd=message&reservno=${vo.reservno}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="hm">호스트에게메세지</a>
+			    <a href="/spaceHub/message" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="hm">호스트에게메세지</a>
 			    <a href="/spaceHub/review?cmd=review&reservno=${vo.reservno}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="de">후기쓰기</a>
+			  </div>
+			  <div class="card-footer" id="btndiv">
+			   <button type="button" class="btn btn-outline-danger" id="cans" value="${vo.reservno} onclick="cans(this);">예약 취소</button>
 			  </div>
 			</div>
 			</div>

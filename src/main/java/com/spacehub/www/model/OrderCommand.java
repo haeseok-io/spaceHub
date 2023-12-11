@@ -10,9 +10,11 @@ import com.spacehub.www.dao.DiscountDAO;
 import com.spacehub.www.dao.MemCouponDAO;
 import com.spacehub.www.dao.SmemberDAO;
 import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.vo.DiscountVO;
 import com.spacehub.www.vo.MCouponVO;
 import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceDiscountVO;
 import com.spacehub.www.vo.SpaceVO;
 
@@ -35,19 +37,42 @@ public class OrderCommand implements ActionCommand {
 				SpaceDiscountVO sdvo = dao.getRes(memberVO.getMemno(), Spaceno);
 				SmemberDAO smdao = new SmemberDAO();
 				SmemberVO smvo = smdao.getOne(memberVO.getMemno());
+				DiscountDAO ddao = new DiscountDAO();
+				ArrayList<DiscountVO> dlist = ddao.getOne(Spaceno);
+				DiscountVO dvo = ddao.getTwo(Spaceno);
+				DiscountVO dwvo = ddao.getWeek(Spaceno);
+				DiscountVO dmvo = ddao.getMonth(Spaceno);
 				
+				SpaceDetailDAO sddao = new SpaceDetailDAO();
+				SpaceDetailVO sddvo = sddao.getOne(Spaceno);
+				
+				int a = 0;
 				int dc = 0;
-				if(sdvo != null) {
-					if(sdvo.getReservno() <= 2){
-						dc = 20;
+				if(dlist != null) {
+					if(dvo != null) {
+						if(sdvo != null) {
+							if(sdvo.getReservno() <= 2){
+								dc = dvo.getDcratio();
+							}
+						}else {
+							dc = dvo.getDcratio();
+						}
+					}else if(dwvo != null) {
+						if(a>=7) {
+							dc = dwvo.getDcratio();
+						}
+					}else if(dmvo != null) {
+						if(a>=28) {
+							dc = dmvo.getDcratio();
+						}
 					}else {
-						dc = 10;
+						dc = 0;
 					}
-					
 				}else {
-					dc = 20;
+					dc = 0;
 				}
 				
+				req.setAttribute("sddvo", sddvo);
 				req.setAttribute("dc", dc);
 				req.setAttribute("vo", vo);
 				req.setAttribute("smvo", smvo);

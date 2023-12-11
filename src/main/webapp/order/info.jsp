@@ -19,7 +19,7 @@
 		float:left;
 	}
 	
-	button{
+	button, .btn-group{
 		float: right;
 	}
 </style>
@@ -90,7 +90,7 @@
 						success : function(result){
 							if(result == "y"){
 								alert("예약이 완료되었습니다.");
-								location.href="/spaceHub/home";
+								window.location.href="/spaceHub/home";
 							}else{
 								alert("결제 실패");
 								return false;
@@ -122,6 +122,24 @@
 		}
 	}
 	
+	$(()=>{
+		$("#minus").on("click",()=>{
+			let guest = $("#guest").text();
+			let m = guest-1;
+			if(guest > 1){
+				$("#guest").text(m);
+			}
+		});
+		
+		$("#plus").on("click",()=>{
+			let guest = $("#guest").text();
+			let p = Number(guest)+1;
+			let guestmax = $("#guestmax").val();
+			if(guest < guestmax){
+				$("#guest").text(p);
+			}
+		});
+	});
 	
 </script>
 </head>
@@ -139,6 +157,7 @@
 			    <input type="hidden" name="post" id="post" value="${smvo.post}" />
 			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
 			    <input type="hidden" name="spaceno" id="spaceno" value="${vo.spaceno}" />
+			    <input type="hidden" name="guestmax" id="guestmax" value="${sddvo.maxGuest}" />
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
@@ -153,9 +172,12 @@
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">게스트</h5>
-			    <p class="card-text" id="guest">3</p>
+			    <p class="card-text" id="guest">1</p>
 			    <p class="card-text">명</p>
-			    <button type="button" class="btn">수정</button>
+			    <div class="btn-group" role="group" aria-label="Basic example">
+				  <button type="button" class="btn btn-outline-secondary" id="minus">-</button>
+				  <button type="button" class="btn btn-outline-secondary" id="plus">+</button>
+				</div>
 			  </div>
 			   <div class="card-body">
 			    <h5 class="card-title">쿠폰</h5>
@@ -182,7 +204,10 @@
 			<div class="card">
 			  <h5 class="card-header">요금 세부 정보</h5>
 			  <div class="card-body">
-			    <p class="card-title" >${vo.price} X 3박</p>
+			    <p class="card-title" >${vo.price}</p>
+			    <p class="card-title" >X</p>
+			    <p class="card-title" >3</p>
+			    <p class="card-title" >박</p>
 			    <p class="card-text" style="float: right" id="space-price">${vo.price*3}</p>
 			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
