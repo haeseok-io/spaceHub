@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.spacehub.www.model.JsonAction;
+import com.spacehub.www.model.MessageContentAction;
 import com.spacehub.www.model.MessageListAction;
 
 @WebServlet("/message")
@@ -35,7 +36,8 @@ public class MessageControl extends HttpServlet {
 			JsonAction ac = new MessageListAction();
 			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("contentData") ) {
-			
+			JsonAction ac = new MessageContentAction();
+			jsonObject = ac.execute(req, resp);
 		}
 		
 		

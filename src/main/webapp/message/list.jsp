@@ -7,23 +7,20 @@
 	<title>메시지 - spaceHub</title>
 	
 	<style>
-		/* 메시지 페이지에서 헤더모양 변경 */
 		#header { position: fixed; top: 0; left: 0; width: 100%; }
 		#header .inner { width: 100%; padding: 0 30px; }
 	
-		/* 메시지 모양 */
-		.main { position: fixed; top: 100px; left: 0; display: flex; justify-content: flex-start; align-items: flex-start; width: 100%; height: calc(100% - 100px); }
+	
+		.main { position: fixed; top: 100px; left: 0; display: flex; justify-content: flex-start; align-items: flex-start; width: 100%; min-width: 1400px; height: calc(100% - 100px); }
 		.main > div { height: 100%; }
-		
-		
 		.message-title { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 80px; border-bottom: 1px solid #ccc; padding: 0 30px; }
 		.message-title .title-name { font-weight: bold; font-size: 20px; }
 		
-		
+		/* 메시지 리스트 */
 		.message-list { width: 400px; border-right: 1px solid #ccc; }
 		.message-list .list-wrap { height: calc(100% - 80px); overflow-y: auto; padding: 30px; }
 		.message-list .list-wrap ul {}
-		.message-list .list-wrap ul li { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100px; border-radius: 10px; padding: 10px 20px; cursor: pointer; }
+		.message-list .list-wrap ul li { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100px; border-radius: 10px; padding: 10px 20px; margin-bottom: 10px; cursor: pointer; }
 		
 		.message-list .list-wrap .item-profile { position: relative; width: 50px; height:50px; }
 		.message-list .list-wrap .item-profile .profile-img { position: relative; width: 100%; height: 100%; border: 1px solid #333; border-radius: 100%;  overflow: hidden; }
@@ -34,13 +31,19 @@
 		
 		.message-list .list-wrap .item-info { width: calc(100% - 70px); font-size: 12px; }
 		.message-list .list-wrap .item-info .info-subject { display: flex; justify-content: flex-start; align-items: center; }
+		.message-list .list-wrap .item-info .info-subject .badge { margin-right: 5px; padding: 5px 8px; font-weight: normal; font-size: 11px; }
 		.message-list .list-wrap .item-info .info-subject .subject-name { font-size: 14px; }
 		.message-list .list-wrap .item-info .info-subject .subject-spacename { color: #999; }
 		.message-list .list-wrap .item-info .info-subject .subject-spacename:before { content: "·"; padding: 0 5px; }
 		.message-list .list-wrap .item-info .info-contents { width: 100%; margin-top: 5px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis }
 		.message-list .list-wrap .item-info .info-alarm { color: #999; }
 		
-		.message-content { width: calc(100% - 400px); }
+		/* 메시지 본문 */
+		.message-content { width: calc(100% - 900px); }
+		.message-content .content-wrap { padding: 30px; }
+		
+		/* 공간 상세정보 */
+		.message-space_detail { width: 500px; border-left: 1px solid #ccc; }
 	</style>
 	
 	<script>
@@ -56,7 +59,8 @@
 				let _this = $(e.currentTarget);
 				let bno = _this.data("bno");
 				
-				_this.css({background: 'red'});
+				// 본문 호출
+				callContent(bno);
 			});
 		});
 		
@@ -114,8 +118,11 @@
 							else 							alarmMsg = hnickname+" 님에게 메시지를 전송했습니다.";
 						}
 						
-						// 이미지가 없을경우 임시 이미지로 대체
-						profileImg = profileImg ? profileImg : "/spaceHub/upload/profile_empty.jpeg";
+						// 문의글인 경우 라벨 추가
+						if( spaceOwnStatus ){
+							let qnaBadge = "<span class='badge text-bg-success'>문의</span>";
+							appendHtml.find(".info-subject").prepend(qnaBadge);
+						}
 						
 						// 데이터 담기
 						appendHtml.attr("data-bno", obj.bno);
@@ -129,24 +136,20 @@
 					});
 				}
 			});
+		}
+		
+		const callContent = bno => {
 			
-			const callContent = bno => {
-				let listEl = $(".message-list .list-wrap ul li");
-				
-				
-				
-				// Process
-				$.ajax({
-					type: "GET",
-					url: "/spaceHub/message",
-					data: {cmd: "contentData", bno: bno},
-					dataType: "json",
-					success: result => {
-						
-					}
-				});
-			}
-			
+			// Process
+			$.ajax({
+				type: "GET",
+				url: "/spaceHub/message",
+				data: {cmd: "contentData", bno: bno},
+				dataType: "json",
+				success: result => {
+					console.log(result);
+				}
+			});
 		}
 	</script>
 
@@ -194,7 +197,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="message-space_detail" style="display: none;">
+		<div class="message-space_detail">
 			<div class="message-title">
 				<p class="title-name">숙소 상세정보</p>
 			</div>

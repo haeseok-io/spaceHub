@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import com.spacehub.www.dao.JjimDAO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class LikeWriteAction implements JsonAction {
+public class LikeWriteOkAction implements JsonAction {
 
 	@Override
 	public JSONObject execute(HttpServletRequest req, HttpServletResponse resp) {

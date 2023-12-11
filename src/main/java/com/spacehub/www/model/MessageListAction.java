@@ -31,9 +31,15 @@ public class MessageListAction implements JsonAction {
 
 		ArrayList<HashMap<String, String>> messageList = new ArrayList<HashMap<String, String>>();
 		for(MessageListVO data : messageDAO.getList(memberData.getMemno())) {
-			HashMap<String, String> messageData = new HashMap<String, String>();
+
+			// 회원 프로필 이미지 체크
+			if( data.getMprofileImg()==null ) 	data.setMprofileImg("/spaceHub/upload/profile_empty.jpeg");
+			if( data.getWprofileImg()==null ) 	data.setWprofileImg("/spaceHub/upload/profile_empty.jpeg");
+			if( data.getHprofileImg()==null ) 	data.setHprofileImg("/spaceHub/upload/profile_empty.jpeg");
 			
 			// 데이터 담기
+			HashMap<String, String> messageData = new HashMap<String, String>();
+			
 			messageData.put("messageno", ""+data.getMessageno());
 			messageData.put("bno", ""+data.getBno());
 			messageData.put("contents", data.getContents());

@@ -14,7 +14,7 @@ import org.json.simple.JSONObject;
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.JsonAction;
 import com.spacehub.www.model.LikeDeleteOkAction;
-import com.spacehub.www.model.LikeWriteAction;
+import com.spacehub.www.model.LikeWriteOkAction;
 import com.spacehub.www.model.SpaceDetailAction;
 import com.spacehub.www.model.SpaceListAction;
 import com.spacehub.www.model.SpaceWriteAction;
@@ -47,7 +47,7 @@ public class SpaceControl extends HttpServlet {
 				isRedirect = true;
 			}
 		} else if( cmd.equals("likeWriteOk") ) {
-			JsonAction ac = new LikeWriteAction();
+			JsonAction ac = new LikeWriteOkAction();
 			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("likeDeleteOk") ) {
 			JsonAction ac = new LikeDeleteOkAction();
