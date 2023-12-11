@@ -9,17 +9,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	function checkPw() {
-		let pw = $("#password").val().trim();
-		let pwConfirm = $("#pwConfrim").val().trim();
-		if(pw.length<8) {
-			$("#pwCheck").text("비밀번호를 8자리 이상 입력하세요.");
-			return false;
-		}else {
-			alert("비밀번호가 정상적으로 입력되었습니다.");
-			return true;
-		}
-	}
 </script>
 </head>
 <body>
@@ -43,13 +32,6 @@
 					<a href="/spaceHub/mypage?cmd=pwAuth&memno=${vo.memno }">
 						<input type="button" value="비밀번호 변경" />
 					</a>
-				</td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td>
-					<input type="password" name="pwConfirm" id="pwConfirm" value=""/>
-					<button onclick="checkPw()"></button>
 				</td>
 			</tr>
 			<tr>

@@ -11,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.Action;
+import com.spacehub.www.model.EmailAuthAction;
 import com.spacehub.www.model.LikeAction;
 import com.spacehub.www.model.ModifyAction;
 import com.spacehub.www.model.ModifyOkAction;
+import com.spacehub.www.model.PwAuthAction;
+import com.spacehub.www.model.pwAuthOkAction;
 
 @WebServlet("/mypage")
 public class MypageControl extends HttpServlet{
@@ -36,9 +39,20 @@ public class MypageControl extends HttpServlet{
 		}else if(cmd.equals("likeList")) {
 			Action action = new LikeAction();
 			url = action.execute(req, resp);
+		}else if(cmd.equals("pwAuth")) {
+			Action action = new PwAuthAction();
+			url = action.execute(req, resp);
+		}else if(cmd.equals("emailAuth")) {
+			Action action = new EmailAuthAction();
+			url = action.execute(req, resp);
+		}else if(cmd.equals("pwAuthOk")) {
+			Action action = new pwAuthOkAction();
+			url = action.execute(req, resp);
+			
+			isRedirect = true;
 		}
 		if(isRedirect) {
-			resp.sendRedirect("mypage?cmd=modify");
+			resp.sendRedirect(url);
 		}else {
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);

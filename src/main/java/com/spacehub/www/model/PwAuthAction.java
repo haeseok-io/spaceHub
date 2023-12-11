@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.spacehub.www.dao.SmemberDAO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class pwAuthOk implements Action{
+public class PwAuthAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -20,9 +20,10 @@ public class pwAuthOk implements Action{
 			SmemberVO vo = dao.getOne(memno);
 			
 			req.setAttribute("vo", vo);
+			dao.close();
 		}
 		
-		return null;
+		return "/mypage/pwAuth.jsp";
 	}
 
 }
