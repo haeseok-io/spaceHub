@@ -27,7 +27,7 @@
 			</div>
 			<c:forEach var="vo" items="${list}">
 			<table class="table">
-			  <thead>
+			  <thead class="table-light">
 			    <tr>
 			      <th scope="col">예약번호</th>
 			      <td scope="row">${vo.reservno}</td>

@@ -21,18 +21,21 @@
 			<table class="table">
 			  <thead>
 			    <tr>
-			      <th scope="col" colspan="3">예약후기</th>
+			      <th scope="col" colspan="5">예약후기</th>
 			    </tr>
 			  </thead>
 	<c:forEach var="vo" items="${list}">
 			  <tbody>
 			    <tr>
-			      <th scope="row">${vo.reservno}</th>
+			      <th>예약번호 :</th>
+			      <td scope="row">${vo.reservno}</td>
+			      <th>제목 :</th>
 			      <td>${vo.subject}</td>
-			      <td style="text-align: right;">${vo.regdate}</td>
+			      <td>${vo.regdate}</td>
 			    </tr>
 			    <tr>
-			    	<td colspan="3">${vo.contents}</td>
+			    	<th colspan="1">내용 :</th>
+			    	<td colspan="4">${vo.contents}</td>
 			    </tr>
 			  </tbody>
 		</c:forEach>
