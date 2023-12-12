@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import com.spacehub.www.model.Action;
 import com.spacehub.www.model.JsonAction;
-import com.spacehub.www.model.MessageContentAction;
+import com.spacehub.www.model.MessageContentDataAction;
 import com.spacehub.www.model.MessageListAction;
+import com.spacehub.www.model.MessageListDataAction;
 
 @WebServlet("/message")
 public class MessageControl extends HttpServlet {
@@ -31,15 +33,21 @@ public class MessageControl extends HttpServlet {
 		if( cmd==null ) 	cmd = "list";
 		
 		if( cmd.equals("list") ) {
-			url = "/message/list.jsp";
+			Action ac = new MessageListAction();
+			url = ac.execute(req, resp);
 		} else if( cmd.equals("listData") ) {
-			JsonAction ac = new MessageListAction();
+			JsonAction ac = new MessageListDataAction();
 			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("contentData") ) {
-			JsonAction ac = new MessageContentAction();
+			JsonAction ac = new MessageContentDataAction();
 			jsonObject = ac.execute(req, resp);
 		}
 		
+		// url 이 null로 리턴될 경우 메인페이지로 리다이렉트
+		if( url==null ) {
+			url = "/spaceHub/home";
+			isRedirect = true;
+		}
 		
 		// Result
 		if( !url.equals("") ) {

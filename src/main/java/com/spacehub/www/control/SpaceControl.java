@@ -41,11 +41,6 @@ public class SpaceControl extends HttpServlet {
 		} else if( cmd.equals("detail") ) {
 			Action ac = new SpaceDetailAction();
 			url = ac.execute(req, resp);
-			
-			if( url==null ) {
-				url = "/spaceHub/home";
-				isRedirect = true;
-			}
 		} else if( cmd.equals("likeWriteOk") ) {
 			JsonAction ac = new LikeWriteOkAction();
 			jsonObject = ac.execute(req, resp);
@@ -57,7 +52,13 @@ public class SpaceControl extends HttpServlet {
 			url = ac.execute(req, resp);
 		} 
 		
+		// url값이 null일 경우 메인페이지로 리다이렉트
+		if( url==null ) {
+			url = "/spaceHub/home";
+			isRedirect = true;
+		}
 		
+		// url이 있을경우 페이지 이동, 없을경우엔 json 데이터 리턴
 		if( !url.equals("") ) {
 			if( isRedirect ) {
 				resp.sendRedirect(url);							

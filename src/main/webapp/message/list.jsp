@@ -15,32 +15,42 @@
 		.main > div { height: 100%; }
 		.message-title { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 80px; border-bottom: 1px solid #ccc; padding: 0 30px; }
 		.message-title .title-name { font-weight: bold; font-size: 20px; }
+		.message-wrap { height: calc(100% - 80px); overflow-y: auto; padding: 30px; }
 		
 		/* 메시지 리스트 */
 		.message-list { width: 400px; border-right: 1px solid #ccc; }
-		.message-list .list-wrap { height: calc(100% - 80px); overflow-y: auto; padding: 30px; }
-		.message-list .list-wrap ul {}
-		.message-list .list-wrap ul li { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100px; border-radius: 10px; padding: 10px 20px; margin-bottom: 10px; cursor: pointer; }
-		
-		.message-list .list-wrap .item-profile { position: relative; width: 50px; height:50px; }
-		.message-list .list-wrap .item-profile .profile-img { position: relative; width: 100%; height: 100%; border: 1px solid #333; border-radius: 100%;  overflow: hidden; }
-		.message-list .list-wrap .item-profile .profile-img img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: auto; }
+		.message-list .message-wrap .list-item li { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100px; border-radius: 10px; padding: 10px 20px; margin-bottom: 10px; cursor: pointer; }
+		.message-list .message-wrap .list-item .item-profile { position: relative; width: 50px; height:50px; }
+		.message-list .message-wrap .list-item .item-profile .profile-img { position: relative; width: 100%; height: 100%; border: 1px solid #333; border-radius: 100%;  overflow: hidden; }
+		.message-list .message-wrap .list-item .item-profile .profile-img img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; object-fit: cover; }
 
-		.message-list .list-wrap ul li:hover { background: #f1f1f1; }
-		.message-list .list-wrap ul li.new .item-profile:after { position: absolute; top: 0; left: 0; width: 10px; height: 10px; background: red; border-radius: 100%; content: ""; display: block; }
+		.message-list .message-wrap .list-item li:hover { background: #f1f1f1; }
+		.message-list .message-wrap .list-item li.new .item-profile:after { position: absolute; top: 0; left: 0; width: 10px; height: 10px; background: red; border-radius: 100%; content: ""; display: block; }
 		
-		.message-list .list-wrap .item-info { width: calc(100% - 70px); font-size: 12px; }
-		.message-list .list-wrap .item-info .info-subject { display: flex; justify-content: flex-start; align-items: center; }
-		.message-list .list-wrap .item-info .info-subject .badge { margin-right: 5px; padding: 5px 8px; font-weight: normal; font-size: 11px; }
-		.message-list .list-wrap .item-info .info-subject .subject-name { font-size: 14px; }
-		.message-list .list-wrap .item-info .info-subject .subject-spacename { color: #999; }
-		.message-list .list-wrap .item-info .info-subject .subject-spacename:before { content: "·"; padding: 0 5px; }
-		.message-list .list-wrap .item-info .info-contents { width: 100%; margin-top: 5px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis }
-		.message-list .list-wrap .item-info .info-alarm { color: #999; }
+		.message-list .message-wrap .list-item .item-info { width: calc(100% - 70px); font-size: 12px; }
+		.message-list .message-wrap .list-item .item-info .info-subject { display: flex; justify-content: flex-start; align-items: center; }
+		.message-list .message-wrap .list-item .item-info .info-subject .badge { margin-right: 5px; padding: 5px 8px; font-weight: normal; font-size: 11px; }
+		.message-list .message-wrap .list-item .item-info .info-subject .subject-name { font-size: 14px; }
+		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename { color: #999; }
+		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename:before { content: "·"; padding: 0 5px; }
+		.message-list .message-wrap .list-item .item-info .info-contents { width: 100%; margin-top: 5px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis }
+		.message-list .message-wrap .list-item .item-info .info-alarm { color: #999; }
 		
 		/* 메시지 본문 */
-		.message-content { width: calc(100% - 900px); }
-		.message-content .content-wrap { padding: 30px; }
+		.message-content { position: relative; width: calc(100% - 900px); }
+		.message-content .message-wrap li { display: flex; justify-content: flex-start; align-items: flex-start; width: 100%; padding-bottom: 30px; }
+		.message-content .message-wrap .item-profile { width: 50px; height:50px; border: 1px solid #333; border-radius: 100%; margin-right: 20px;  overflow: hidden; }
+		.message-content .message-wrap .item-profile img { width: 100%; height: 100%; object-fit: cover; }
+		
+		.message-content .message-wrap .item-info { width: calc(100% - 70px); }
+		.message-content .message-wrap .item-info .info-subject { display: flex; align-items: center; }
+		.message-content .message-wrap .item-info .info-subject .subject-name { margin-right: 10px; font-weight: bold; font-size: 16px; color: #333; }
+		.message-content .message-wrap .item-info .info-subject .subject-date { font-size: 12px; color: #888; }
+		.message-content .message-wrap .item-info .info-contents { margin-top: 5px; font-size: 14px; color: #666; }
+		
+		.message-content .message-write { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 60%; }
+		.message-content .message-write input[type='text'] { width: 100%; height: 40px; border: 1px solid #ccc; border-radius: 10px; padding-left: 10px; }
+		.message-content .message-write input[type='text']:focus { border: 2px solid #333; }
 		
 		/* 공간 상세정보 */
 		.message-space_detail { width: 500px; border-left: 1px solid #ccc; }
@@ -54,7 +64,7 @@
 			callList();
 			
 			// 리스트 클릭
-			$(document).on("click", ".message-list .list-wrap ul li", e => {
+			$(document).on("click", ".message-list .message-wrap ul li", e => {
 				// Val
 				let _this = $(e.currentTarget);
 				let bno = _this.data("bno");
@@ -68,7 +78,7 @@
 		
 		const callList = () => {
 			let appendTemplate = $("#list-template").html();
-			let appendEl = $(".message-list .list-wrap ul");
+			let appendEl = $(".message-list .list-item");
 			
 			$.ajax({
 				type: "GET",
@@ -139,6 +149,11 @@
 		}
 		
 		const callContent = bno => {
+			let appendTemplate = $("#content-template").html();
+			let appendEl = $(".message-content .content-item");
+			
+			// Init
+			appendEl.html("");
 			
 			// Process
 			$.ajax({
@@ -147,7 +162,18 @@
 				data: {cmd: "contentData", bno: bno},
 				dataType: "json",
 				success: result => {
-					console.log(result);
+					let contentData = result.data;
+					
+					contentData.forEach(obj => {
+						let appendHtml = $(appendTemplate);
+						
+						appendHtml.find(".item-profile img").attr("src", obj.wprofileImg);
+						appendHtml.find(".subject-name").text(obj.wnickname);
+						appendHtml.find(".subject-date").text(obj.regdate);
+						appendHtml.find(".info-contents").text(obj.contents);
+						
+						appendEl.append(appendHtml);
+					});
 				}
 			});
 		}
@@ -160,50 +186,33 @@
 			<div class="message-title">
 				<p class="title-name">메시지</p>
 			</div>
-			<div class="list-wrap">
-				<ul></ul>
+			<div class="message-wrap">
+				<ul class="list-item"></ul>
 			</div>
 		</div>
 		<div class="message-content">
 			<div class="message-title">
 				<p class="title-name">내용</p>
 			</div>
-			<div class="content-wrap">
-				<div class="content-viewer">
-					<ul class="viewer-list">
-						<li>
-							<div class="item-wrap">
-								<div class="item-img">
-									<img src="/spaceHub/upload/profile_empty.jpeg" alt="" />
-								</div>
-								<div class="item-info">
-									<div class="info-user">
-										<p class="user-nickname">아무개</p>
-										<p class="user-date">1111-11-11 22:22:22</p>
-									</div>
-									<div class="info-message">
-										숙소에 대한 문의 입니다.........
-									</div>
-									<div class="info-status">
-										xxx 님이 읽음	
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="content-write">
-					
-				</div>
+			<div class="message-wrap">
+				<ul class="content-item"></ul>
+			</div>
+			<div class="message-write">
+				<form name="messageWriteForm">
+					<input type="hidden" name="cmd" value="messageWriteOk" />
+					<input type="hidden" name="bno" />
+					<input type="hidden" name="spaceno" />
+					<input type="hidden" name="memno" value="${member.memno}" />
+				
+					<input type="text" name="contents" placeholder="메시지를 입력하세요." disabled/>
+				</form>
 			</div>
 		</div>
 		<div class="message-space_detail">
 			<div class="message-title">
 				<p class="title-name">숙소 상세정보</p>
 			</div>
-			<div class="space_detail-wrap">
-				
-			</div>
+			<div class="space_detail-wrap"></div>
 		</div>
 	</div>
 	
@@ -221,6 +230,22 @@
 				</div>
 				<p class="info-contents"></p>
 				<p class="info-alarm"></p>
+			</div>
+		</li>
+	</template>
+	
+	<template id="content-template">
+		<li>
+			<div class="item-profile">
+				<img src="" alt="" />
+			</div>
+			<div class="item-info">
+				<div class="info-subject">
+					<p class="subject-name"></p>
+					<p class="subject-date"></p>
+				</div>
+				<p class="info-contents"></p>
+				<p class="info-status"></p>
 			</div>
 		</li>
 	</template>
