@@ -137,6 +137,23 @@ public class MemCardDAO {
 			e.printStackTrace();
 		}
 	}
+	// 하나 삭제
+		public void deleteTwo(int memno, int mcardno) {
+			sb.setLength(0);
+			sb.append("delete from mem_card ");
+			sb.append("where memno=? and mcardno=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, memno);
+				pstmt.setInt(2, mcardno);
+				
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	// 종료
 	public void close() {
 		try {

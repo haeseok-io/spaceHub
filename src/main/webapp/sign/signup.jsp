@@ -176,7 +176,6 @@
 		
 		
 			<div>
-				<h1>회원가입</h1>
 				<form action="/spaceHub/sign?cmd=signupOk" method="post" onsubmit="return inputck()">
 					<div>
 						 <label for="exampleFormControlInput1" class="form-label">이메일 (필수)</label>
