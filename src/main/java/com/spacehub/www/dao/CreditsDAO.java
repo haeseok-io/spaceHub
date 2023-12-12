@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.spacehub.www.vo.CreditsVO;
+import com.spacehub.www.vo.DiscountVO;
 
 public class CreditsDAO {
 	private Connection conn = null;
@@ -68,18 +69,41 @@ public class CreditsDAO {
 		}
 		return list;
 	}
+	// 회원 정보를 통한 크레딧 합 조회
+		public CreditsVO getSum(int memno) {
+			CreditsVO data = new CreditsVO();
+			sb.setLength(0);
+			sb.append("SELECT creditsno, contents, sum(price) as price, date, memno FROM credits ");
+			sb.append("where memno=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, memno);
+				rs = pstmt.executeQuery();
+				
+				if( rs.next() ) {
+					data.setCreditsno(rs.getInt("creditsno"));
+					data.setContents(rs.getString("contents"));
+					data.setPrice(rs.getInt("price"));
+					data.setDate(rs.getString("date"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data;
+		}
 	// 추가
 	public void addOne(CreditsVO vo) {
 		sb.setLength(0);
 		sb.append("insert into credits(contents, price, date, memno) ");
-		sb.append("values(?, ?, ?, ?)" );
+		sb.append("values(?, ?, now(), ?)" );
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setString(1, vo.getContents());
 			pstmt.setInt(2, vo.getPrice());
-			pstmt.setString(3, vo.getDate());
-			pstmt.setInt(4, vo.getMemno());
+			pstmt.setInt(3, vo.getMemno());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
