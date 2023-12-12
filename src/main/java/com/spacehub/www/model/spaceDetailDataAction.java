@@ -37,6 +37,7 @@ public class spaceDetailDataAction implements JsonAction {
 		spaceData.put("price", ""+spaceVO.getPrice());
 		
 		// Result
+		spaceDAO.close();
 		jsonObject.put("data", spaceData);
 		return jsonObject;
 	}

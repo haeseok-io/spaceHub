@@ -2,19 +2,19 @@
 
 .inner { width: 1400px; margin: 0 auto; }
 
-#header { position: relative; border-bottom: 1px solid #ccc; }
+#header { position: relative; z-index: 9999; border-bottom: 1px solid #ccc; }
 #header > .inner { display: flex; justify-content: space-between; align-items: center; height: 100px; }
 
 #header .header-logo { position: relative; z-index: 2; width: 200px; }
 #header .header-logo a { display: block; width: 100%; text-decoration: none; font-size: 24px; color: #333; }
 #header .header-logo a img { width: 100%; height: auto; }
 
-#header .header-search { position: absolute; left: 0; top: 0; z-index: 1; width: 100%; height: 100%; }
-#header .header-search .search-toggle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; border: 1px solid #ccc; border-radius: 30px; }
-#header .header-search .search-toggle .toggle-item { display: none; position: relative; width: 100%; padding: 15px 0; padding-left: 30px; cursor: pointer; }
+#header .header-search {}
+#header .header-search .search-toggle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; height: 50px; padding: 0 20px; padding-right: 50px; border: 1px solid #ccc; border-radius: 30px; }
+#header .header-search .search-toggle .toggle-item { display: none; font-size: 14px; cursor: pointer; }
 #header .header-search .search-toggle .toggle-item i { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); }
 
-#header .header-search .search-field { display: none; position: absolute; top: calc(100% - 1px); left: 0; width: 100%; background: #fff; }
+#header .header-search .search-field { display: none; position: absolute; top: calc(100% - 1px); left: 0; z-index: 2; width: 100%; background: #fff; }
 #header .header-search .search-field .search-wrap { width: 900px; margin: 0 auto; padding: 20px 0 40px; }
 #header .header-search .search-field .search-wrap  form { display: flex; justify-content: space-between; align-items: center; }
 #header .header-search .search-field .search-wrap  form input[type='text'] { width: 100%; height: 40px; background: #f1f1f1; border: 1px solid #e9e9e9; border-radius: 3px; padding-left: 10px; cursor: pointer; }
@@ -36,4 +36,25 @@
 #header .header-search[data-status='Y'] .search-field { display: block; }
 #header .header-search[data-status='N'] .search-toggle .toggle-item[data-status='N'] { display: block; }
 
-#header .header-user { position: relative; z-index: 2; }
+#header .header-user { position: relative; z-index: 2; display: flex; align-items: center; }
+#header .header-user .user-advertise { margin-right: 20px; font-size: 14px; color: #888; }
+#header .header-user .user-menu .menu-toggle { height: 40px; border: 1px solid #ccc; border-radius: 30px; padding: 0 10px; cursor: pointer; }
+#header .header-user .user-menu .menu-toggle i { margin-right: 5px; font-size: 22px; }
+#header .header-user .user-menu .menu-toggle i:last-child { margin-right: 0; }
+#header .header-user .user-menu .menu-wrap { position: absolute; top: 60px; right: 0; width: 200px; background: #fff; box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; border: 1px solid #ccc; border-radius: 10px; padding: 5px 0; }
+#header .header-user .user-menu .menu-wrap .menu-list {}
+#header .header-user .user-menu .menu-wrap .menu-list li {}
+#header .header-user .user-menu .menu-wrap .menu-list li.dash { position: relative; width: 100%; height: 10px; }
+#header .header-user .user-menu .menu-wrap .menu-list li.dash:after { content: ""; position: absolute; top: 50%; left: 0; transform: translateY(-50%); display: block; width: 100%; height: 1px; background: #ccc; }
+#header .header-user .user-menu .menu-wrap .menu-list li a { display: block; padding-left: 20px; font-size: 14px; line-height: 40px; color: #666; }
+#header .header-user .user-menu .menu-wrap .menu-list li a.bold { font-weight: bold; }
+
+#header .header-user .user-menu .menu-toggle.active,
+#header .header-user .user-menu .menu-toggle:hover { box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; }
+#header .header-user .user-menu .menu-wrap .menu-list li:hover { background: #f4f4f4; }
+
+
+
+
+
+

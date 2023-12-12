@@ -56,6 +56,17 @@
 		
 		/* 공간 상세정보 */
 		.message-space { width: 400px; border-left: 1px solid #ccc; }
+		.message-space .space-wrap {}
+		.message-space .space-wrap .space-img {}
+		.message-space .space-wrap .space-img img { width: 100%; height: 300px; object-fit: cover; }
+		.message-space .space-wrap .space-subject { margin-top: 10px; font-weight: bold; font-size: 16px; color: #333; }
+		.message-space .space-wrap .space-addr { margin-top: 5px; font-size: 14px; color: #888; }
+		.message-space .space-wrap .space-info { margin-top: 10px; color: #666; }
+		.message-space .space-wrap .space-info .info-price { font-size: 14px; }
+		.message-space .space-wrap .space-info .info-price .price-data { font-weight: bold; font-size: 16px; color: #333; }
+		
+		.message-space .space-wrap .space-more { margin-top: 20px; }
+		.message-space .space-wrap .space-more button { width: 100%; height: 40px; background: #333; border: 0; font-weight: bold; font-size: 14px; color: #fff; }
 	</style>
 	
 	<script>
@@ -225,8 +236,15 @@
 					let detailData = result.data;
 					let appendHtml = $(appendTemplate);
 					
-					console.log(appendHtml);
-					appendHtml.find(".space-img img").attr("src", detailData.imgPath);.<div class="space-img"append(appendHtml);
+					detailData.price = detailData.price.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+					
+					appendHtml.attr("data-spaceno", detailData.spaceno);
+					appendHtml.find(".space-img img").attr("src", detailData.imgPath);
+					appendHtml.find(".space-subject").text(detailData.subject);
+					appendHtml.find(".space-addr").text(detailData.addr);
+					appendHtml.find(".price-data").text("\\"+detailData.price);
+					
+					appendEl.append(appendHtml);
 				}
 			});
 			
@@ -263,8 +281,6 @@
 				data: form.serialize(),
 				dataType: "json",
 				success: result => {
-					// Val
-					let appendHtml = $(appendTemplate);
 					
 					// Check
 					if( result.errorCode ){
@@ -272,23 +288,13 @@
 						return false;
 					}
 					
-					// Data
-					let profileImg = "${member.profileImg}" ? "${member.profileImg}" : "/spaceHub/upload/profile_empty.jpeg";
-					let nickname = "${member.nickname}" ? "${member.nickname}" : "${member.name}";
-					
-					
-					// Process
-					appendHtml.find(".item-profile img").attr("src", profileImg);
-					appendHtml.find(".subject-name").text(nickname);
-					appendHtml.find(".subject-date").text(getNowDateTime());
-					appendHtml.find(".info-contents").text(contents);
-					
-					appendEl.append(appendHtml);
 					
 					// Result
-					scrollEl.scrollTop(scrollEl[0].scrollHeight);
-					contentEl.val("");
 					callList();
+					callContent(bno);
+					
+					contentEl.val("");
+					scrollEl.scrollTop(scrollEl[0].scrollHeight);
 				}
 			});
 			
@@ -374,7 +380,7 @@
 	</template>
 	
 	<template id="space-template">
-		<div>
+		<div class="space-wrap">
 			<div class="space-img">
 				<img src="" alt="" />
 			</div>

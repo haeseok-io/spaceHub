@@ -45,28 +45,7 @@ public class MessageContentDataAction implements JsonAction {
 		ArrayList<HashMap> contentList = new ArrayList<HashMap>();
 		for(MessageContentsVO data : messageDAO.getContents(bno)) {
 			if( data.getMnickname()==null ) 	data.setMnickname(data.getMname());
-			if( data.getMprofileImg()==null ) 	data.setMprofileImg("/spaceHub/upload/profile_empty.jpeg");
-			
-			// {	
-			//	bno: "",
-			//	spaceno: "",
-			//	data: {[
-			//        0 : {
-			//        	"memno" : "",
-			//        	"nickname" : "",
-			//        	"profileImg" : "",
-			//        	"msgList" : {[
-	        //	              0 : {messageno: "", contents: "", regdate: "", status: "", ip: ""},
-	        //	              1 : {messageno: "", contents: "", regdate: "", status: "", ip: ""}
-    	    //          	]}
-			//        }, 
-			//        1 : {
-			//        	
-			//        }
-		    //    ]}
-			// }
-			
-			
+			if( data.getMprofileImg()==null ) 	data.setMprofileImg("/spaceHub/upload/profile_empty.jpeg");	
 			
 			// 데이터 담기
 			HashMap<String, String> obj = new HashMap<String, String>();

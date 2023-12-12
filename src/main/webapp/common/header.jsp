@@ -72,6 +72,7 @@
 					</div>
 				</div>
 			</div>
+			
 			</c:if>
 			<div class="header-user">
 				<div class="user-advertise">
@@ -85,11 +86,16 @@
 					<div class="menu-wrap">
 						<ul class="menu-list">
 							<c:if test="${sessionScope.member==null}">
-							<li><a href="/spaceHub/sign?cmd=login">로그인</a></li>
+							<li><a href="/spaceHub/sign?cmd=login" class="bold">로그인</a></li>
+							<li><a href="/spaceHub/sign?cmd=signup" class="bold">회원가입</a></li>
 							</c:if>
 							
 							<c:if test="${sessionScope.member!=null}">
-								<li><a href="/spaceHub/sign?cmd=logoutOk">로그아웃</a></li>
+							<li><a href="/spaceHub/message" class="bold">메시지</a></li>
+							<li><a href="/spaceHub/mypage/guest" class="bold">예약내역</a></li>
+							<li><a href="/spaceHub/mypage?cmd=likeList" class="bold">찜 리스트</a></li>
+							<li class="dash"></li>
+							<li><a href="/spaceHub/sign?cmd=logoutOk">로그아웃</a></li>
 							</c:if>
 						</ul>
 					</div>
