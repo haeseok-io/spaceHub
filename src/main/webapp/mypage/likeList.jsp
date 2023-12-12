@@ -19,11 +19,14 @@
 </style>
 </head>
 <body>
-	<h1>찜한 숙소</h1>
+	<form action="/mypage" method="post">
+	<input type="hidden" name="cmd" value="likeList"/>
+	<input type="hidden" name="memno" value="${member.memno }" />
+		<h1>찜한 숙소</h1>
 		<div class="container">		
-			<a href="space?cmd=detail">
+			<a href="/spaceHub/space?cmd=detail&space=${member.memno }">
 				<div class="wrap">
-					<c:forEach var="vo" items="${list }">
+					<c:forEach var="vo" items="${likeList }">
 						<c:forEach var="img" items="${vo.imgList }">
 							<img src="${img.path }" alt="" />			
 						</c:forEach>
@@ -34,9 +37,10 @@
 					</c:forEach>
 				</div>
 			</a>
-		<%-- <c:if var="list" test="${empty list.spaceno }">
-			<p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
-		</c:if> --%>
+			<%-- <c:if var="list" test="${empty list.spaceno }">
+				<p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
+			</c:if> --%>
 		</div>
+	</form>
 </body>
 </html>
