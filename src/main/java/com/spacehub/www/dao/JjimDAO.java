@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import com.spacehub.www.vo.JjimListVO;
 
 public class JjimDAO {
 	private Connection conn = null;
@@ -71,6 +74,41 @@ public class JjimDAO {
 		}
 		
 		return checkStatus;
+	}
+	
+	// 찜 리스트
+	public ArrayList<JjimListVO> getJjimList(int memno) {
+		ArrayList<JjimListVO> list = new ArrayList<JjimListVO>();
+
+		sb.setLength(0);
+		sb.append("select space.spaceno, space.subject, space.price, space_detail.bed, ");
+		sb.append("space_detail.in_date, space_detail.out_date, jjim.jjimno ");
+		sb.append("FROM jjim ");
+		sb.append("JOIN space_detail ON space_detail.spaceno = jjim.spaceno ");
+		sb.append("JOIN space ON space.spaceno = jjim.spaceno ");
+		sb.append("WHERE jjim.memno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {;
+				String subject = rs.getString("space.subject");
+				int spaceno = rs.getInt("space.spaceno");
+				int price = rs.getInt("space.price");
+				int bed = rs.getInt("space_detail.bed");
+				String inDate = rs.getString("space_detail.in_date");
+				String outDate = rs.getString("space_detail.out_date");
+				int jjimno = rs.getInt("jjim.jjimno");
+				
+				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, inDate, outDate, price, jjimno, null);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 	
 	// 종료

@@ -8,8 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.SpaceDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
-import com.spacehub.www.vo.JjimListVO;
+import com.spacehub.www.vo.HostMainVO;
 import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceImageVO;
 
 public class HostMainAction implements Action{
 
@@ -19,30 +20,30 @@ public class HostMainAction implements Action{
 		
 		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
 		
+		
 		if (memberData == null) {
 		    return "/spaceHub/sign?cmd=login";  // 로그인 페이지로 리다이렉트 또는 포워드
 		}
 		
-		session.setAttribute("member", memberData);
-		
-		if(memberData != null) {
+		if (memberData != null) {
 			int memno = memberData.getMemno();
-			SpaceDAO dao = new SpaceDAO();
-			SpaceImageDAO imgDao = new SpaceImageDAO();
+			SpaceDAO hostDao = new SpaceDAO();
+			SpaceImageDAO spaceImgDao = new SpaceImageDAO();
 			
-			ArrayList<JjimListVO> list = dao.getJjimList(memno);
+			ArrayList<HostMainVO> hostMainList = new ArrayList<HostMainVO>();
 			
-			for(JjimListVO jjimData : list) {
-				int spaceno = jjimData.getSpaceno();
+			for(HostMainVO vo : hostDao.getHostSpace(memno)) {
+				ArrayList<SpaceImageVO> imgList = spaceImgDao.getSpaceImages(vo.getSpaceno());
 				
+				vo.setImgList(imgList);
 				
-				jjimData.setImgList(imgDao.getSpaceImages(spaceno, memno));
+				hostMainList.add(vo);
+				
 			}
+			hostDao.close();
+			spaceImgDao.close();
 			
-			session.setAttribute("list", list);
-			imgDao.close();
-			dao.close();
-			
+			req.setAttribute("hostList", hostMainList);
 		}
 		return "/mypage/host/hostMain.jsp";
 	}

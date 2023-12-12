@@ -1,23 +1,22 @@
 package com.spacehub.www.model;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.dao.JjimDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.JjimListVO;
 import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceImageVO;
 
 public class LikeAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession(true);
+		HttpSession session = req.getSession();
 		
 		// 세션에 저장된 로그인 정보 가져오기
 		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
@@ -27,24 +26,25 @@ public class LikeAction implements Action{
 		    return "/spaceHub/sign?cmd=login";  // 로그인 페이지로 리다이렉트 또는 포워드
 		}
 
-		// 세션에 로그인 정보 저장
-		session.setAttribute("member", memberData);
-
 		if (memberData != null) {
 		    int memno = memberData.getMemno();  // 로그인된 사용자의 memno 가져오기
-		    SpaceDAO dao = new SpaceDAO();
-		    SpaceImageDAO imgDao = new SpaceImageDAO();
-
-		    ArrayList<JjimListVO> list = dao.getJjimList(memno);
-
-		    for (JjimListVO jjimData : list) {
-		        int spaceno = jjimData.getSpaceno();
-		        
-		        jjimData.setImgList(imgDao.getSpaceImages(spaceno, memno));
+		    JjimDAO jjimDao = new JjimDAO();
+		    SpaceImageDAO spaceImgDao = new SpaceImageDAO();
+		    ArrayList<JjimListVO> jjimList = new ArrayList<JjimListVO>();
+		    
+		    for(JjimListVO vo : jjimDao.getJjimList(memno)) {
+		    	
+		    	ArrayList<SpaceImageVO> imgList = spaceImgDao.getSpaceImages(vo.getSpaceno());
+		 
+		    	vo.setImgList(imgList);
+		    	
+		    	jjimList.add(vo);
+		    	
 		    }
-		    // 세션에 좋아요 목록 저장
-		    session.setAttribute("likeList", list);
-		    dao.close();
+		    jjimDao.close();
+		    spaceImgDao.close();
+		    
+		    req.setAttribute("jjimList", jjimList);
 		}
 
 		return "/mypage/likeList.jsp";
