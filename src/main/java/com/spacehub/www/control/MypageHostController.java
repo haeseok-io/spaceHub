@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.CardListCommand;
 import com.spacehub.www.model.HostMainAction;
 import com.spacehub.www.model.ImageDeleteOkAction;
 import com.spacehub.www.model.JsonAction;
@@ -27,7 +28,6 @@ public class MypageHostController extends HttpServlet{
 	private void doPro(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
-		
 		String cmd = req.getParameter("cmd");
 		boolean isRedirect = false;
 		JSONObject jsonObject = new JSONObject();

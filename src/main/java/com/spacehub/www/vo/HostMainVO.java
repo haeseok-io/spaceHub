@@ -11,15 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JjimListVO {
-	int memno;
-	String subject;
+public class HostMainVO {
 	int spaceno;
-	int bed;
-	String inDate;
-	String outDate;
-	int price;
-	int jjimno;
+	String subject;
+	int memno;
 	
 	ArrayList<SpaceImageVO> imgList;
 }
