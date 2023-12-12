@@ -65,11 +65,11 @@
 
 .fieldset-wrap {}
 .fieldset-wrap .fieldset-data {}
-.fieldset-wrap .fieldset-data .field-wrap { margin-bottom: 20px; }
-.fieldset-wrap .fieldset-data .field-wrap input[type='text'],
-.fieldset-wrap .fieldset-data .field-wrap input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
-.fieldset-wrap .fieldset-data .field-wrap input[type='text']:focus,
-.fieldset-wrap .fieldset-data .field-wrap input[type='password']:focus { border: 1px solid #198754; }
+.fieldset-wrap .fieldset-data .data-wrap { margin-bottom: 20px; }
+.fieldset-wrap .fieldset-data .data-wrap input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
+.fieldset-wrap .fieldset-data .data-wrap input[type='text']:focus,
+.fieldset-wrap .fieldset-data .data-wrap input[type='password']:focus { border: 1px solid #198754; }
 
 .fieldset-wrap .fieldset-button {}
 .fieldset-wrap .fieldset-button button { width: 100%; height: 60px; }

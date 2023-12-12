@@ -62,10 +62,10 @@
 					<input type="hidden" name="cmd" value="loginOk" />
 					
 					<div class="fieldset-data">
-						<div class="field-wrap">
+						<div class="data-wrap">
 							<input type="text" name="email" placeholder="이메일을 입력해주세요." />
 						</div>
-						<div class="field-wrap">
+						<div class="data-wrap">
 							<input type="password" name="pw" placeholder="비밀번호를 입력해주세요." />
 						</div>
 					</div>
