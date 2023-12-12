@@ -63,10 +63,14 @@
 					
 					<div class="fieldset-data">
 						<div class="data-wrap">
-							<input type="text" name="email" placeholder="이메일을 입력해주세요." />
+							<div class="data-field">
+								<input type="text" name="email" placeholder="이메일을 입력해주세요." />
+							</div>
 						</div>
 						<div class="data-wrap">
-							<input type="password" name="pw" placeholder="비밀번호를 입력해주세요." />
+							<div class="data-field">
+								<input type="password" name="pw" placeholder="비밀번호를 입력해주세요." />
+							</div>
 						</div>
 					</div>
 					
