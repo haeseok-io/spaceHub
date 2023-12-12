@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.HostMainVO;
 import com.spacehub.www.vo.JjimListVO;
 import com.spacehub.www.vo.SpaceDiscountVO;
+import com.spacehub.www.vo.SpaceHostVO;
 import com.spacehub.www.vo.SpaceListVO;
 import com.spacehub.www.vo.SpaceVO;
 
@@ -108,6 +110,32 @@ public class SpaceDAO {
 		return lastInsertNo;
 	}
 
+	// 등록한 방 가져오기
+	public ArrayList<HostMainVO> getHostSpace(int memno) {
+		ArrayList<HostMainVO> list = new ArrayList<HostMainVO>();
+				
+		sb.setLength(0);
+		sb.append("Select spaceno, subject from space where memno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int spaceno = rs.getInt("spaceno");
+				String subject = rs.getString("subject");
+				
+				HostMainVO vo = new HostMainVO(spaceno, subject, memno, null);
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	// 전체 리스트
 	public ArrayList<SpaceListVO> getList() {
 		ArrayList<SpaceListVO> list = new ArrayList<SpaceListVO>();
@@ -288,45 +316,7 @@ public class SpaceDAO {
 						e.printStackTrace();
 					}
 					return data;
-				}
-	
-	// 찜 리스트
-	public ArrayList<JjimListVO> getJjimList(int memno) {
-		ArrayList<JjimListVO> list = new ArrayList<JjimListVO>();
-
-		sb.setLength(0);
-		sb.append("select smember.memno, space.subject, space.spaceno, space_detail.bed, "
-				+ "space_detail.in_date, space_detail.out_date, space.price, jjim.jjimno ");
-		sb.append("from space ");
-		sb.append("join space_detail on space.spaceno = space_detail.spaceno ");
-		sb.append("join jjim on space.memno = jjim.memno ");
-		sb.append("join smember on space.memno = smember.memno ");
-		sb.append("where smember.memno=?");
-		
-		
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, memno);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {;
-				String subject = rs.getString("space.subject");
-				int spaceno = rs.getInt("space.spaceno");
-				int bed = rs.getInt("space_detail.bed");
-				String inDate = rs.getString("space_detail.in_date");
-				String outDate = rs.getString("space_detail.out_date");
-				int price = rs.getInt("space.price");
-				int jjimno = rs.getInt("jjim.jjimno");
-				
-				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, inDate, outDate, price, jjimno, null);
-				list.add(vo);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return list;
-	}
+				}			
 	
 	//추가
 	public void addOne(SpaceVO vo) {

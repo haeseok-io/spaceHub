@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.CouponVO;
 import com.spacehub.www.vo.MemCardVO;
 import com.spacehub.www.vo.SmemberVO;
 
@@ -73,6 +74,32 @@ public class MemCardDAO {
 		}
 		return list;
 	}
+	// 회원 번호를 통한 조회
+		public MemCardVO getOne(String cardNum, int memno) {
+			MemCardVO data = new MemCardVO(); 
+			sb.setLength(0);
+			sb.append("select mcardno, card_num, e_date, cvc, post, loc, memno from mem_card ");
+			sb.append("where card_num=? and memno=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, cardNum);
+				pstmt.setInt(2, memno);				
+				rs = pstmt.executeQuery();
+				
+				if( rs.next() ) {
+					data.setMcardno(rs.getInt("mcardno"));
+					data.setEDate(rs.getString("e_date"));
+					data.setCvc(rs.getInt("cvc"));
+					data.setPost(rs.getString("post"));
+					data.setLoc(rs.getString("loc"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data;
+		}
 	// 추가
 	public void addOne(MemCardVO vo) {
 		sb.setLength(0);

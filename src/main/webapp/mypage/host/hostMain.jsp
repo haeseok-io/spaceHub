@@ -40,7 +40,7 @@
 			</div>
 			<div>
 				<h2>등록한 숙소</h2>
-				<c:forEach var="vo" items="${list }">
+				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
 							<a href="/spaceHub/mypage/host?cmd=reservCalender">
 							<div class="img_wrap">

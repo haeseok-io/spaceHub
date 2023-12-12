@@ -16,38 +16,25 @@
 		text-align: center;
 	}
 </style>
-
 </head>
 <body>
 	<div class="container">
 		<form action="">
-			<h2>리스트</h2>
-			<div class="btn-group">
-			  <a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${spaceno}" class="btn btn-outline-secondary" aria-current="page">달력</a>
-			  <a href="#" class="btn btn-outline-secondary active">리스트</a>
-			</div>
+			<h2>카드 리스트</h2>
 			<c:forEach var="vo" items="${list}">
 			<table class="table">
 			  <thead class="table-light">
 			    <tr>
-			      <th scope="col">예약번호</th>
-			      <td scope="row">${vo.reservno}</td>
-			      <th scope="col">이름</th>
-			      <td>${vo.name}</td>
+			      <th scope="col">카드번호</th>
+			      <th scope="col">만료일</th>
+			      <th scope="col">지역</th>
 			    </tr>
 			  </thead>
 			  <tbody>
 			    <tr>
-			      <th scope="col">체크인</th>
-			      <td>${vo.checkin}</td>
-			      <th scope="col">체크아웃</th>
-			      <td>${vo.checkout}</td>
-			    </tr>
-			    <tr>
-			    	<th>전화번호 :</th>
-			    	<td>${vo.phone}</td>
-			    	<th>인원 :</th>
-			    	<td>${vo.guest}</td>
+			      <td scope="row">${vo.cardNum}</td>
+			      <td>${vo.EDate}</td>
+			      <td>${vo.loc}</td>
 			    </tr>
 			  </tbody>
 			</table>

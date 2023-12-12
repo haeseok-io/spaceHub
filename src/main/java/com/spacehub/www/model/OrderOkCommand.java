@@ -8,11 +8,13 @@ import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.CouponDAO;
 import com.spacehub.www.dao.CreditsDAO;
+import com.spacehub.www.dao.MemCardDAO;
 import com.spacehub.www.dao.MemCouponDAO;
 import com.spacehub.www.dao.PaymentDAO;
 import com.spacehub.www.dao.ReservationDAO;
 import com.spacehub.www.vo.CouponVO;
 import com.spacehub.www.vo.CreditsVO;
+import com.spacehub.www.vo.MemCardVO;
 import com.spacehub.www.vo.MemCouponVO;
 import com.spacehub.www.vo.PaymentVO;
 import com.spacehub.www.vo.ReservationVO;
@@ -75,13 +77,32 @@ public class OrderOkCommand implements ActionCommand {
 			  
 			  ReservationVO rsvo = rdao.getSpaceOne(spaceno);
 			  
-			  CreditsDAO creditsdao = new CreditsDAO();
-			  CreditsVO creditsvo = new CreditsVO();
-			  creditsvo.setContents("크래딧 사용");
-			  creditsvo.setPrice(-credit);
-			  creditsvo.setMemno(memberVO.getMemno());
-			  creditsdao.addOne(creditsvo);
-			  creditsdao.close();
+			  if(credit != 0) {
+				  CreditsDAO creditsdao = new CreditsDAO();
+				  CreditsVO creditsvo = new CreditsVO();
+				  creditsvo.setContents("크래딧 사용");
+				  creditsvo.setPrice(-credit);
+				  creditsvo.setMemno(memberVO.getMemno());
+				  creditsdao.addOne(creditsvo);
+				  creditsdao.close();
+			  }
+			  
+			  MemCardDAO memdao = new MemCardDAO();
+			  MemCardVO memvo = new MemCardVO();
+			  MemCardVO memcardvo = memdao.getOne(cardnum, memberVO.getMemno());
+			  
+			  if(memcardvo != null) {
+				  memvo.setCardNum(cardnum);
+				  memvo.setEDate("");
+				  memvo.setCvc(0);
+				  memvo.setPost(postcode);
+				  memvo.setLoc("한국");
+				  memvo.setMemno(memberVO.getMemno());
+				  
+				  memdao.addOne(memvo);
+				  memdao.close();
+			  }
+			  
 			  
 			  if(cprice != 0) {
 				  MemCouponDAO mdao = new MemCouponDAO();
@@ -98,7 +119,7 @@ public class OrderOkCommand implements ActionCommand {
 			  if(orderno!= null || cardConfirmno != null || email != null || cardnum != null){
 				  PaymentDAO dao = new PaymentDAO();
 				  PaymentVO vo = new PaymentVO();
-				  vo.setApprovalNum(cardConfirmno);
+				  vo.setApprovalNum(orderno);
 				  vo.setCardNum(cardnum);
 				  vo.setName(name);
 				  vo.setEmail(email);
@@ -110,9 +131,8 @@ public class OrderOkCommand implements ActionCommand {
 			  }
 			  rdao.close();
 		  }
-		  String result = "y";
 		
-		return result;
+		return "/mypage/guest?cmd=spaceList";
 	}
 
 }
