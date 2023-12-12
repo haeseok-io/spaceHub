@@ -53,7 +53,22 @@ public class OrderCommand implements ActionCommand {
 				SpaceDetailDAO sddao = new SpaceDetailDAO();
 				SpaceDetailVO sddvo = sddao.getOne(Spaceno);
 				
-				int a = 0;
+				String bark = "";
+				SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
+				java.util.Date ckin = null;
+				java.util.Date ckout = null;
+				try {
+					ckin = format.parse(checkin);
+					ckout = format.parse(checkout);
+					
+					long b = (ckout.getTime()-ckin.getTime())/(24*60*60*1000);
+					bark = Long.toString(b);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				int dc = 0;
 				if(dlist != null) {
 					if(dvo != null) {
@@ -65,11 +80,11 @@ public class OrderCommand implements ActionCommand {
 							dc = dvo.getDcratio();
 						}
 					}else if(dwvo != null) {
-						if(a>=7) {
+						if(Integer.parseInt(bark)>=7) {
 							dc = dwvo.getDcratio();
 						}
 					}else if(dmvo != null) {
-						if(a>=28) {
+						if(Integer.parseInt(bark)>=28) {
 							dc = dmvo.getDcratio();
 						}
 					}else {
@@ -79,6 +94,7 @@ public class OrderCommand implements ActionCommand {
 					dc = 0;
 				}
 				
+				req.setAttribute("bark", bark);
 				req.setAttribute("checkin", checkin);
 				req.setAttribute("checkout", checkout);
 				req.setAttribute("guest", guest);
