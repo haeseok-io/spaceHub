@@ -45,7 +45,6 @@
 			let couponname = $("#couponselect option:selected").text();
 			let creditsPrice = $("#credits-price").text();
 			
-		  
 		  IMP.request_pay({
 		    pg: "inicis",
 		    pay_method: "card",
