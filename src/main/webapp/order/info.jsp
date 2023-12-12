@@ -35,22 +35,14 @@
 			let email = $("#email").val();
 			let post = $("#post").val();
 			let addr = $("#addr").val();
-			let spaceno = $("#spaceno").val();
-			let checkin = $("#checkin").text();
-			let checkout = $("#checkout").text();
-			let guest = $("#guest").text();
 			let phone = $("#phone").val();
-			let cprice = $("#coupon-price").text();
-			let dprice = $("#discount-price").text();
-			let couponname = $("#couponselect option:selected").text();
-			let creditsPrice = $("#credits-price").text();
 			
 		  IMP.request_pay({
 		    pg: "inicis",
 		    pay_method: "card",
-		    merchant_uid : 'merchant_'+new Date().getTime(),
+		    merchant_uid : 'm_'+new Date().getTime(),
 		    name : space,
-			amount : 1,
+			amount : pricenum,
 		    buyer_email : email,
 		    buyer_name : memname,
 		    buyer_tel : ' ',
@@ -64,40 +56,16 @@
 				  msg += "상점 거래 ID : "+rsp.merchant_uid;
 				  msg += "결제 금액 : "+rsp.paid_amount;
 				  msg += "카드 승인 번호 : "+rsp.apply_num;
-				  $.ajax({
-						url : "/spaceHub/order?cmd=orderOk",
-						type : "post",
-						data : {
-							//고객 번호,
-							orderno : rsp.merchant_uid,
-							amount : rsp.paid_amount,
-							cardCondirmno : rsp.apply_num,
-							name : rsp.buyer_name,
-							email : rsp.buyer_email,
-							addr : rsp.buyer_addr,
-							postcode : rsp.buyer_postcode,
-							cardnum : rsp.card_number,
-							spaceno : spaceno,
-							checkin : checkin,
-							checkout : checkout,
-							guest : guest,
-							phone : phone,
-							cprice : cprice,
-							dprice : dprice,
-							couponname : couponname,
-							creditsPrice : creditsPrice
-							
-						},
-						success : function(result){
-							if(result == "y"){
-								alert("예약이 완료되었습니다.");
-								window.location.href="/spaceHub/home";
-							}else{
-								alert("결제 실패");
-								return false;
-							}
-						}
-					});
+				  
+				  document.orderform.orderno.value = rsp.merchant_uid;
+				  document.orderform.amount.value = rsp.paid_amount;
+				  document.orderform.cardCondirmno.value = rsp.apply_num;
+				  document.orderform.cardnum.value = rsp.card_number;
+				  
+				  alert("예약이 완료되었습니다.");
+				  
+				  document.orderform.submit();
+				  
 			    } else {
 			      var msg = '결제에 실패하였습니다.';
 			      msg += '에러내용 : ' + rsp.error_msg;
@@ -109,36 +77,43 @@
 	function couchange(el){
 		let _this = $(el);
 		let dcratio = _this.val();
+		let couponname = $("#couponselect option:selected").text();
 		let a = $("#dcp").val();
 		let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
 		let dprice = ($("#cprice").val())*((100-a)*0.01);
 		let usecredits = Number($("#usecredits").val());
+		
 		if(dcratio != 0){
 			$("#coupon-price").text(dcratio);
 			$("#discount-price").text("0");
+			$("#couponprice").val(dcratio);
+			$("#discountprice").val(0);
 			$("#price").text(cprice-usecredits);
 		}else{
 			$("#coupon-price").text(0);
 			$("#discount-price").text(a);
+			$("#couponprice").val(0);
+			$("#discountprice").val(a);
 			$("#price").text(dprice-usecredits);
 		}
+		$("#couponname").val(couponname);
 	}
 	
 	$(()=>{
 		$("#minus").on("click",()=>{
-			let guest = $("#guest").text();
+			let guest = Number($("#guest").val());
 			let m = guest-1;
 			if(guest > 1){
-				$("#guest").text(m);
+				$("#guest").val(m);
 			}
 		});
 		
 		$("#plus").on("click",()=>{
-			let guest = $("#guest").text();
+			let guest = $("#guest").val();
 			let p = Number(guest)+1;
 			let guestmax = $("#guestmax").val();
 			if(guest < guestmax){
-				$("#guest").text(p);
+				$("#guest").val(p);
 			}
 		});
 		
@@ -160,6 +135,7 @@
 				$("#crespan").text(cre);
 				$("#credits-price").text(usecredits);
 				$("#price").text(allprice-usecredits);
+				$("#creditsprice").val(usecredits);
 			}else if(usecredits > creditsyet){
 				alert("크래딧이 부족합니다.");
 			}else if(usecredits > price){
@@ -167,6 +143,7 @@
 				$("#crespan").text(num);
 				$("#price").text(0);
 				$("#credits-price").text(price);
+				$("#creditsprice").val(price);
 			}else if(usecredits == 0){
 				$("#price").text(allprice);
 			}
@@ -178,34 +155,37 @@
 <body>
 	<div class="container">
 		<h2>예약 요청</h2>
-		<form action="" method="post">
+		<form action="/spaceHub/order" method="post" name="orderform">
 			<div class="card">
 			  <h5 class="card-header">예약 정보</h5>
 			  <div class="card-body">
 			    <h5 class="card-title">예약 공간</h5>
 			    <p class="card-text" id="sname">${vo.subject}</p>
-			    <input type="hidden" name="memname" id="memname" value="${smvo.name}" />
+			    <input type="hidden" name="cmd" value="orderOk" />
+			    <input type="hidden" name="name" id="memname" value="${smvo.name}" />
 			    <input type="hidden" name="email" id="email" value="${smvo.email}" />
-			    <input type="hidden" name="post" id="post" value="${smvo.post}" />
+			    <input type="hidden" name="postcode" id="post" value="${smvo.post}" />
 			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
 			    <input type="hidden" name="spaceno" id="spaceno" value="${vo.spaceno}" />
-			    <input type="hidden" name="guestmax" id="guestmax" value="${sddvo.maxGuest}" />
+			    <input type="hidden" name="guest" id="guestmax" value="${sddvo.maxGuest}" />
+			    <input type="hidden" name="orderno" value="" />
+			    <input type="hidden" name="amount" value="" />
+			    <input type="hidden" name="cardCondirmno" value="" />
+			    <input type="hidden" name="cardnum" value="" />
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
-			    <p class="card-text" id="checkin">${checkin}</p>
-			    <button type="button" class="btn">수정</button>
-			    <input type="hidden" name="cmd" value="orderOk" />
+			      <input type="text" readonly class="form-control-plaintext" name="checkin" id="checkin" value="${checkin}">
+			      <button type="button" class="btn">수정</button>
 			  </div>
-			   <div class="card-body">
+			  <div class="card-body">
 			    <h5 class="card-title">체크아웃</h5>
-			    <p class="card-text" id="checkout">${checkout}</p>
-			    <button type="button" class="btn">수정</button>
+			      <input type="text" readonly class="form-control-plaintext" name="checkout" id="checkout" value="${checkout}">
+			      <button type="button" class="btn">수정</button>
 			  </div>
-			   <div class="card-body">
+			  <div class="card-body">
 			    <h5 class="card-title">게스트</h5>
-			    <p class="card-text" id="guest">${guest}</p>
-			    <p class="card-text">명</p>
+			      <input type="text" readonly class="form-control-plaintext" name="guest" id="guest" value="${guest}">
 			    <div class="btn-group" role="group" aria-label="Basic example">
 				  <button type="button" class="btn btn-outline-secondary" id="minus">-</button>
 				  <button type="button" class="btn btn-outline-secondary" id="plus">+</button>
@@ -222,6 +202,7 @@
 			  </div>
 			  <div class="card-body">
 			    <h9 class="card-title">쿠폰과 호스트의 할인은 중복 적용이 불가능합니다.</h9>
+			    <input type="hidden" name="couponname" id="couponname" value="" />
 			  </div>
 			  <div class="card-body">
 			  	<div class="mb-3">
@@ -238,7 +219,7 @@
 			   <div class="card-body">
 			  	<div class="mb-3">
 				   <h5 class="card-title">전화번호 입력</h5>
-				  <input type="text" class="form-control" id="phone" placeholder="phone">
+				  <input type="text" class="form-control" name="phone" id="phone" placeholder="phone-number">
 				</div>
 			  </div>
 			</div>
@@ -264,18 +245,21 @@
 			    <p class="card-title">쿠폰 할인</p>
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="coupon-price">0</p>
+			    <input type="hidden" name="cprice" id="couponprice" value=""/>
+			    <input type="hidden" name="dprice" id="discountprice" value=""/>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title" id="dis">호스트의 할인</p>
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
 			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>
-			    <input type="hidden" name="cprice" id="cprice" value="${((vo.price*bark)+(vo.price*bark)*0.01)}"/>
+			    <input type="hidden" name="cp" id="cprice" value="${((vo.price*bark)+(vo.price*bark)*0.01)}"/>
 			  </div>
 			   <div class="card-body">
 			    <p class="card-title">사용한 크래딧</p>
 			    <p class="card-text" style="float: right" id="credits-price">0</p>
 			    <p class="card-text" style="float: right">₩ </p>
+			    <input type="hidden" name="creditsPrice" id="creditsprice" value="" />
 			  </div>
 			  <ul class="list-group list-group-flush">
 			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+tax)*disc}</p><p class="card-text" style="float: right"> ₩</p></li>

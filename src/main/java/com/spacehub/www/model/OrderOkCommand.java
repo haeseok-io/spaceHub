@@ -98,7 +98,7 @@ public class OrderOkCommand implements ActionCommand {
 			  if(orderno!= null || cardConfirmno != null || email != null || cardnum != null){
 				  PaymentDAO dao = new PaymentDAO();
 				  PaymentVO vo = new PaymentVO();
-				  vo.setApprovalNum(cardConfirmno);
+				  vo.setApprovalNum(orderno);
 				  vo.setCardNum(cardnum);
 				  vo.setName(name);
 				  vo.setEmail(email);
@@ -110,9 +110,8 @@ public class OrderOkCommand implements ActionCommand {
 			  }
 			  rdao.close();
 		  }
-		  String result = "y";
 		
-		return result;
+		return "/mypage/guest?cmd=spaceList";
 	}
 
 }
