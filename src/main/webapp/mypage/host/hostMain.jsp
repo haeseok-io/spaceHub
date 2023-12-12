@@ -50,13 +50,8 @@
 							</div>
 								<p class="space_subject">${vo.subject }</p>
 							</a>
-<<<<<<< HEAD
-							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${vo.memno }&spaceno=${vo.spaceno }">공간 수정</a>
-							<a href="/spaceHub/space?cmd=sapceDelete&memno=${vo1.memno }&spaceno=${vo1.spaceno }">공간 삭제</a>
-=======
 							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a>
 							<a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
->>>>>>> refs/heads/master
 						</div>
 				 </c:forEach>
 			</div>

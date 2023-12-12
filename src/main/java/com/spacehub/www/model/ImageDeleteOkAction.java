@@ -20,7 +20,7 @@ public class ImageDeleteOkAction implements JsonAction {
 		String spacenoParam = req.getParameter("spaceno"); // 수정된 변수명
         String imgnoParam = req.getParameter("imgno"); // 이미지 번호 파라미터 추가
 
-        SmemberVO memberData = (SmemberVO) session.getAttribute("memno");
+        SmemberVO memberData = (SmemberVO) session.getAttribute("member");
 		// Check
 		if( spacenoParam==null || spacenoParam.isEmpty() ) {
 			data.put("errorCode", "param empty");
@@ -42,7 +42,7 @@ public class ImageDeleteOkAction implements JsonAction {
         SpaceImageDAO spaceImageDao = new SpaceImageDAO();
         spaceImageDao.deleteOne(imgno); // 이미지 번호를 이용해 이미지 삭제
         spaceImageDao.close();
-		
+		System.out.println("이미지 삭제 성공");
 		return data;
 	}
 

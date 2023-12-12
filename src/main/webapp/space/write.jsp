@@ -45,8 +45,8 @@
 				</div>
 				<div class="form-check form-check-inline">
 					<img src="" class="img-thumbnail" alt="..."><br>
-					<input type="radio" name="detailType" id="room" value="다인실">
-			  		<label for="room">다인실</label>
+					<input type="radio" name="detailType" id="multiRoom" value="도미토리">
+			  		<label for="multiRoom">도미토리</label>
 				</div>
 			</div>
 			<div class="input-group mb-3">

@@ -19,7 +19,7 @@ public class DiscountDAO {
 		conn = DBConnection.getConnection();
 	}
 	
-	//방번호로 검색
+		//방번호로 검색
 		public ArrayList<DiscountVO> getOne(int spaceno) {
 			ArrayList<DiscountVO> list = new ArrayList<DiscountVO>();
 			
