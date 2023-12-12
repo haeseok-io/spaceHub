@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.ActionCommand;
-import com.spacehub.www.model.CardListCommand;
 import com.spacehub.www.model.HostMainAction;
 import com.spacehub.www.model.ImageDeleteOkAction;
 import com.spacehub.www.model.JsonAction;
@@ -46,8 +45,10 @@ public class MypageHostController extends HttpServlet{
 			Action ac = new SpaceModifyAction();
 			url = ac.execute(req, resp);
 		} else if(cmd.equals("spaceModifyOk")) {
+			System.out.println("spaceModifyOk 연결 성공");
 			Action ac = new SpaceModifyOkAction();
-			url = ac.execute(req, resp);		
+			url = ac.execute(req, resp);	
+			isRedirect = true;
 		} else if(cmd.equals("imgDeleteOk")) {
 			JsonAction ac = new ImageDeleteOkAction();
 			jsonObject = ac.execute(req, resp);

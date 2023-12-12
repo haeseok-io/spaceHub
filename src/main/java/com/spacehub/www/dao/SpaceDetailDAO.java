@@ -70,7 +70,29 @@ public class SpaceDetailDAO {
 				e.printStackTrace();
 			}
 	}
-	
+		
+		//수정
+		public void modifyOne(SpaceDetailVO vo) {
+			sb.setLength(0);
+			sb.append("update space_detail set ");
+			sb.append("type=?, detail=?, max_guest=?, bed=?, bathroom=?, in_date=?, out_date=?, x=?, y=? ");
+			sb.append("where spaceno=? ");
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setString(1, vo.getType());
+				pstmt.setString(2, vo.getDetail());
+				pstmt.setInt(3, vo.getBed());
+				pstmt.setInt(4, vo.getBathroom());
+				pstmt.setString(5,vo.getInDate());
+				pstmt.setString(6, vo.getOutDate());
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		
 	public void close() {
 		try {
 			if (rs != null)
@@ -84,5 +106,6 @@ public class SpaceDetailDAO {
 			e.printStackTrace();
 		}
 	}
+
 
 }

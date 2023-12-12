@@ -154,6 +154,8 @@
 		<form name="spaceModifyForm" action="/spaceHub/mypage/host" method="get" enctype="multipart/form-data">
 			<input type="hidden" name="cmd" value="spaceModifyOk" />
 			<input type="hidden" name="memno" value="${member.memno }"/>
+			<input type="hidden" name="spaceno" value="${spaceVo.spaceno }"/>
+			<input type="hidden" name="vstatus" value="${spaceVo.VStatus}"/>
 			<input type="hidden" name="y" /> <!-- 위도  -->
 			<input type="hidden" name="x" /> <!-- 경도  -->
 			<p></p>
@@ -188,7 +190,7 @@
 			</div>
 			</c:forEach>
 				<button type="button" class="btn btn-outline-primary plusImgContainer">사진추가</button>
-			
+		 
 			<div class="input-group mb-3">
 			  <label class="input-group-text" for="inputGroupFile01">공간이미지 업로드</label>
 			  <input name="img5" type="file" class="form-control" id="inputGroupFile01">
@@ -196,7 +198,7 @@
 			  <input name="img3" type="file" class="form-control" id="inputGroupFile03">
 			  <input name="img2" type="file" class="form-control" id="inputGroupFile04">
 			  <input name="img1" type="file" class="form-control" id="inputGroupFile05">
-			</div>
+			</div> 
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
 			</div>

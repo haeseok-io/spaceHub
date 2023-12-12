@@ -19,6 +19,7 @@ import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceFacVO;
 import com.spacehub.www.vo.SpaceVO;
 
+
 public class SpaceModifyAction implements Action {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -51,9 +52,6 @@ public class SpaceModifyAction implements Action {
 			req.setAttribute("spaceFacVo", spaceFacVo);
 			req.setAttribute("list", list);
 			req.setAttribute("dcList", dcList);
-			for(int i=0; i<dcList.size(); i++) {
-				System.out.println(dcList.get(i));
-			}
 			
 			spaceDao.close();
 			spaceDetailDao.close();
