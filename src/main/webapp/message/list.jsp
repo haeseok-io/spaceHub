@@ -225,9 +225,8 @@
 					let detailData = result.data;
 					let appendHtml = $(appendTemplate);
 					
-					appendHtml.find(".space-img img").attr("src", detailData.imgPath);
-					
-					appendEl.append(appendHtml);
+					console.log(appendHtml);
+					appendHtml.find(".space-img img").attr("src", detailData.imgPath);.<div class="space-img"append(appendHtml);
 				}
 			});
 			
