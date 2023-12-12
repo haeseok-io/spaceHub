@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.spacehub.www.dao.CreditsDAO;
 import com.spacehub.www.dao.DiscountDAO;
 import com.spacehub.www.dao.MemCouponDAO;
 import com.spacehub.www.dao.SmemberDAO;
 import com.spacehub.www.dao.SpaceDAO;
 import com.spacehub.www.dao.SpaceDetailDAO;
+import com.spacehub.www.vo.CreditsVO;
 import com.spacehub.www.vo.DiscountVO;
 import com.spacehub.www.vo.MCouponVO;
 import com.spacehub.www.vo.SmemberVO;
@@ -49,6 +51,8 @@ public class OrderCommand implements ActionCommand {
 				DiscountVO dvo = ddao.getTwo(Spaceno);
 				DiscountVO dwvo = ddao.getWeek(Spaceno);
 				DiscountVO dmvo = ddao.getMonth(Spaceno);
+				CreditsDAO crdao = new CreditsDAO();
+				CreditsVO crvo = crdao.getSum(memberVO.getMemno());
 				
 				SpaceDetailDAO sddao = new SpaceDetailDAO();
 				SpaceDetailVO sddvo = sddao.getOne(Spaceno);
@@ -68,6 +72,8 @@ public class OrderCommand implements ActionCommand {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				int tax = (int)(vo.getPrice()*(Integer.parseInt(bark))*0.01);
 				
 				int dc = 0;
 				if(dlist != null) {
@@ -94,6 +100,11 @@ public class OrderCommand implements ActionCommand {
 					dc = 0;
 				}
 				
+				int disc = (int)((100-dc)*0.01);
+				
+				req.setAttribute("crvo", crvo);
+				req.setAttribute("disc", disc);
+				req.setAttribute("tax", tax);
 				req.setAttribute("bark", bark);
 				req.setAttribute("checkin", checkin);
 				req.setAttribute("checkout", checkout);

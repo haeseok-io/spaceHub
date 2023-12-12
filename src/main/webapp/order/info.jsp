@@ -43,14 +43,14 @@
 			let cprice = $("#coupon-price").text();
 			let dprice = $("#discount-price").text();
 			let couponname = $("#couponselect option:selected").text();
+			let creditsPrice = $("#credits-price").text();
 			
-		  
 		  IMP.request_pay({
 		    pg: "inicis",
 		    pay_method: "card",
 		    merchant_uid : 'merchant_'+new Date().getTime(),
 		    name : space,
-			amount : pricenum,
+			amount : 1,
 		    buyer_email : email,
 		    buyer_name : memname,
 		    buyer_tel : ' ',
@@ -84,7 +84,8 @@
 							phone : phone,
 							cprice : cprice,
 							dprice : dprice,
-							couponname : couponname
+							couponname : couponname,
+							creditsPrice : creditsPrice
 							
 						},
 						success : function(result){
@@ -111,14 +112,15 @@
 		let a = $("#dcp").val();
 		let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
 		let dprice = ($("#cprice").val())*((100-a)*0.01);
+		let usecredits = Number($("#usecredits").val());
 		if(dcratio != 0){
 			$("#coupon-price").text(dcratio);
 			$("#discount-price").text("0");
-			$("#price").text(cprice);
+			$("#price").text(cprice-usecredits);
 		}else{
 			$("#coupon-price").text(0);
 			$("#discount-price").text(a);
-			$("#price").text(dprice);
+			$("#price").text(dprice-usecredits);
 		}
 	}
 	
@@ -137,6 +139,36 @@
 			let guestmax = $("#guestmax").val();
 			if(guest < guestmax){
 				$("#guest").text(p);
+			}
+		});
+		
+		$("#usecreditsbtn").on("click",()=>{
+			let creditsyet = Number($("#creditsyet").val());
+			let usecredits = Number($("#usecredits").val());
+			let crespan = Number($("#crespan").text());
+			let price = Number($("#price").text());
+			
+			let dcratio = Number($("#coupon-price").text());
+			let a = $("#dcp").val();
+			let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
+			let dprice = ($("#cprice").val())*((100-a)*0.01);
+			let allprice = cprice+dprice-$("#cprice").val();
+			
+			
+			if(usecredits <= creditsyet){
+				let cre = creditsyet-usecredits;
+				$("#crespan").text(cre);
+				$("#credits-price").text(usecredits);
+				$("#price").text(allprice-usecredits);
+			}else if(usecredits > creditsyet){
+				alert("크래딧이 부족합니다.");
+			}else if(usecredits > price){
+				let num = usecredits-price;
+				$("#crespan").text(num);
+				$("#price").text(0);
+				$("#credits-price").text(price);
+			}else if(usecredits == 0){
+				$("#price").text(allprice);
 			}
 		});
 	});
@@ -191,8 +223,20 @@
 			  <div class="card-body">
 			    <h9 class="card-title">쿠폰과 호스트의 할인은 중복 적용이 불가능합니다.</h9>
 			  </div>
+			  <div class="card-body">
+			  	<div class="mb-3">
+				   <h5 class="card-title">보유 크래딧</h5>
+				  <div class="input-group">
+				  	  <span class="input-group-text">₩</span>
+					  <span class="input-group-text" id="crespan">${crvo.price}</span>
+					  <input type="text" style="text-align:right;" aria-label="First name" id="usecredits" class="form-control">
+					  <input type="hidden" name="creditsyet" id="creditsyet" value="${crvo.price}" />
+					  <button class="btn btn-outline-secondary" id="usecreditsbtn" type="button">사용</button>
+					</div>
+				</div>
+			  </div>
 			   <div class="card-body">
-			  <div class="mb-3">
+			  	<div class="mb-3">
 				   <h5 class="card-title">전화번호 입력</h5>
 				  <input type="text" class="form-control" id="phone" placeholder="phone">
 				</div>
@@ -213,7 +257,7 @@
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">서비스 수수료</p>
-			    <p class="card-text" style="float: right" id="service-price">${(vo.price*bark)*0.01}</p>
+			    <p class="card-text" style="float: right" id="service-price">${tax}</p>
 			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
@@ -228,8 +272,13 @@
 			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>
 			    <input type="hidden" name="cprice" id="cprice" value="${((vo.price*bark)+(vo.price*bark)*0.01)}"/>
 			  </div>
+			   <div class="card-body">
+			    <p class="card-title">사용한 크래딧</p>
+			    <p class="card-text" style="float: right" id="credits-price">0</p>
+			    <p class="card-text" style="float: right">₩ </p>
+			  </div>
 			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+(vo.price*bark)*0.01)*((100-dc)*0.01)}</p><p class="card-text" style="float: right"> ₩</p></li>
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+tax)*disc}</p><p class="card-text" style="float: right"> ₩</p></li>
 			  </ul>
 			  <div class="card-body">
 			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>

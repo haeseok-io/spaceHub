@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.CouponDAO;
+import com.spacehub.www.dao.CreditsDAO;
 import com.spacehub.www.dao.MemCouponDAO;
 import com.spacehub.www.dao.PaymentDAO;
 import com.spacehub.www.dao.ReservationDAO;
 import com.spacehub.www.vo.CouponVO;
+import com.spacehub.www.vo.CreditsVO;
 import com.spacehub.www.vo.MemCouponVO;
 import com.spacehub.www.vo.PaymentVO;
 import com.spacehub.www.vo.ReservationVO;
@@ -41,13 +43,15 @@ public class OrderOkCommand implements ActionCommand {
 		  String c = req.getParameter("cprice");
 		  String d = req.getParameter("dprice");
 		  String couponname = req.getParameter("couponname");
+		  String creditsprice = req.getParameter("creditsPrice");
 		  
-		  if(s != null || ip != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
+		  if(s != null || creditsprice != null || ip != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
 			  int price = Integer.parseInt(p);
 			  int spaceno = Integer.parseInt(s);
 			  int guest = Integer.parseInt(g);
 			  int cprice = Integer.parseInt(c);
 			  int dprice = Integer.parseInt(d);
+			  int credit = Integer.parseInt(creditsprice);
 			  int dcratio = cprice+dprice;
 			  
 			  CouponDAO cdao = new CouponDAO();
@@ -70,6 +74,14 @@ public class OrderOkCommand implements ActionCommand {
 			  rdao.addOne(rvo);
 			  
 			  ReservationVO rsvo = rdao.getSpaceOne(spaceno);
+			  
+			  CreditsDAO creditsdao = new CreditsDAO();
+			  CreditsVO creditsvo = new CreditsVO();
+			  creditsvo.setContents("크래딧 사용");
+			  creditsvo.setPrice(-credit);
+			  creditsvo.setMemno(memberVO.getMemno());
+			  creditsdao.addOne(creditsvo);
+			  creditsdao.close();
 			  
 			  if(cprice != 0) {
 				  MemCouponDAO mdao = new MemCouponDAO();
@@ -98,8 +110,9 @@ public class OrderOkCommand implements ActionCommand {
 			  }
 			  rdao.close();
 		  }
+		  String result = "y";
 		
-		return "y";
+		return result;
 	}
 
 }

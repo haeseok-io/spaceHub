@@ -13,40 +13,40 @@
 </head>
 <body>
 <div class="container">
-	<form action="/mypage" method="get">
+	<form action="/mypage" method="post">
 		<input type="hidden" name="cmd" value="modifyOk" />
-		<input type="hidden" name="memno" value="${vo.memno }"/>
+		<input type="hidden" name="memno" value="${member.memno }"/>
 		<table class="table">
 			<tr>
 				<th>이름</th>
-				<td>${vo.name }</td>
+				<td>${member.name }</td>
 			</tr>
 			
 			<tr>
 				<th>이메일</th>
-				<td>${vo.email }</td>
+				<td>${member.email }</td>
 			</tr>
 			
 			<tr>
 				<td>
-					<a href="/spaceHub/mypage?cmd=pwAuth&memno=${vo.memno }">
+					<a href="/spaceHub/mypage?cmd=pwAuth&memno=${member.memno }">
 						<input type="button" value="비밀번호 변경" />
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<th>우편번호</th>
-				<td><input type="text" name="post" id="post" value="${vo.post }"/></td>
+				<td><input type="text" name="post" id="post" value="${member.post }"/></td>
 			</tr>
 			
 			<tr>
 				<th>주소</th>
-				<td><input type="text" name="addr" id="addr" value="${vo.addr }"/></td>
+				<td><input type="text" name="addr" id="addr" value="${member.addr }"/></td>
 			</tr>
 			
 			<tr>
 				<th>계좌번호</th>
-				<td><input type="text" name="accountNum" id="accountNum" value="${vo.accountNum }"/></td>
+				<td><input type="text" name="accountNum" id="accountNum" value="${member.accountNum }"/></td>
 			</tr>
 			
 			<tr>

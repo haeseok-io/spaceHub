@@ -53,11 +53,11 @@
 </script>
 </head>
 <body>
-	<form action="/space" method="get">
+	<form action="/space" method="post">
 		<a href="#report-popup" class="btn-open" value="">신고하기</a>
-		<input type="hidden" name="memno" value="${vo.memno }"/>
-		<input type="hidden" name="spaceno" value="${vo.spaceno }" />
-		<input type="hidden" name="spaceSubject" value="${vo.spaceSubject }" />		
+		<input type="hidden" name="memno" value="${member.memno }"/>
+		<input type="hidden" name="spaceno" value="${member.spaceno }" />
+		<input type="hidden" name="spaceSubject" value="${member.spaceSubject }" />		
 		<input type="hidden" name="cmd" value="reportOk"/>
 		
 		<div class="container">
@@ -66,12 +66,12 @@
 					<table class="table">
 						<tr>
 							<th>제목</th>
-							<td><input type="text" class="text" name="subject" id="subject" value="${vo.subject }" /></td>
+							<td><input type="text" class="text" name="subject" id="subject" value="${member.subject }" /></td>
 						</tr>
 						
 						<tr>
 							<th>내용</th>
-							<td><textarea class="textarea" name="contents" id="contents" cols="30" rows="10" value="${vo.contents }"></textarea></td>
+							<td><textarea class="textarea" name="contents" id="contents" cols="30" rows="10" value="${member.contents }"></textarea></td>
 						</tr>
 						
 						<tr>

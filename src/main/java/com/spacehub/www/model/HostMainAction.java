@@ -4,19 +4,29 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.SpaceDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.JjimListVO;
+import com.spacehub.www.vo.SmemberVO;
 
 public class HostMainAction implements Action{
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		String m = req.getParameter("memno");
+		HttpSession session = req.getSession(true);
 		
-		if(m != null) {
-			int memno = Integer.parseInt(m);
+		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
+		
+		if (memberData == null) {
+		    return "/spaceHub/sign?cmd=login";  // 로그인 페이지로 리다이렉트 또는 포워드
+		}
+		
+		session.setAttribute("member", memberData);
+		
+		if(memberData != null) {
+			int memno = memberData.getMemno();
 			SpaceDAO dao = new SpaceDAO();
 			SpaceImageDAO imgDao = new SpaceImageDAO();
 			
@@ -29,9 +39,7 @@ public class HostMainAction implements Action{
 				jjimData.setImgList(imgDao.getSpaceImages(spaceno, memno));
 			}
 			
-			
-			
-			req.setAttribute("list", list);
+			session.setAttribute("list", list);
 			imgDao.close();
 			dao.close();
 			

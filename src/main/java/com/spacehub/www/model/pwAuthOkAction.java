@@ -19,7 +19,7 @@ public class pwAuthOkAction implements Action {
 		
 		
 		if( !authNum.equals(emailKey) ) {
-			return "/spaceHub/mypage?cmd=pwAuth&memno=2"; 
+			return "/spaceHub/mypage?cmd=pwAuth&memno=" + memno; 
 		}
 		
 		// 정보수정

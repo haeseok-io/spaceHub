@@ -305,7 +305,7 @@ public class SpaceDAO {
 				+ "space_detail.in_date, space_detail.out_date, space.price, jjim.jjimno ");
 		sb.append("from space ");
 		sb.append("join space_detail on space.spaceno = space_detail.spaceno ");
-		sb.append("join jjim on space.spaceno = jjim.spaceno ");
+		sb.append("join jjim on space.memno = jjim.memno ");
 		sb.append("join smember on space.memno = smember.memno ");
 		sb.append("where smember.memno=?");
 		
