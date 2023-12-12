@@ -245,6 +245,7 @@
 			    <p class="card-title">쿠폰 할인</p>
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="coupon-price">0</p>
+
 			    <input type="hidden" name="cprice" id="couponprice" value="0"/>
 			    <input type="hidden" name="dprice" id="discountprice" value="0"/>
 			  </div>
