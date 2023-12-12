@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.CardListCommand;
 import com.spacehub.www.model.HostMainAction;
 import com.spacehub.www.model.ImageDeleteOkAction;
 import com.spacehub.www.model.JsonAction;

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.CardListCommand;
 import com.spacehub.www.model.CouponCommand;
 import com.spacehub.www.model.SpaceCancelCommand;
 import com.spacehub.www.model.SpaceEndCommand;
@@ -39,6 +40,9 @@ public class MypageGuestController extends HttpServlet{
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("spaceCancel")) {
 			ActionCommand ac = new  SpaceCancelCommand();
+			url = ac.execute(req, resp);
+		} else if(cmd.equals("cardList")) {
+			ActionCommand ac = new  CardListCommand();
 			url = ac.execute(req, resp);
 		}
 		
