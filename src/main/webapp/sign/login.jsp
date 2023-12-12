@@ -1,41 +1,45 @@
 <%@page import="com.spacehub.www.vo.SmemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<style>
-	hr{
-		color:gray;
-	}
-	a{
-		text-decoration-line:none;
-	}
-	p{
-		text-align:center;
-	}
-</style>
-<script type="text/javascript">
-	function inputck(){
-		let email = $("#email").val();
-		let pw = $("#pw").val();
-		
-		if(email == ""){
-			alert("이메일을 입력해주세요.");
-			return false;
-		}else if(pw == ""){
-			alert("비밀번호를 입력해주세요.");
-			return false;
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="../common/common.jsp" />
+	
+	<title>spaceHub - 로그인</title>
+
+	<style>
+		.main .inner { width: 500px; padding: 100px 0; }
+		.fieldset-wrap .login-find { display: flex; justify-content: center; margin-top: 10px; }
+		.fieldset-wrap .login-find ul { display: flex; justify-content: space-between; width: 40%; }
+		.fieldset-wrap .login-find ul li { width: 50%; text-align: center; }
+		.fieldset-wrap .login-find ul li a { font-size: 14px; color: #999; }
+	</style>
+	<script>
+		const checkForm = () => {
+			// Val
+			let form = document.loginForm;
+			
+			let regexObj = {
+				email : /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+			}
+			
+			// Check
+			if( !form.email.value ){
+				alert("이메일을 입력해주세요.");
+				form.email.focus();
+				return false;
+			} else if( !regexObj.email.test(form.email.value) ){
+				alert("이메일 형식이 올바르지 않습니다.");
+				form.email.focus();
+				return false;
+			} else if( !form.pw.value ){
+				alert("비밀번호를 입력해주세요.");
+				form.pw.focus();
+				return false;
+			}
+			
 		}
-	}
-</script>
-</head>
-<body>
+	</script>
+<jsp:include page="../common/header.jsp" />
 	<%
 		Object obj = session.getAttribute("vo");
 	
@@ -45,45 +49,42 @@
 			
 		} else{
 	%>
-	<div class="container">
-		<form action="/spaceHub/sign?cmd=loginOk" method="post" onsubmit="return inputck()">
-			<h1>로그인</h1>
-			<div class="mb-3">
-				  <label for="exampleFormControlInput1" class="form-label">이메일</label>
-				  <input type="text" class="form-control" id="email" name="email" placeholder="name@example.com">
-				  <input type="hidden" name="cmd" value="loginOk" />
+	
+	<div class="main">
+		<div class="inner">
+			
+			<div class="page-title">
+				<p class="title-name">로그인</p>
 			</div>
-			<div>
-				<label for="inputPassword5" class="form-label">비밀번호</label>
-				<input type="password" id="pw" name="pw" class="form-control" aria-describedby="passwordHelpBlock">
+			
+			<div class="fieldset-wrap">
+				<form name="loginForm" action="/spaceHub/sign" method="post" onsubmit="return checkForm()">
+					<input type="hidden" name="cmd" value="loginOk" />
+					
+					<div class="fieldset-data">
+						<div class="field-wrap">
+							<input type="text" name="email" placeholder="이메일을 입력해주세요." />
+						</div>
+						<div class="field-wrap">
+							<input type="password" name="pw" placeholder="비밀번호를 입력해주세요." />
+						</div>
+					</div>
+					
+					<div class="fieldset-button">
+						<button class="btn btn-success" type="submit">로그인</button>
+					</div>
+					<div class="login-find">
+						<ul>
+							<li><a href="/spaceHub/sign?cmd=pwFind">비밀번호 찾기</a></li>
+							<li><a href="/spaceHub/sign?cmd=signup">회원가입</a></li>
+						</ul>
+					</div>
+				</form>
 			</div>
-			<br />
-			<div class="d-grid gap-2">
-			  <button class="btn btn-outline-secondary" type="submit">로그인</button>
-			</div>
-			<br />
-			<p>
-				<a href="/spaceHub/sign?cmd=pwFind" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">비밀번호 찾기</a>
-				<a href="/spaceHub/sign?cmd=signup" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">회원가입</a>
-			</p>
-		<hr />
-			<div class="d-grid gap-2">
-			  <button class="btn btn-outline-secondary" type="button">네이버 로그인</button>
-			</div>
-			<br />
-			<div class="d-grid gap-2">
-			  <button class="btn btn-outline-secondary" type="button">구글 로그인</button>
-			</div>
-			<br />
-			<div class="d-grid gap-2">
-			  <button class="btn btn-outline-secondary" type="button">카카오 로그인</button>
-			</div>
-			<br />
-			<div class="d-grid gap-2">
-			  <button class="btn btn-outline-secondary" type="button">애플 로그인</button>
-			</div>
-		</form>
+			
+		</div>
 	</div>
+	
 	<%} %>
 </body>
 </html>

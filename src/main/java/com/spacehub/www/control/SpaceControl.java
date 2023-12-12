@@ -14,10 +14,11 @@ import org.json.simple.JSONObject;
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.JsonAction;
 import com.spacehub.www.model.LikeDeleteOkAction;
-import com.spacehub.www.model.LikeWriteAction;
+import com.spacehub.www.model.LikeWriteOkAction;
 import com.spacehub.www.model.SpaceDetailAction;
 import com.spacehub.www.model.SpaceListAction;
 import com.spacehub.www.model.SpaceWriteAction;
+import com.spacehub.www.model.spaceDetailDataAction;
 
 @WebServlet("/space")
 public class SpaceControl extends HttpServlet {
@@ -41,13 +42,11 @@ public class SpaceControl extends HttpServlet {
 		} else if( cmd.equals("detail") ) {
 			Action ac = new SpaceDetailAction();
 			url = ac.execute(req, resp);
-			
-			if( url==null ) {
-				url = "/spaceHub/home";
-				isRedirect = true;
-			}
+		} else if( cmd.equals("detailData") ) {
+			JsonAction ac = new spaceDetailDataAction();
+			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("likeWriteOk") ) {
-			JsonAction ac = new LikeWriteAction();
+			JsonAction ac = new LikeWriteOkAction();
 			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("likeDeleteOk") ) {
 			JsonAction ac = new LikeDeleteOkAction();
@@ -57,7 +56,13 @@ public class SpaceControl extends HttpServlet {
 			url = ac.execute(req, resp);
 		} 
 		
+		// url값이 null일 경우 메인페이지로 리다이렉트
+		if( url==null ) {
+			url = "/spaceHub/home";
+			isRedirect = true;
+		}
 		
+		// url이 있을경우 페이지 이동, 없을경우엔 json 데이터 리턴
 		if( !url.equals("") ) {
 			if( isRedirect ) {
 				resp.sendRedirect(url);							
