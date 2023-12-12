@@ -12,25 +12,25 @@
 <body>
 	<form action="/space">
 	<input type="hidden" name="cmd" value="reportList"/>
-	<input type="hidden" name="memno" value="${vo.memno }"/>
+	<input type="hidden" name="memno" value="${member.memno }"/>
 	<div class="container">
-		<c:forEach var="vo" items="${list }">
+		<c:forEach var="likeList" items="${list }">
 		<table class="table">
 			<tr>
 				<th>숙소명</th>
-				<td>${vo.spaceSubject }</td>
+				<td>${likeList.spaceSubject }</td>
 			</tr>
 			<tr>
 				<th>제목</th>
-				<td>${vo.subject }</td>
+				<td>${likeList.subject }</td>
 			</tr>
 			<tr>
 				<th>작성시간</th>
-				<td>${vo.regdate }</td>
+				<td>${likeList.regdate }</td>
 			</tr>
 			<tr>
 				<th>작성내용</th>
-				<td>${vo.contents }</td>
+				<td>${likeList.contents }</td>
 			</tr>
 		</table>
 		</c:forEach>

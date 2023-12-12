@@ -51,9 +51,9 @@
 </script>
 </head>
 <body>
-	<form action="/spaceHub/mypage" method="get">
+	<form action="/spaceHub/mypage" method="post">
 		<input type="hidden" name="cmd" value="pwAuthOk"/>
-		<input type="hidden" name="memno" value="${vo.memno }"/>
+		<input type="hidden" name="memno" value="${member.memno }"/>
 		<div>
 			<p>변경할 비밀번호 : </p>
 			<input type="password" name="password" id="password" />
