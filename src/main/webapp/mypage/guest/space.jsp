@@ -35,7 +35,8 @@
 		height:202px;
 	}
 	.col{
-		margin-right:150px;
+		margin-right:130px;
+		margin-top : 150px;
 	}
 	#can{
 		text-align: center;
@@ -58,10 +59,7 @@
 		  <a href="/spaceHub/mypage/guest?cmd=spaceEnd" class="btn btn-secondary">지난 여행</a>
 		  <a href="/spaceHub/mypage/guest?cmd=spaceCancel" class="btn btn-secondary">취소한 여행</a>
 		</div>
-		<br />
-		<br />
-		<br />
-		<div class="row row-cols-1 row-cols-md-4 g-3">
+		<div class="row row-cols-1 row-cols-md-4 g-4">
 		<c:forEach var="vo" items="${list}">
  		 <div class="col">
 			<div class="card h-100" style="width: 18rem;">

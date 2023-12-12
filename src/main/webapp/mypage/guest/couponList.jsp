@@ -74,7 +74,7 @@
 			    <tr id="ta1">
 				  	<td>${vo.couponno}</td>
 				  	<td>${vo.name}</td>
-				  	<td>${vo.dcratio}</td>
+				  	<td>${vo.dcratio} %</td>
 				  	<td>${vo.EDate}</td>
 			    </tr>
 			  </c:forEach>
@@ -83,7 +83,7 @@
 			    <tr id="ta2">
 				  	<td>${so.couponno}</td>
 				  	<td>${so.name}</td>
-				  	<td>${so.dcratio}</td>
+				  	<td>${so.dcratio} %</td>
 				  	<td>${so.EDate}</td>
 			    </tr>
 			   </c:forEach>
@@ -92,7 +92,7 @@
 			    <tr id="ta3">
 				  	<td>${eo.couponno}</td>
 				  	<td>${eo.name}</td>
-				  	<td>${eo.dcratio}</td>
+				  	<td>${eo.dcratio} %</td>
 				  	<td>${eo.EDate}</td>
 			    </tr>
 			   </c:forEach>

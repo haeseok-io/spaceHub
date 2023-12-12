@@ -33,7 +33,8 @@
 		height:202px;
 	}
 	.col{
-		margin-right:150px;
+		margin-right:130px;
+		margin-top : 150px;
 	}
 	#can{
 		text-align: center;
@@ -46,14 +47,11 @@
 		<form action="">
 		<h2>예약확인</h2>
 		<div class="btn-group" style="float: right;">
-		  <a href="/spaceHub/mypage/guest?cmd=spaceList" class="btn btn-secondary" aria-current="page">여행 예정</a>
+		  <a href="/spaceHub/mypage/guest?cmd=spaceList" class="btn btn-secondary" >여행 예정</a>
 		  <a href="/spaceHub/mypage/guest?cmd=spaceEnd" class="btn btn-secondary">지난 여행</a>
-		  <a href="#" class="btn btn-secondary active">취소한 여행</a>
+		  <a href="#" class="btn btn-secondary active" aria-current="page">취소한 여행</a>
 		</div>
-		<br />
-		<br />
-		<br />
-		<div class="row row-cols-1 row-cols-md-4 g-3">
+		<div class="row row-cols-1 row-cols-md-4 g-4">
 		<c:forEach var="vo" items="${list}">
  		 <div class="col">
 			<div class="card h-100" style="width: 18rem;">
