@@ -89,11 +89,95 @@ public class ReservationDAO {
 			return vo;
 		}
 	
+	//상태1
 	public ArrayList<ResevSpaceVO> getAll(int memno){
 		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
 		
 		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.memno=? and i.seq=1 order by checkin asc");
+		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and checkin >= now() and r.status=1 and r.memno=? and i.seq=1 order by checkin asc");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int reservno = rs.getInt("reservno");
+				String checkin = rs.getString("checkin");
+				String checkout = rs.getString("checkout");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				int price = rs.getInt("price");
+				int guest = rs.getInt("guest");
+				int dcratio = rs.getInt("dcratio");
+				String regdate = rs.getString("regdate");
+				int status = rs.getInt("status");
+				String ip = rs.getString("ip");
+				int spaceno = rs.getInt("spaceno");
+				String type = rs.getString("type");
+				String loc = rs.getString("loc");
+				String subject = rs.getString("subject");
+				String post = rs.getString("post");
+				String addr = rs.getString("addr");
+				String path = rs.getString("path");
+				int seq = rs.getInt("seq");
+				ResevSpaceVO vo = new ResevSpaceVO(reservno, checkin, checkout, name, phone, price,guest,dcratio,regdate,status,ip,spaceno,memno,type,loc,subject,post,addr,path,seq);
+				list.add(vo);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	//상태4
+	public ArrayList<ResevSpaceVO> getTwo(int memno){
+		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
+		
+		sb.setLength(0);
+		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.status=4 and r.memno=? and i.seq=1 order by checkin asc");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int reservno = rs.getInt("reservno");
+				String checkin = rs.getString("checkin");
+				String checkout = rs.getString("checkout");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				int price = rs.getInt("price");
+				int guest = rs.getInt("guest");
+				int dcratio = rs.getInt("dcratio");
+				String regdate = rs.getString("regdate");
+				int status = rs.getInt("status");
+				String ip = rs.getString("ip");
+				int spaceno = rs.getInt("spaceno");
+				String type = rs.getString("type");
+				String loc = rs.getString("loc");
+				String subject = rs.getString("subject");
+				String post = rs.getString("post");
+				String addr = rs.getString("addr");
+				String path = rs.getString("path");
+				int seq = rs.getInt("seq");
+				ResevSpaceVO vo = new ResevSpaceVO(reservno, checkin, checkout, name, phone, price,guest,dcratio,regdate,status,ip,spaceno,memno,type,loc,subject,post,addr,path,seq);
+				list.add(vo);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public ArrayList<ResevSpaceVO> getEnd(int memno){
+		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
+		
+		sb.setLength(0);
+		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.status=1 and checkout < now() and r.memno=? and i.seq=1 order by checkin asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -242,6 +326,25 @@ public class ReservationDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	// 데이터 변경
+		public void modifyStatus(ReservationVO vo) {
+			sb.setLength(0);
+			sb.append("Update reservation Set ");
+			sb.append("status=? ");
+			sb.append("Where reservno=?");
+			
+			try {
+				pstmt = conn.prepareStatement(sb.toString());
+				pstmt.setInt(1, vo.getStatus());
+				pstmt.setInt(2, vo.getReservno());
+				
+				pstmt.executeUpdate();
+				
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	
 	// 데이터 컬럼 변경	
 	public void modifyOnePart(int reservno, String field, String value) {

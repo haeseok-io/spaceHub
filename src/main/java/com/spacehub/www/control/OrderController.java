@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacehub.www.model.ActionCommand;
+import com.spacehub.www.model.CancelCommand;
 import com.spacehub.www.model.OrderCommand;
 import com.spacehub.www.model.OrderOkCommand;
 
@@ -31,6 +32,9 @@ public class OrderController extends HttpServlet{
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("orderOk")) {
 			ActionCommand ac = new  OrderOkCommand();
+			url = ac.execute(req, resp);
+		}else if(cmd.equals("cancel")) {
+			ActionCommand ac = new  CancelCommand();
 			url = ac.execute(req, resp);
 		}
 		
