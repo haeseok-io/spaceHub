@@ -54,8 +54,8 @@ public class MypageControl extends HttpServlet{
 		if(isRedirect) {
 			resp.sendRedirect(url);
 		}else {
-		RequestDispatcher rd = req.getRequestDispatcher(url);
-		rd.forward(req, resp);
+			RequestDispatcher rd = req.getRequestDispatcher(url);
+			rd.forward(req, resp);
 		}
 	}
 	

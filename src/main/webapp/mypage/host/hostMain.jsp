@@ -26,16 +26,16 @@
 </head>
 <body>
 	<div class="container">
-		<form action="" method="get">
+		<form action="" method="post">
 			<div class="greet">
-				<h1>${vo.name }님 안녕하세요</h1>
+				<h1>${member.name }님 안녕하세요</h1>
 				<h2>숙소 등록 후 24시간이 지나면 게스트가 예약을 할 수 있습니다! 예약을 받을 수 있도록 설정을 마쳐보세요!</h2>
 			</div>
 			<div>
 				<div class="account">
 					<div>계정 정보를 제출하셔야 합니다!</div>
 					<div>대금 수령을 위한 정보가 필요합니다.</div>
-					<a href="/spaceHub/mypage?cmd=modify&memno=${vo.memno }">계정 정보 업데이트</a>
+					<a href="/spaceHub/mypage?cmd=modify&memno=${member.memno }">계정 정보 업데이트</a>
 				</div>
 			</div>
 			<div>
@@ -50,8 +50,8 @@
 							</div>
 								<p class="space_subject">${vo.subject }</p>
 							</a>
-							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${vo1.memno }&spaceno=${vo1.spaceno }">공간 수정</a>
-							<a href="/spaceHub/space?cmd=sapceDelete&memno=${vo1.memno }&spaceno=${vo1.spaceno }">공간 삭제</a>
+							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a>
+							<a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
 						</div>
 				 </c:forEach>
 			</div>
