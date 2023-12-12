@@ -26,7 +26,7 @@
 		<div class="container">		
 			<a href="/spaceHub/space?cmd=detail&space=${member.memno }">
 				<div class="wrap">
-					<c:forEach var="vo" items="${likeList }">
+					<c:forEach var="vo" items="${jjimList }">
 						<c:forEach var="img" items="${vo.imgList }">
 							<img src="${img.path }" alt="" />			
 						</c:forEach>
