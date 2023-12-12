@@ -245,8 +245,9 @@
 			    <p class="card-title">쿠폰 할인</p>
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="coupon-price">0</p>
-			    <input type="hidden" name="cprice" id="couponprice" value=""/>
-			    <input type="hidden" name="dprice" id="discountprice" value=""/>
+
+			    <input type="hidden" name="cprice" id="couponprice" value="0"/>
+			    <input type="hidden" name="dprice" id="discountprice" value="0"/>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title" id="dis">호스트의 할인</p>
@@ -259,7 +260,7 @@
 			    <p class="card-title">사용한 크래딧</p>
 			    <p class="card-text" style="float: right" id="credits-price">0</p>
 			    <p class="card-text" style="float: right">₩ </p>
-			    <input type="hidden" name="creditsPrice" id="creditsprice" value="" />
+			    <input type="hidden" name="creditsPrice" id="creditsprice" value="0" />
 			  </div>
 			  <ul class="list-group list-group-flush">
 			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+tax)*disc}</p><p class="card-text" style="float: right"> ₩</p></li>
