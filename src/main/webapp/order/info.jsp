@@ -206,14 +206,14 @@
 			  <div class="card-body">
 			    <p class="card-title" >${vo.price}</p>
 			    <p class="card-title" >X</p>
-			    <p class="card-title" >3</p>
+			    <p class="card-title" >${bark}</p>
 			    <p class="card-title" >박</p>
-			    <p class="card-text" style="float: right" id="space-price">${vo.price*3}</p>
+			    <p class="card-text" style="float: right" id="space-price">${vo.price*bark}</p>
 			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
 			    <p class="card-title">서비스 수수료</p>
-			    <p class="card-text" style="float: right" id="service-price">${(vo.price*3)*0.03}</p>
+			    <p class="card-text" style="float: right" id="service-price">${(vo.price*bark)*0.01}</p>
 			    <p class="card-text" style="float: right">₩ </p>
 			  </div>
 			  <div class="card-body">
@@ -226,10 +226,10 @@
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
 			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>
-			    <input type="hidden" name="cprice" id="cprice" value="${((vo.price*3)+(vo.price*3)*0.03)}"/>
+			    <input type="hidden" name="cprice" id="cprice" value="${((vo.price*bark)+(vo.price*bark)*0.01)}"/>
 			  </div>
 			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*3)+(vo.price*3)*0.03)*((100-dc)*0.01)}</p><p class="card-text" style="float: right"> ₩</p></li>
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+(vo.price*bark)*0.01)*((100-dc)*0.01)}</p><p class="card-text" style="float: right"> ₩</p></li>
 			  </ul>
 			  <div class="card-body">
 			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>
