@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.MessageContentsVO;
 import com.spacehub.www.vo.MessageListVO;
 import com.spacehub.www.vo.MessageVO;
 
@@ -40,8 +41,8 @@ public class MessageDAO {
 		sb.append("Join smember hm On hm.memno=hs.memno ");
 		sb.append("Where (s.spaceno=m.spaceno or wm.memno=?) ");
 		sb.append("And m.messageno=(Select max(messageno) From message Where bno=m.bno) ");
-		sb.append("Group By m.bno");
-		
+		sb.append("Group By m.bno ");
+		sb.append("Order By m.messageno DESC");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -90,11 +91,13 @@ public class MessageDAO {
 	}
 	
 	// 메세지 리스트 가져오기
-	public ArrayList<MessageVO> getContents(int bno) {
-		ArrayList<MessageVO> list = new ArrayList<MessageVO>();
+	public ArrayList<MessageContentsVO> getContents(int bno) {
+		ArrayList<MessageContentsVO> list = new ArrayList<MessageContentsVO>();
 		
 		sb.setLength(0);
-		sb.append("Select * From message Where bno=?");
+		sb.append("Select m.messageno, m.bno, m.contents, m.regdate, m.status, m.ip, m.spaceno, m.memno, s.name, s.nickname, s.profile_img ");
+		sb.append("From message m, smember s ");
+		sb.append("Where m.memno=s.memno And bno=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -102,7 +105,7 @@ public class MessageDAO {
 			rs = pstmt.executeQuery();
 			
 			while( rs.next() ) {
-				list.add(new MessageVO(
+				list.add(new MessageContentsVO(
 					rs.getInt("messageno"),
 					rs.getInt("bno"),
 					rs.getString("contents"),
@@ -110,7 +113,10 @@ public class MessageDAO {
 					rs.getInt("status"),
 					rs.getString("ip"),
 					rs.getInt("spaceno"),
-					rs.getInt("memno")
+					rs.getInt("memno"),
+					rs.getString("name"),
+					rs.getString("nickname"),
+					rs.getString("profile_img")
 				));
 			}
 			
@@ -119,6 +125,46 @@ public class MessageDAO {
 		}
 		
 		return list;
+	}
+	
+	// 메시지 추가하기
+	public void addOne(MessageVO vo) {
+		sb.setLength(0);
+		sb.append("Insert Into message (bno, contents, regdate, status, ip, spaceno, memno) ");
+		sb.append("Values (?, ?, now(), 1, ?, ?, ?)");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, vo.getBno());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setString(3, vo.getIp());
+			pstmt.setInt(4, vo.getSpaceno());
+			pstmt.setInt(5, vo.getMemno());
+			
+			pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 상대방이 보낸 메시지 읽음 처리
+	// - bno 게시물중 memno 가 일치하지 않는값 변경 (상대방이 보낸 메시지)
+	public void readMessage(int bno, int memno) {
+		sb.setLength(0);
+		sb.append("Update message ");
+		sb.append("Set status=2 ");
+		sb.append("Where bno=? And memno!=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, bno);
+			pstmt.setInt(2, memno);
+			
+			pstmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//종료
