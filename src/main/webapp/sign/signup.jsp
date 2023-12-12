@@ -162,9 +162,13 @@
 			
 			<div class="fieldset-wrap">
 				<form name="signupForm" action="/spaceHub/sign" method="post" onsubmit="return checkForm()">
+					<input type="hidden" name="cmd" value="signupOk" />
+				
 				
 					<div class="fieldset-data">
-					
+						<div class="data-wrap">
+							
+						</div>
 					</div>
 				
 				</form>
@@ -176,7 +180,6 @@
 				<form action="/spaceHub/sign?cmd=signupOk" method="post" onsubmit="return inputck()">
 					<div>
 						 <label for="exampleFormControlInput1" class="form-label">이메일 (필수)</label>
-						 <input type="hidden" name="cmd" value="signupOk" />
 						 <input type="hidden" name="emailck" id="ec" value="" />
 						 <input type="hidden" name="pkck" id="pc" value="" />
 						 <input type="hidden" name="nc" id="nc" value="" />
