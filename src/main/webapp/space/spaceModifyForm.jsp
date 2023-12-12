@@ -17,7 +17,7 @@
 			var vstatus = "${spaceVo.VStatus}"
 			console.log("vstatus:" + vstatus);
 			
-			 // 페이지 로딩 시 초기 상태에 따라 버튼 보이기/숨기기 설정
+			// 페이지 로딩 시 초기 상태에 따라 버튼 보이기/숨기기 설정
 	        if (vstatus == "1") {
 	            $("#normalStatus").show();
 	            $("#stopStatus").hide();
@@ -38,20 +38,35 @@
 	            }
 	        });
 	        
-	        // 이미지 삭제
-	        $(".deleteBtn").on("click", function() {
-	        	 var container = $(this).closest('.imageContainer'); // 삭제할 이미지 컨테이너
-	        	 container.remove(); // 이미지 컨테이너 삭제
-	        	 $.ajax({
-	        		url:"/mypage/host",
-	        		data:{cmd:imgDeleteOk, spaceno: spaceno},
-	        		dataType: "json",
-	        		success: data =>{
-	        			
-	        		}
-	        	 });
-	        });
-	        
+		    var spaceno = "${spaceVo.spaceno}";
+		    // 이미지 삭제
+		    $(".deleteBtn").on("click", function() {
+		        var container = $(this).closest('.imageContainer'); // 삭제할 이미지 컨테이너
+		        container.remove(); // 이미지 컨테이너 삭제
+		        
+		        var imgno = container.data('imgno'); // 데이터 속성에서 imgno 값을 가져옴
+		        console.log("이미지 번호:", imgno);
+		        
+		        // Ajax 요청
+		        $.ajax({
+		            url: "/spaceHub/mypage/host",
+		            data: { cmd: 'imgDeleteOk', spaceno: spaceno, imgno: imgno },
+		            dataType: "json",
+		            success: function(data) {
+		                if (data.errorCode) {
+		                    alert(data.errorMsg);
+		                    if (data.errorCode === "member empty") {
+		                        document.location.href = "/spaceHub/sign?cmd=login";
+		                    }
+		                    return false;
+		                }
+		            },
+		            error: function(xhr, status, error) {
+		                console.error("오류 발생", error);
+		            }
+		        });
+		    });
+
 	        // 이미지 컨테이너
 	        $(".plusImgContainer").on("click", function() {
 	            var imageContainers = $('.imageContainer').length; // 이미지 컨테이너의 개수 확인
@@ -112,8 +127,9 @@
 				<button type="button" class="btn btn-danger" id="stopStatus" value="2" style="display:none;">상태 : 운영중지</button>
 			</div>
 			<c:forEach var="vo" items="${list }">
-			<div class="imageContainer" style="display: inline-block;">
+			<div class="imageContainer" style="display: inline-block;" data-imgno="${vo.imgno}">
 				<img src=${vo.path } class="img-thumbnail" alt="...">
+				<input type="hidden" name="imgno" value=${vo.imgno } />
 				 <div class="deleteBtnDiv">
                     <button type="button" class="btn btn-outline-danger deleteBtn">삭제</button>
                 </div>

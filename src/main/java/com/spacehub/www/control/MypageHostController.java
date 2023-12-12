@@ -27,7 +27,6 @@ public class MypageHostController extends HttpServlet{
 	private void doPro(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
-		
 		String cmd = req.getParameter("cmd");
 		boolean isRedirect = false;
 		JSONObject jsonObject = new JSONObject();

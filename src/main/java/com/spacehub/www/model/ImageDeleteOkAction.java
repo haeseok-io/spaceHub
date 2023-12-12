@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceImageVO;
 
 public class ImageDeleteOkAction implements JsonAction {
 
@@ -16,9 +17,10 @@ public class ImageDeleteOkAction implements JsonAction {
 		JSONObject data = new JSONObject();
 		HttpSession session = req.getSession();
 		
-		String spacenoParam = req.getParameter("spaecno");
-		SmemberVO memberData = (SmemberVO) session.getAttribute("memno");
-		
+		String spacenoParam = req.getParameter("spaceno"); // 수정된 변수명
+        String imgnoParam = req.getParameter("imgno"); // 이미지 번호 파라미터 추가
+
+        SmemberVO memberData = (SmemberVO) session.getAttribute("memno");
 		// Check
 		if( spacenoParam==null || spacenoParam.isEmpty() ) {
 			data.put("errorCode", "param empty");
@@ -32,14 +34,16 @@ public class ImageDeleteOkAction implements JsonAction {
 			return data;
 		}
 		
-		// Data
-		int spaceno = Integer.parseInt(spacenoParam);
+		 // Data
+        int spaceno = Integer.parseInt(spacenoParam);
+        int imgno = Integer.parseInt(imgnoParam); // 이미지 번호 파라미터를 정수형으로 변환
 		
-		// Process
-		SpaceImageDAO spaceImageDao = new SpaceImageDAO();
+        // Process
+        SpaceImageDAO spaceImageDao = new SpaceImageDAO();
+        spaceImageDao.deleteOne(imgno); // 이미지 번호를 이용해 이미지 삭제
+        spaceImageDao.close();
 		
-		
-		return null;
+		return data;
 	}
 
 }

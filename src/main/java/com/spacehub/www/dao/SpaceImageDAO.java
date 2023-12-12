@@ -20,9 +20,18 @@ public class SpaceImageDAO {
 	}
 	
 	//공간 이미지 삭제
-	public void deleteOne(SpaceImageVO vo) {
+	public void deleteOne(int imgno) {
 		sb.setLength(0);
 		sb.append("delete from space_image where imgno=? ");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, imgno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("이미지 삭제 실패");
+			e.printStackTrace();
+		}
+				
 	}
 	
 	// 공간 이미지 수정
