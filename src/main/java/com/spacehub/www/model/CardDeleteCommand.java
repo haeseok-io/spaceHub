@@ -22,7 +22,7 @@ public class CardDeleteCommand implements ActionCommand {
 			
 			dao.deleteTwo(memberVO.getMemno(), mcardno);
 		}
-		return "/mypage/guest/cardList.jsp";
+		return "/mypage/guest?cmd=cardList";
 	}
 
 }

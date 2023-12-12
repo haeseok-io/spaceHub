@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <style>
@@ -19,11 +20,8 @@
 </head>
 <body>
 	<div class="container">
-		<form action="/spaceHub/mypage/guest">
+		<form action="">
 			<h2>카드 리스트</h2>
-			<c:forEach var="vo" items="${list}">
-			<input type="hidden" name="cmd" value="cardDelete" />
-			<input type="hidden" name="mcardno" value="${vo.mcardno}" />
 			<table class="table">
 			  <thead class="table-light">
 			    <tr>
@@ -33,16 +31,17 @@
 			      <th></th>
 			    </tr>
 			  </thead>
+			<c:forEach var="vo" items="${list}" varStatus="status">
 			  <tbody>
 			    <tr>
-			      <td scope="row">${vo.cardNum}</td>
+			      <td scope="row" id="cardNum">${vo.cardNum}</td>
 			      <td>${vo.EDate}</td>
 			      <td>${vo.loc}</td>
-			      <td><button type="submit" class="btn btn-outline-secondary">카드 삭제</button></td>
+			      <td><a href="/spaceHub/mypage/guest?cmd=cardDelete&mcardno=${vo.mcardno}" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">삭제</a></td>
 			    </tr>
 			  </tbody>
-			</table>
 			</c:forEach>
+			</table>
 		</form>
 	</div>
 </body>
