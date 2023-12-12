@@ -11,8 +11,10 @@
 
 #header .header-search {}
 #header .header-search .search-toggle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; height: 50px; padding: 0 20px; padding-right: 50px; border: 1px solid #ccc; border-radius: 30px; }
-#header .header-search .search-toggle .toggle-item { display: none; font-size: 14px; cursor: pointer; }
+#header .header-search .search-toggle .toggle-item { font-size: 14px; cursor: pointer; }
 #header .header-search .search-toggle .toggle-item i { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); }
+#header .header-search .search-toggle .toggle-item[data-status='Y'] { display: none; }
+#header .header-search .search-toggle .toggle-item[data-status='N'] { display: block; }
 
 #header .header-search .search-field { display: none; position: absolute; top: calc(100% - 1px); left: 0; z-index: 2; width: 100%; background: #fff; }
 #header .header-search .search-field .search-wrap { width: 900px; margin: 0 auto; padding: 20px 0 40px; }
@@ -31,17 +33,18 @@
 #header .header-search .search-field .search-wrap .search-button { width: 100px; padding-top: 30px; }
 #header .header-search .search-field .search-wrap .search-button button { width: 100%; height: 40px; }
 
-#header .header-search[data-status='Y'] .search-toggle{ border: none; }
-#header .header-search[data-status='Y'] .search-toggle .toggle-item[data-status='Y'] { display: block; }
-#header .header-search[data-status='Y'] .search-field { display: block; }
-#header .header-search[data-status='N'] .search-toggle .toggle-item[data-status='N'] { display: block; }
+#header .header-search.active .search-toggle { border: none }
+#header .header-search.active .search-field { display: block; }
+#header .header-search.active .search-toggle .toggle-item[data-status='Y'] { display: block; }
+#header .header-search.active .search-toggle .toggle-item[data-status='N'] { display: none; }
+
 
 #header .header-user { position: relative; z-index: 2; display: flex; align-items: center; }
 #header .header-user .user-advertise { margin-right: 20px; font-size: 14px; color: #888; }
 #header .header-user .user-menu .menu-toggle { height: 40px; border: 1px solid #ccc; border-radius: 30px; padding: 0 10px; cursor: pointer; }
 #header .header-user .user-menu .menu-toggle i { margin-right: 5px; font-size: 22px; }
 #header .header-user .user-menu .menu-toggle i:last-child { margin-right: 0; }
-#header .header-user .user-menu .menu-wrap { position: absolute; top: 60px; right: 0; width: 200px; background: #fff; box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; border: 1px solid #ccc; border-radius: 10px; padding: 5px 0; }
+#header .header-user .user-menu .menu-wrap { display: none; position: absolute; top: 50px; right: 0; width: 200px; background: #fff; box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; border: 1px solid #ccc; border-radius: 10px; padding: 5px 0; }
 #header .header-user .user-menu .menu-wrap .menu-list {}
 #header .header-user .user-menu .menu-wrap .menu-list li {}
 #header .header-user .user-menu .menu-wrap .menu-list li.dash { position: relative; width: 100%; height: 10px; }
@@ -49,9 +52,28 @@
 #header .header-user .user-menu .menu-wrap .menu-list li a { display: block; padding-left: 20px; font-size: 14px; line-height: 40px; color: #666; }
 #header .header-user .user-menu .menu-wrap .menu-list li a.bold { font-weight: bold; }
 
-#header .header-user .user-menu .menu-toggle.active,
+#header .header-user .user-menu.active .menu-wrap { display: block; }
+#header .header-user .user-menu.active .menu-toggle,
 #header .header-user .user-menu .menu-toggle:hover { box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; }
 #header .header-user .user-menu .menu-wrap .menu-list li:hover { background: #f4f4f4; }
+
+
+
+.page-title { margin-bottom: 30px; }
+.page-title .title-name { font-weight: bold; font-size: 28px; line-height: 30px; }
+
+
+.fieldset-wrap {}
+.fieldset-wrap .fieldset-data {}
+.fieldset-wrap .fieldset-data .field-wrap { margin-bottom: 20px; }
+.fieldset-wrap .fieldset-data .field-wrap input[type='text'],
+.fieldset-wrap .fieldset-data .field-wrap input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
+.fieldset-wrap .fieldset-data .field-wrap input[type='text']:focus,
+.fieldset-wrap .fieldset-data .field-wrap input[type='password']:focus { border: 1px solid #198754; }
+
+.fieldset-wrap .fieldset-button {}
+.fieldset-wrap .fieldset-button button { width: 100%; height: 60px; }
+
 
 
 

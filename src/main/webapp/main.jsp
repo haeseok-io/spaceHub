@@ -35,7 +35,8 @@
 	
 	<script src="/spaceHub/js/air-datepicker.js"></script>
 	<script>
-		let moreViewStatus = false;
+		let searchState = false;
+		let moreViewState = false;
 	
 		$(() => {
 			// 초기 리스트 호출
@@ -46,17 +47,34 @@
 			const inDatepicker = new AirDatepicker("input[name='in_date']", datepickerOption);
 			const outDatepicker = new AirDatepicker("input[name='out_date']", datepickerOption);
 			
-			// 상세검색
-			$(".search-toggle .toggle-item").click(e => {
-				let _this = $(e.currentTarget);
-				let status = _this.data('status');
+			// 검색 메뉴 클릭
+			$("#header .search-toggle").on("click", e => {
+				let searchEl = $("#header .header-search");
+				let active = searchEl.hasClass("active");
 				
-				status = status=='Y' ? 'N' : 'Y';
-				_this.parents(".header-search").attr('data-status', status);
+				if( active ){
+					searchState = false;
+					searchEl.removeClass("active");
+				}
+				else{
+					searchState = true;
+					searchEl.addClass("active");
+				}
+			});
+			
+			// 검색메뉴 외 클릭시 닫기
+			document.addEventListener('click', e => {
+				let target = $(e.target);
+				let searchEl = $("#header .header-search");
+				
+				if( searchState && !target.is('#header, #header *') ){
+					searchState = false;
+					searchEl.removeClass("active");
+				}
 			});
 			
 			// 상세검색 - 게스트 인원
-			$(".guest-control-button").click(e => {
+			$("#header .guest-control-button").click(e => {
 				let type = $(e.currentTarget).data("type");
 				let guestEl = $("input[name='max_guest']");
 				let guest = guestEl.val();
@@ -140,7 +158,7 @@
 			
 			// Init
 			emptyEl.hide();
-			moreViewStatus = false;
+			moreViewState = false;
 			
 			// Data
 			page = page ? page : 1;
@@ -160,7 +178,7 @@
 					if( page==1 ) appendEl.html("");
 					
 					// 더 보여줄 데이터가 있을경우 더보기 버튼 노출
-					if( pageData.remainCount>0 ) 	moreViewStatus = true;
+					if( pageData.remainCount>0 ) 	moreViewState = true;
 				
 					// 데이터가 없을 경우
 					if( spaceData.length<1 ) {
@@ -194,10 +212,7 @@
 				},
 				complete: () => {
 					// 검색창 닫기
-					let searchViewStatus = $(".header-search").attr("data-status");
-					if( searchViewStatus=='Y' ){
-						$(".header-search").attr("data-status", "N");
-					}
+					$("#header .header-search").removeClass("active");
 				}
 			});
 			
@@ -210,7 +225,7 @@
 			let scrollTop = $(e).scrollTop();
 			let scrollHeight = $("body").prop("scrollHeight");
 			
-			if( moreViewStatus && innerHeight+scrollTop>=scrollHeight-200 ){
+			if( moreViewState && innerHeight+scrollTop>=scrollHeight-200 ){
 				moreEl.fadeIn(300);
 			} else {
 				moreEl.fadeOut(300);

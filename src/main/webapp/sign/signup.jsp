@@ -4,10 +4,10 @@
 
 <jsp:include page="../common/common.jsp" />
 
-	<title>Insert title here</title>
+	<title>spaceHub - 회원가입</title>
 	
 	<style>
-		.inner { padding: 50px 0; }
+		.main .inner { width: 500px; padding: 100px 0; }
 	</style>
 	
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -155,6 +155,22 @@
 
 	<div class="main">
 		<div class="inner">
+			
+			<div class="page-title">
+				<p class="title-name">회원가입</p>
+			</div>
+			
+			<div class="fieldset-wrap">
+				<form name="signupForm" action="/spaceHub/sign" method="post" onsubmit="return checkForm()">
+				
+					<div class="fieldset-data">
+					
+					</div>
+				
+				</form>
+			</div>
+		
+		
 			<div>
 				<h1>회원가입</h1>
 				<form action="/spaceHub/sign?cmd=signupOk" method="post" onsubmit="return inputck()">

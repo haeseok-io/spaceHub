@@ -1,6 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	
+	<script>
+		let menuState = false;
+	
+		$(() => {
+			// 메뉴 아이콘 클릭
+			$("#header .menu-toggle").on("click", e => {
+				let menuEl = $("#header .user-menu");
+				let active = menuEl.hasClass("active");
+				
+				if( active ){
+					menuState = false;
+					menuEl.removeClass("active");
+				}
+				else{
+					menuState = true;
+					menuEl.addClass("active");
+				}
+			});
+			
+			
+			document.addEventListener('click', e => {
+				let target = $(e.target);
+				let menuEl = $("#header .user-menu");
+				
+				if( menuState && !target.is('.menu-toggle, .menu-toggle *') ){
+					menuState = false;
+					menuEl.removeClass("active");
+				}
+			});
+		});
+	</script>
 
 </head>
 <body>
@@ -14,7 +46,7 @@
 				</h1>
 			</div>
 			<c:if test="${requestScope['javax.servlet.forward.servlet_path']=='/home'}">
-			<div class="header-search" data-status="N">
+			<div class="header-search">
 				<div class="search-toggle">
 					<div class="toggle-item" data-status="N">
 						어디든 | 언제든 일주일 | 게스트
@@ -94,6 +126,9 @@
 							<li><a href="/spaceHub/message" class="bold">메시지</a></li>
 							<li><a href="/spaceHub/mypage/guest" class="bold">예약내역</a></li>
 							<li><a href="/spaceHub/mypage?cmd=likeList" class="bold">찜 리스트</a></li>
+							<li class="dash"></li>
+							<li><a href="/spaceHub/mypage/host">숙소 관리</a></li>
+							<li><a href="/spaceHub/mypage">정보 수정</a></li>
 							<li class="dash"></li>
 							<li><a href="/spaceHub/sign?cmd=logoutOk">로그아웃</a></li>
 							</c:if>
