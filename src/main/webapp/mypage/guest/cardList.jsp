@@ -19,15 +19,18 @@
 </head>
 <body>
 	<div class="container">
-		<form action="">
+		<form action="/spaceHub/mypage/guest">
 			<h2>카드 리스트</h2>
 			<c:forEach var="vo" items="${list}">
+			<input type="hidden" name="cmd" value="cardDelete" />
+			<input type="hidden" name="mcardno" value="${vo.mcardno}" />
 			<table class="table">
 			  <thead class="table-light">
 			    <tr>
 			      <th scope="col">카드번호</th>
 			      <th scope="col">만료일</th>
 			      <th scope="col">지역</th>
+			      <th></th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -35,6 +38,7 @@
 			      <td scope="row">${vo.cardNum}</td>
 			      <td>${vo.EDate}</td>
 			      <td>${vo.loc}</td>
+			      <td><button type="submit" class="btn btn-outline-secondary">카드 삭제</button></td>
 			    </tr>
 			  </tbody>
 			</table>
