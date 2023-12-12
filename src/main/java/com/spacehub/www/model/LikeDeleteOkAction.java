@@ -12,7 +12,7 @@ import com.spacehub.www.vo.SmemberVO;
 public class LikeDeleteOkAction implements JsonAction {
 	@Override
 	public JSONObject execute(HttpServletRequest req, HttpServletResponse resp) {
-		JSONObject data = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
 		HttpSession session = req.getSession();
 		
 		String spacenoParam = req.getParameter("spaceno");
@@ -20,28 +20,28 @@ public class LikeDeleteOkAction implements JsonAction {
 		
 		// Check
 		if( spacenoParam==null || spacenoParam.isEmpty() ) {
-			data.put("errorCode", "param empty");
-			data.put("errorMsg", "공간 번호가 존재하지 않습니다.");
-			return data;
+			jsonObject.put("errorCode", "param empty");
+			jsonObject.put("errorMsg", "공간 번호가 존재하지 않습니다.");
+			return jsonObject;
 		}
 		
 		// - 회원일 경우에만 찜 삭제 가능하도록
 		if( memberData==null ) {
-			data.put("errorCode", "member empty");
-			data.put("errorMsg", "찜 기능은 로그인 후 가능합니다.");
-			return data;
+			jsonObject.put("errorCode", "member empty");
+			jsonObject.put("errorMsg", "찜 기능은 로그인 후 가능합니다.");
+			return jsonObject;
 		}
 		
 		// Data
 		int spaceno = Integer.parseInt(spacenoParam);
+		JjimDAO jjimDAO = new JjimDAO();
 		
 		// Process
-		JjimDAO jjimDAO = new JjimDAO();
 		jjimDAO.deleteOne(spaceno, memberData.getMemno());
 		jjimDAO.close();
 		
 		// Result
-		return data;
+		return jsonObject;
 	}
 
 }

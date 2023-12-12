@@ -22,8 +22,8 @@ public class MessageListDataAction implements JsonAction {
 		
 		HttpSession session = req.getSession();
 		SmemberVO memberData = (SmemberVO)session.getAttribute("member");
-		
 		ArrayList<HashMap<String, String>> messageList = new ArrayList<HashMap<String, String>>();
+		
 		for(MessageListVO data : messageDAO.getList(memberData.getMemno())) {
 
 			// 회원 프로필 이미지 체크
@@ -61,12 +61,10 @@ public class MessageListDataAction implements JsonAction {
 			
 			messageList.add(messageData);
 		}
-		
-	
 		messageDAO.close();
 		
+		// Result
 		jsonObject.put("data", messageList);
-		
 		return jsonObject;
 	}
 

@@ -20,6 +20,7 @@ public class MessageListAction implements Action {
 			return null;
 		}
 		
+		
 		return "/message/list.jsp";
 	}
 	

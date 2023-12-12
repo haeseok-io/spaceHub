@@ -18,18 +18,19 @@
 		.message-wrap { height: calc(100% - 80px); overflow-y: auto; padding: 30px; }
 		
 		/* 메시지 리스트 */
-		.message-list { width: 400px; border-right: 1px solid #ccc; }
+		.message-list { width: 450px; border-right: 1px solid #ccc; }
 		.message-list .message-wrap .list-item li { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100px; border-radius: 10px; padding: 10px 20px; margin-bottom: 10px; cursor: pointer; }
 		.message-list .message-wrap .list-item .item-profile { position: relative; width: 50px; height:50px; }
 		.message-list .message-wrap .list-item .item-profile .profile-img { position: relative; width: 100%; height: 100%; border: 1px solid #333; border-radius: 100%;  overflow: hidden; }
 		.message-list .message-wrap .list-item .item-profile .profile-img img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; object-fit: cover; }
 
-		.message-list .message-wrap .list-item li:hover { background: #f1f1f1; }
+		.message-list .message-wrap .list-item li.active,
+		.message-list .message-wrap .list-item li:hover { background: #f1f1f1; border: 1px solid #e0e0e0; }
 		.message-list .message-wrap .list-item li.new .item-profile:after { position: absolute; top: 0; left: 0; width: 10px; height: 10px; background: red; border-radius: 100%; content: ""; display: block; }
 		
 		.message-list .message-wrap .list-item .item-info { width: calc(100% - 70px); font-size: 12px; }
 		.message-list .message-wrap .list-item .item-info .info-subject { display: flex; justify-content: flex-start; align-items: center; }
-		.message-list .message-wrap .list-item .item-info .info-subject .badge { margin-right: 5px; padding: 5px 8px; font-weight: normal; font-size: 11px; }
+		.message-list .message-wrap .list-item .item-info .info-subject .badge { margin-right: 5px; padding: 4px 6px; font-weight: normal; font-size: 10px; }
 		.message-list .message-wrap .list-item .item-info .info-subject .subject-name { font-size: 14px; }
 		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename { color: #999; }
 		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename:before { content: "·"; padding: 0 5px; }
@@ -37,7 +38,8 @@
 		.message-list .message-wrap .list-item .item-info .info-alarm { color: #999; }
 		
 		/* 메시지 본문 */
-		.message-content { position: relative; width: calc(100% - 900px); }
+		.message-content { position: relative; width: calc(100% - 850px); }
+		.message-content .message-wrap { height: calc(100% - 150px); }
 		.message-content .message-wrap li { display: flex; justify-content: flex-start; align-items: flex-start; width: 100%; padding-bottom: 30px; }
 		.message-content .message-wrap .item-profile { width: 50px; height:50px; border: 1px solid #333; border-radius: 100%; margin-right: 20px;  overflow: hidden; }
 		.message-content .message-wrap .item-profile img { width: 100%; height: 100%; object-fit: cover; }
@@ -53,32 +55,49 @@
 		.message-content .message-write input[type='text']:focus { border: 2px solid #333; }
 		
 		/* 공간 상세정보 */
-		.message-space_detail { width: 500px; border-left: 1px solid #ccc; }
+		.message-space { width: 400px; border-left: 1px solid #ccc; }
 	</style>
 	
 	<script>
-		const MEMNO = "3";
-	
+		const MEMNO = "${member.memno}";
+		
 		$(() => {
+			// 파라미터값 추출
+			const param = new URLSearchParams(location.search);
+			
 			// 초기 리스트 호출
-			callList();
+			callList(param.get("bno"));
 			
 			// 리스트 클릭
 			$(document).on("click", ".message-list .message-wrap ul li", e => {
 				// Val
 				let _this = $(e.currentTarget);
-				let bno = _this.data("bno");
+				let form = $("form[name='writeForm']");
+				let contentTitle = _this.find(".subject-name").text()+" - "+_this.find(".subject-spacename").text();
 				
-				// 본문 호출
-				callContent(bno);
+				// Data
+				_this.removeClass("new");
+				$("input[name='bno']", form).val(_this.data("bno"));
+				$("input[name='spaceno']", form).val(_this.data("spaceno"));
+				$("input[name='contents']").attr("disabled", false);
+				
+				// Etc
+				_this.addClass("active").siblings().removeClass("active");
+				$(".message-content .title-name").text(contentTitle);
+				
+				// Result
+				callContent(_this.data("bno"));
+				callSpaceDetail(_this.data("spaceno"));
 			});
 		});
 		
-		
-		
-		const callList = () => {
+		// 메시지 리스트 호출
+		const callList = bno => {
 			let appendTemplate = $("#list-template").html();
 			let appendEl = $(".message-list .list-item");
+			
+			// Init 
+			appendEl.html("");
 			
 			$.ajax({
 				type: "GET",
@@ -130,12 +149,13 @@
 						
 						// 문의글인 경우 라벨 추가
 						if( spaceOwnStatus ){
-							let qnaBadge = "<span class='badge text-bg-success'>문의</span>";
+							let qnaBadge = "<span class='badge text-bg-success'>공간문의</span>";
 							appendHtml.find(".info-subject").prepend(qnaBadge);
 						}
 						
 						// 데이터 담기
 						appendHtml.attr("data-bno", obj.bno);
+						appendHtml.attr("data-spaceno", obj.spaceno);
 						appendHtml.find(".profile-img img").attr("src", profileImg);
 						appendHtml.find(".subject-name").text(nickname);
 						appendHtml.find(".subject-spacename").text(obj.spaceName);
@@ -144,10 +164,15 @@
 						
 						appendEl.append(appendHtml);
 					});
+					
+					// 리스트 클릭 트리거
+					if( !bno && typeof bno!="undefined" ) 	appendEl.find("li").eq(0).trigger("click");
+					else 									appendEl.find("li[data-bno='"+bno+"']").trigger("click");
 				}
 			});
 		}
 		
+		// 메시지 본문 호출
 		const callContent = bno => {
 			let appendTemplate = $("#content-template").html();
 			let appendEl = $(".message-content .content-item");
@@ -174,8 +199,106 @@
 						
 						appendEl.append(appendHtml);
 					});
+					
+					// 스크롤 하단으로 이동
+					let scrollEl = $(".message-content .message-wrap");
+					scrollEl.scrollTop(scrollEl[0].scrollHeight);
 				}
 			});
+		}
+		
+		// 메시지 공간 호출
+		const callSpaceDetail = spaceno => {
+			let appendTemplate = $("#space-template").html();
+			let appendEl = $(".message-space .message-wrap");
+			
+			// Init
+			appendEl.html("");
+			
+			// Process
+			$.ajax({
+				type: "GET",
+				url: "/spaceHub/space",
+				data: {cmd: "detailData", spaceno: spaceno},
+				dataType: "json",
+				success: result => {
+					let detailData = result.data;
+					let appendHtml = $(appendTemplate);
+					
+					appendHtml.find(".space-img img").attr("src", detailData.imgPath);
+					
+					appendEl.append(appendHtml);
+				}
+			});
+			
+			
+			
+		}
+		
+		// 메시지 작성
+		const messageWrite = () => {
+			// Val
+			let form = $("form[name='writeForm']");
+			let contentEl = $("input[name='contents']", form);
+			let scrollEl = $(".message-content .message-wrap");
+			let appendTemplate = $("#content-template").html();
+			let appendEl = $(".message-content .content-item");
+			
+			let bno = $("input[name='bno']", form).val();
+			let spaceno = $("input[name='spaceno']", form).val();
+			let contents = contentEl.val();
+			
+			// Check
+			if( !contents ){
+				return false;
+			}
+			if( !spaceno || !bno ) {
+				alert("메시지 작성시 필요한 정보가 유실되었습니다. 리스트를 다시 클릭 후 진행 해주세요.");
+				return false;
+			}
+			
+			// Process
+			$.ajax({
+				type: "POST",
+				url: "/spaceHub/message",
+				data: form.serialize(),
+				dataType: "json",
+				success: result => {
+					// Val
+					let appendHtml = $(appendTemplate);
+					
+					// Check
+					if( result.errorCode ){
+						alert(result.errorMsg);
+						return false;
+					}
+					
+					// Data
+					let profileImg = "${member.profileImg}" ? "${member.profileImg}" : "/spaceHub/upload/profile_empty.jpeg";
+					let nickname = "${member.nickname}" ? "${member.nickname}" : "${member.name}";
+					
+					
+					// Process
+					appendHtml.find(".item-profile img").attr("src", profileImg);
+					appendHtml.find(".subject-name").text(nickname);
+					appendHtml.find(".subject-date").text(getNowDateTime());
+					appendHtml.find(".info-contents").text(contents);
+					
+					appendEl.append(appendHtml);
+					
+					// Result
+					scrollEl.scrollTop(scrollEl[0].scrollHeight);
+					contentEl.val("");
+					callList();
+				}
+			});
+			
+			return false;
+		}
+		
+		const getNowDateTime = () => {
+			let date = new Date();
+			return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 		}
 	</script>
 
@@ -198,21 +321,22 @@
 				<ul class="content-item"></ul>
 			</div>
 			<div class="message-write">
-				<form name="messageWriteForm">
-					<input type="hidden" name="cmd" value="messageWriteOk" />
+				<form name="writeForm" autocomplete="off" onsubmit="return messageWrite();">
+					<input type="hidden" name="cmd" value="writeOk" />
 					<input type="hidden" name="bno" />
 					<input type="hidden" name="spaceno" />
-					<input type="hidden" name="memno" value="${member.memno}" />
 				
 					<input type="text" name="contents" placeholder="메시지를 입력하세요." disabled/>
 				</form>
 			</div>
 		</div>
-		<div class="message-space_detail">
+		<div class="message-space">
 			<div class="message-title">
-				<p class="title-name">숙소 상세정보</p>
+				<p class="title-name">숙소정보</p>
 			</div>
-			<div class="space_detail-wrap"></div>
+			<div class="message-wrap">
+				
+			</div>
 		</div>
 	</div>
 	
@@ -248,6 +372,25 @@
 				<p class="info-status"></p>
 			</div>
 		</li>
+	</template>
+	
+	<template id="space-template">
+		<div>
+			<div class="space-img">
+				<img src="" alt="" />
+			</div>
+			<p class="space-subject"></p>
+			<p class="space-addr"></p>
+			<div class="space-info">
+				<div class="info-price">
+					<span class="price-data"></span>
+					/ 1박
+				</div>
+			</div>
+			<div class="space-more">
+				<button>상세보기</button>
+			</div>
+		</div>
 	</template>
 
 </body>

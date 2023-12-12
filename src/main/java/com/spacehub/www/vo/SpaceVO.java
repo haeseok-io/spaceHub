@@ -22,4 +22,5 @@ public class SpaceVO {
 	private int vStatus;
 	private int status;
 	private int memno;
+	private String imgPath;
 }

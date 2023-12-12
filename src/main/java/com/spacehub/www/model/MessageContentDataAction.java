@@ -5,12 +5,12 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import com.spacehub.www.dao.MessageDAO;
-import com.spacehub.www.dao.SmemberDAO;
-import com.spacehub.www.vo.MessageVO;
+import com.spacehub.www.vo.MessageContentsVO;
 import com.spacehub.www.vo.SmemberVO;
 
 public class MessageContentDataAction implements JsonAction {
@@ -28,23 +28,24 @@ public class MessageContentDataAction implements JsonAction {
 			return jsonObject;
 		}
 		
-		
+		// Data
 		Integer bno = Integer.parseInt(bnoParam);
-		MessageDAO messageDAO = new MessageDAO();
-		SmemberDAO smemberDAO = new SmemberDAO();
 		
+		// - 회원정보
+		HttpSession session = req.getSession();
+		SmemberVO smemberData = (SmemberVO)session.getAttribute("member");
+		
+		// Process
+		MessageDAO messageDAO = new MessageDAO();
+		
+		// - 게시글 읽음 처리
+		messageDAO.readMessage(bno, smemberData.getMemno());
+
+		// - 본문 내용
 		ArrayList<HashMap> contentList = new ArrayList<HashMap>();
-		for(MessageVO data : messageDAO.getContents(bno)) {
-			
-			// 메시지 회원 정보
-			SmemberVO smemberData = smemberDAO.getOne(data.getMemno());
-			
-			if( smemberData.getNickname()==null ) {
-				smemberData.setNickname(smemberData.getName());
-			}
-			if( smemberData.getProfileImg()==null ) {
-				smemberData.setProfileImg("/spaceHub/upload/profile_empty.jpeg");
-			}
+		for(MessageContentsVO data : messageDAO.getContents(bno)) {
+			if( data.getMnickname()==null ) 	data.setMnickname(data.getMname());
+			if( data.getMprofileImg()==null ) 	data.setMprofileImg("/spaceHub/upload/profile_empty.jpeg");
 			
 			// 데이터 담기
 			HashMap<String, String> obj = new HashMap<String, String>();
@@ -56,12 +57,10 @@ public class MessageContentDataAction implements JsonAction {
 			obj.put("ip", data.getIp());
 			obj.put("spaceno", ""+data.getSpaceno());
 			obj.put("memno", ""+data.getMemno());
-			obj.put("wnickname", smemberData.getNickname());
-			obj.put("wprofileImg", smemberData.getProfileImg());
+			obj.put("wnickname", data.getMnickname());
+			obj.put("wprofileImg", data.getMprofileImg());
 			contentList.add(obj);
 		}
-		
-		smemberDAO.close();
 		messageDAO.close();
 		
 		// Result

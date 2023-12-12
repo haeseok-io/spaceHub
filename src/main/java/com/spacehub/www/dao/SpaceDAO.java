@@ -228,24 +228,30 @@ public class SpaceDAO {
 		public SpaceVO getOne(int spaceno) {
 			SpaceVO data = null;
 			sb.setLength(0);
-			sb.append("select spaceno, type, loc, subject, post, addr, price, regdate, ip, v_status, status, memno from space where spaceno = ? ");
+			sb.append("Select s.spaceno, s.type, s.loc, s.subject, s.post, s.addr, s.price, s.regdate, s.ip, s.v_status, s.status, s.memno, i.path ");
+			sb.append("From space s, space_image i ");
+			sb.append("Where s.spaceno=i.spaceno AND i.seq=1 AND s.spaceno=?");
+			
 			try {
 				pstmt = conn.prepareStatement(sb.toString());
 				pstmt.setInt(1, spaceno);
 				rs = pstmt.executeQuery();
 				while(rs.next()) {
-					String type = rs.getString("type");
-					String loc = rs.getString("loc");
-					String subject = rs.getString("subject");
-					String post = rs.getString("post");
-					String addr = rs.getString("addr");
-					int price = rs.getInt("price");
-					String regdate = rs.getString("regdate");
-					String ip = rs.getString("ip");
-					int vStatus = rs.getInt("v_status");
-					int status = rs.getInt("status");
-					int memno = rs.getInt("memno");
-					data = new SpaceVO(spaceno, type, loc, subject, post, addr, price, regdate, ip, vStatus, status, memno);
+					data = new SpaceVO(
+						spaceno,
+						rs.getString("type"),
+						rs.getString("loc"),
+						rs.getString("subject"),
+						rs.getString("post"),
+						rs.getString("addr"),
+						rs.getInt("price"),
+						rs.getString("regdate"),
+						rs.getString("ip"),
+						rs.getInt("v_status"),
+						rs.getInt("status"),
+						rs.getInt("memno"),
+						rs.getString("path")
+					);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -18,6 +18,7 @@ import com.spacehub.www.model.LikeWriteOkAction;
 import com.spacehub.www.model.SpaceDetailAction;
 import com.spacehub.www.model.SpaceListAction;
 import com.spacehub.www.model.SpaceWriteAction;
+import com.spacehub.www.model.spaceDetailDataAction;
 
 @WebServlet("/space")
 public class SpaceControl extends HttpServlet {
@@ -41,6 +42,9 @@ public class SpaceControl extends HttpServlet {
 		} else if( cmd.equals("detail") ) {
 			Action ac = new SpaceDetailAction();
 			url = ac.execute(req, resp);
+		} else if( cmd.equals("detailData") ) {
+			JsonAction ac = new spaceDetailDataAction();
+			jsonObject = ac.execute(req, resp);
 		} else if( cmd.equals("likeWriteOk") ) {
 			JsonAction ac = new LikeWriteOkAction();
 			jsonObject = ac.execute(req, resp);
