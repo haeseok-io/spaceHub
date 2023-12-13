@@ -21,13 +21,23 @@
 	.spaceInfo p.space_subject {
 	    text-decoration: none; /* P태그의 밑줄 삭제 */
 	}
-	.account a.account_update {
-		text-decoration: underline;
-	}
 	.account {
 		border: 3px solid gray;
 		border-radius: 10px;
-		width: 250px;
+		width: fit-content; /* 텍스트 크기에 맞게 조절될 수 있도록 수정 */
+        padding: 10px; /* 텍스트와 테두리 사이의 간격 조절 */
+	}
+	.account a.account_update {
+		text-decoration: underline;
+	}
+	.empty_account {
+		border: 3px solid gray;
+		border-radius: 10px;
+		width: fit-content; /* 텍스트 크기에 맞게 조절될 수 있도록 수정 */
+        padding: 10px; /* 텍스트와 테두리 사이의 간격 조절 */
+	}
+	.empty_account a.account_update {
+		text-decoration: underline;
 	}
 </style>
 
@@ -40,12 +50,19 @@
 				<h4>숙소 등록 후 24시간이 지나면 게스트가 예약을 할 수 있습니다! 예약을 받을 수 있도록 설정을 마쳐보세요!</h4>
 			</div>
 			<div>
-				<div class="account">
+			<c:if test="${empty member.accountNum}">
+				<div class="empty_account">
 					<div>계정 정보를 제출하셔야 합니다!</div>
 					<div>대금 수령을 위한 정보가 필요합니다.</div>
-					<a class="account_update" href="/spaceHub/mypage?cmd=modify&memno=${member.memno }">계정 정보 업데이트</a>
+					<a class="account_update" href="/spaceHub/mypage?cmd=modify&memno=${member.memno}">계정 정보 업데이트</a>
 				</div>
-			</div>
+			</c:if>
+			<c:if test="${not empty member.accountNum}">
+				<div class="account">
+					<a class="account_update" href="/spaceHub/mypage?cmd=modify&memno=${member.memno}">계좌 번호 확인</a>
+				</div>
+			</c:if>
+		</div>
 			<div>
 				<h2>등록한 숙소</h2>
 				<c:forEach var="vo" items="${hostList }">
