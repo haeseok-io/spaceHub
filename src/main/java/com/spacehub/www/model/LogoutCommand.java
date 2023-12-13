@@ -10,6 +10,7 @@ public class LogoutCommand implements Action {
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
 		session.setAttribute("member", null);
+		session.setAttribute("admin", null);
 		
 		return "/spaceHub/home";
 	}
