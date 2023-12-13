@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/common/common.jsp" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <style>
 	img {
 		height: 200px;
@@ -14,8 +16,37 @@
 		display: inline-block; /* 이미지를 옆으로 배열하려면 인라인 블록 요소로 설정 */
         margin-right: 20px;
 	}
-</style>
+	p {
+		color : black;
+	}
+    .wrap {
+        position: relative;
+        width: 100%; /* 슬라이드 전체 너비 */
+    }
 
+    .slider {
+        position: relative;
+        max-width: 200px; /* 슬라이더의 최대 너비를 조절 */
+    }
+
+    .slider img {
+        width: 200px; /* 이미지가 슬라이더 안에 꽉 차도록 설정 */
+        height: 200px; /* 가로 비율에 따라 세로 비율 자동 조절 */
+        border-radius: 8px; /* 이미지에 둥근 테두리 적용 */
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.slider').slick({
+			slidesToShow : 1,
+			slidesToScroll : 1,
+			autoplay : false,
+			dots : true,
+			pauseOnFocus: true,
+		});
+	});
+</script>
 <jsp:include page="/common/header.jsp" />
 
 	<form action="/mypage" method="post">
@@ -24,18 +55,16 @@
 		<div class="container">		
 		<h1>찜한 숙소</h1>
 			<c:forEach var="vo" items="${jjimList }">
-				<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
-					<div class="wrap">
+					<div class="wrap slider">
 						<c:forEach var="img" items="${vo.imgList }">
-							<img src="${img.path }" alt="" />			
+							<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
+								<img src="${img.path }" alt="" />			
+							</a>
 						</c:forEach>
+					</div>
 						<p>${vo.subject }</p>
 						<p>침대 : ${vo.bed }개</p>
-						<p>${vo.inDate } ~ ${vo.outDate }</p>
-						<p>$${vo.price }/박	</p>
-						<p> 총액$${vo.price }</p>
-					</div>
-				</a>
+						<p>가격 : $${vo.price }/1박	</p>
 			</c:forEach>
 			<c:if test="${empty jjimList}">
         		    <p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>

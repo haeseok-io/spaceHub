@@ -50,14 +50,14 @@
 				<h2>등록한 숙소</h2>
 				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
-							<a href="/spaceHub/mypage/host?cmd=reservCalender">
 							<div class="img_wrap">
 								<c:forEach var="img" items="${vo.imgList }">
-									<img src="${img.path }" alt="" />
+									<a href="/spaceHub/mypage/host?cmd=reservCalender">
+										<img src="${img.path }" alt="" />
+									</a>
 								</c:forEach> 
 							</div>
-								<p class="space_subject">${vo.subject }</p>
-							</a>
+							<p class="space_subject">${vo.subject }</p>
 							<button type="button" class="btn btn-secondary"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
 							<button type="button" class="btn btn-secondary"><a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
 						</div>
