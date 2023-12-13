@@ -37,7 +37,9 @@
 		if(obj != null){
 			AdminVO vo = (AdminVO)obj;
 			%>
-			<a href="/spaceHub/admin?cmd=logoutOk">관리자 로그아웃</a>
+			<div>
+				<a href="/spaceHub/admin?cmd=logoutOk" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">관리자 로그아웃</a>
+			</div>
 			<%
 			
 		} else{
