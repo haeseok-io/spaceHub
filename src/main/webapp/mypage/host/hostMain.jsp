@@ -51,7 +51,7 @@
 								<p class="space_subject">${vo.subject }</p>
 							</a>
 							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a>
-							<a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
+							<a href="/spaceHub/mypage/host?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
 						</div>
 				 </c:forEach>
 			</div>

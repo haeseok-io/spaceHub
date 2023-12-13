@@ -162,19 +162,32 @@ public class DiscountDAO {
 		sb.setLength(0);	
 		sb.append("update discount set ");
 		sb.append("name=?, dcratio=? ");
-		sb.append("where spaecno=? and disno=?");
+		sb.append("where spaceno=?");
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setString(1, vo.getName());
 			pstmt.setInt(2, vo.getDcratio());
 			pstmt.setInt(3, vo.getSpaceno());
-			pstmt.setInt(4, vo.getDisno());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+	}
+	
+	//삭제
+	public void deleteOne(int spaceno) {
+		sb.setLength(0);
+		sb.append("delete from discount where spaceno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void close() {
@@ -190,5 +203,6 @@ public class DiscountDAO {
 			e.printStackTrace();
 		}
 	}
+
 
 }

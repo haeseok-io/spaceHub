@@ -114,6 +114,20 @@ public class SpaceFacDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	//삭제
+	public void deleteOne(int spaceno) {
+		sb.setLength(0);
+		sb.append("delete from space_fac where spaceno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void close() {
 		try {
@@ -128,5 +142,6 @@ public class SpaceFacDAO {
 			e.printStackTrace();
 		}
 	}
+
 
 }

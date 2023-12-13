@@ -1,12 +1,17 @@
-package com.spacehub.www.model;
+package com.spacehub.www.control;
 
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
@@ -18,15 +23,21 @@ import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.dao.SpaceFacDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.DiscountVO;
+import com.spacehub.www.vo.SmemberVO;
 import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceFacVO;
 import com.spacehub.www.vo.SpaceImageVO;
 import com.spacehub.www.vo.SpaceVO;
 
-public class SpaceModifyOkAction implements Action {
-
+@WebServlet("/mypage/hostControl")
+public class SpaceModifyOkControl extends HttpServlet {
+	
 	@Override
-	public String execute(HttpServletRequest req, HttpServletResponse resp) {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session =  req.getSession(true);
+		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
+		session.setAttribute("member", memberData);
+		
 		SpaceDAO spaceDao = new SpaceDAO();
 		SpaceDetailDAO spcaeDetailDao = new SpaceDetailDAO();
 		SpaceImageDAO spcaeImageDao = new SpaceImageDAO();
@@ -68,6 +79,8 @@ public class SpaceModifyOkAction implements Action {
 			System.out.println("spacetype:"+type);
 			System.out.println("spaceaddr:"+addr);
 			System.out.println("spaceprice:"+price);
+			System.out.println("vstatus:"+vstatus);
+			System.out.println("memno:"+memno);
 			try {
 				String ip = Inet4Address.getLocalHost().getHostAddress();
 				System.out.println("spaceip:"+ip);
@@ -155,10 +168,6 @@ public class SpaceModifyOkAction implements Action {
 			spaceVo.setMemno(Integer.parseInt(memno));
 			spaceDao.modifyOne(spaceVo);
 			
-			//LastInsertId
-			int lastInsert = spaceDao.getLastInsert();
-			System.out.println("마지막 번호 : " + lastInsert);
-			
 			//공간 상세정보(space_detail)
 			spaceDetailVo.setSpaceno(Integer.parseInt(spaceno));
 			spaceDetailVo.setType(detailType);
@@ -179,8 +188,8 @@ public class SpaceModifyOkAction implements Action {
 			//String[] path = mr.getParameterValues("path");
 			
 			System.out.println(mr.getFileNames());
-			System.out.println(mr.getFilesystemName("img1"));
-			System.out.println(mr.getOriginalFileName("img1"));
+			System.out.println(mr.getFilesystemName("img"));
+			System.out.println(mr.getOriginalFileName("img"));
 			
 			 // 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
@@ -193,8 +202,8 @@ public class SpaceModifyOkAction implements Action {
 		        if (uploadedFilePath != null) {
 		            // 업로드된 파일의 경로를 DB에 저장하거나 다른 작업 수행
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
-		            spaceImageVo.setSpaceno(lastInsert); // 공간 번호 설정
-		            spaceImageVo.setImgno(1); // 이미지 번호 설정
+		            spaceImageVo.setSpaceno(Integer.parseInt(spaceno)); // 공간 번호 설정
+		            //spaceImageVo.setImgno(1); // 이미지 번호 설정
 		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
 		            spaceImageVo.setSeq(seq++); // 순서 설정
 
@@ -205,7 +214,7 @@ public class SpaceModifyOkAction implements Action {
 		    }
 		    
 			//공간 편의시설(space_fac)
-			spaceFacVo.setSpaceno(lastInsert);
+			spaceFacVo.setSpaceno(Integer.parseInt(spaceno));
 			if(wifi!=null) spaceFacVo.setWifi(Integer.parseInt(wifi));
 			if(tv!=null) spaceFacVo.setTv(Integer.parseInt(tv));
 			if(kitchen!=null) spaceFacVo.setKitchen(Integer.parseInt(kitchen));
@@ -225,7 +234,7 @@ public class SpaceModifyOkAction implements Action {
 			//할인등록(discount)
 			for(int i=0; i<dcRatio.length; i++)	{
 				DiscountVO discountVo = new DiscountVO();
-				discountVo.setSpaceno(lastInsert);
+				discountVo.setSpaceno(Integer.parseInt(spaceno));
 				discountVo.setName(disName[i]);
 				discountVo.setDcratio(Integer.parseInt(dcRatio[i]));
 				discountDao.modifyOne(discountVo);
@@ -243,7 +252,9 @@ public class SpaceModifyOkAction implements Action {
 		spcaeFacDao.close();
 		discountDao.close();
 		
-		return "/spaceHub/home";
+		// 처리가 끝난 후 /spaceHub/home 으로 이동
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/spaceHub/home");
+		dispatcher.forward(req, resp);
 	}
-
 }
+	

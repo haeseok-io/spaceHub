@@ -361,10 +361,27 @@ public class SpaceDAO {
 			pstmt.setInt(6, vo.getPrice());
 			pstmt.setString(7, vo.getIp());
 			pstmt.setInt(8, vo.getVStatus());
+			pstmt.setInt(9, vo.getSpaceno());
+			pstmt.setInt(10, vo.getMemno());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//삭제
+	public void deleteOne(int spaceno) {
+		sb.setLength(0);
+		sb.append("delete from space where spaceno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//종료
@@ -377,6 +394,7 @@ public class SpaceDAO {
 			e.printStackTrace();
 		}
 	}
+
 
 
 }// class end
