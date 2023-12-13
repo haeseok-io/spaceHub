@@ -42,6 +42,10 @@
 		text-align: center;
 		display: block;
 	}
+	.gospace{
+		margin-left:50px;
+		margin-top : 80px;
+	}
 </style>
 <script type="text/javascript">
 
@@ -58,6 +62,12 @@
 		  <a href="#" class="btn btn-secondary active" aria-current="page">여행 예정</a>
 		  <a href="/spaceHub/mypage/guest?cmd=spaceEnd" class="btn btn-secondary">지난 여행</a>
 		  <a href="/spaceHub/mypage/guest?cmd=spaceCancel" class="btn btn-secondary">취소한 여행</a>
+		</div>
+		<div class="gospace">
+			<a class="icon-link icon-link-hover link-success link-underline-success link-underline-opacity-25" href="/spaceHub/home">
+		  새로운 여행지를 계획해보세요.
+		  <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
+		</a>
 		</div>
 		<div class="row row-cols-1 row-cols-md-4 g-4">
 		<c:forEach var="vo" items="${list}">
