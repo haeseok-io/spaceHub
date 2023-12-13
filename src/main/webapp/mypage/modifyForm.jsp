@@ -8,6 +8,15 @@
 
 <jsp:include page="/common/common.jsp" />
 
+<script>
+	window.onload = function () {		
+		<% if (request.getAttribute("showAlert") != null) { %>
+			alert("${alertMessage}");
+			window.location.replace("/spaceHub/mypage");
+		<% } %>
+	}
+</script>
+
 <jsp:include page="/common/header.jsp" />
 
 	<div class="container">
@@ -51,15 +60,9 @@
 					<td>
 						<input type="submit" value="수정" />
 					</td>
-				</tr>			
-			</table>
-		</form>
-		
+				</tr>
+		</table>
+		</form>	
 	</div>
-	<script>
-		<% if (request.getAttribute("showAlert") != null && (boolean) request.getAttribute("showAlert")) { %>
-			alert("정보가 성공적으로 업데이트되었습니다.");
-		<% } %>
-	</script>
 </body>
 </html>
