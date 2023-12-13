@@ -27,27 +27,26 @@ public class MessageDAO {
 		ArrayList<MessageListVO> list = new ArrayList<MessageListVO>();
 		
 		sb.setLength(0);
-		sb.append("Select m.messageno, m.bno, m.contents, m.regdate, m.status, m.ip, m.spaceno, m.memno, hs.subject as space_name, ");
-		sb.append("Case When s.memno=hm.memno Then 1 Else 0 End As space_own_status, ");
-		sb.append("mm.memno as mmemno, mm.name as mname, mm.nickname as mnickname, mm.profile_img as mprofile_img, ");
-		sb.append("wm.memno as wmemno, wm.name as wname, wm.nickname as wnickname, wm.profile_img as wprofile_img, ");
-		sb.append("hm.memno as hmemno, hm.name as hname, hm.nickname as hnickname, hm.profile_img as hprofile_img ");
-		sb.append("From message m ");
-		sb.append("Join space s On s.memno=? ");
-		sb.append("Join space ms On ms.memno=m.memno ");
-		sb.append("Join smember mm On mm.memno=m.memno ");
-		sb.append("Join smember wm On wm.memno=(Select memno From message Where bno=m.bno order by messageno asc limit 1) ");
-		sb.append("Join space hs On hs.spaceno=m.spaceno ");
-		sb.append("Join smember hm On hm.memno=hs.memno ");
-		sb.append("Where (s.spaceno=m.spaceno or wm.memno=?) ");
-		sb.append("And m.messageno=(Select max(messageno) From message Where bno=m.bno) ");
-		sb.append("Group By m.bno ");
-		sb.append("Order By m.messageno DESC");
+		sb.append("SELECT m.messageno, m.bno, m.contents, m.regdate, m.status, m.ip, m.spaceno, m.memno, ");
+		sb.append("s.subject AS space_name, ");
+		sb.append("Case When s.memno=? Then 1 ELSE 0 ENd AS space_own_status, ");
+		sb.append("mmem.memno as mmemno, mmem.name as mname, mmem.nickname as mnickname, mmem.profile_img as mprofile_img, ");
+		sb.append("wmem.memno as wmemno, wmem.name as wname, wmem.nickname as wnickname, wmem.profile_img as wprofile_img, ");
+		sb.append("hmem.memno as hmemno, hmem.name as hname, hmem.nickname as hnickname, hmem.profile_img as hprofile_img ");
+		sb.append("FROM message m ");
+		sb.append("JOIN space s ON s.spaceno=m.spaceno ");
+		sb.append("JOIN smember mmem ON mmem.memno=m.memno ");
+		sb.append("JOIN smember hmem ON hmem.memno=s.memno ");
+		sb.append("JOIN smember wmem ON wmem.memno=(Select memno From message Where bno=m.bno order by messageno asc limit 1) ");
+		sb.append("WHERE m.bno IN (SELECT bno FROM message m WHERE (memno=? or spaceno IN (SELECT spaceno FROM space WHERE memno=?)) GROUP BY bno) ");
+		sb.append("AND m.messageno=(SELECT MAX(messageno) FROM message WHERE bno=m.bno) ");
+		sb.append("ORDER BY messageno DESC");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, memno);
 			pstmt.setInt(2, memno);
+			pstmt.setInt(3, memno);
 			rs = pstmt.executeQuery();
 			
 			while( rs.next() ) {
@@ -90,7 +89,7 @@ public class MessageDAO {
 		return list;
 	}
 	
-	// 메세지 리스트 가져오기
+	// 메세지 내용 가져오기
 	public ArrayList<MessageContentsVO> getContents(int bno) {
 		ArrayList<MessageContentsVO> list = new ArrayList<MessageContentsVO>();
 		

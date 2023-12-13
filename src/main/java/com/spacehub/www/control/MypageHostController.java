@@ -1,6 +1,7 @@
 package com.spacehub.www.control;
 
-import java.io.IOException;
+import com.spacehub.www.model.*;
+import org.json.simple.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,20 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONObject;
-
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import com.spacehub.www.model.Action;
-import com.spacehub.www.model.ActionCommand;
-import com.spacehub.www.model.HostMainAction;
-import com.spacehub.www.model.ImageDeleteOkAction;
-import com.spacehub.www.model.JsonAction;
-import com.spacehub.www.model.ReservCalenderCommand;
-import com.spacehub.www.model.ReservListCommand;
-import com.spacehub.www.model.SpaceDeleteAction;
-import com.spacehub.www.model.SpaceModifyAction;
+import java.io.IOException;
 
 @WebServlet("/mypage/host")
 public class MypageHostController extends HttpServlet {
