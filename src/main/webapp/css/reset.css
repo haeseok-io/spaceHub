@@ -6,3 +6,4 @@ ul { margin-bottom: 0; padding-left: 0; }
 ul li { list-style: none; }
 input { outline: none; }
 p { margin-bottom: 0; }
+select { outline: none; }

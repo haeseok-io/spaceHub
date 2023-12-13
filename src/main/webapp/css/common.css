@@ -65,15 +65,34 @@
 
 .fieldset-wrap {}
 .fieldset-wrap .fieldset-data {}
-.fieldset-wrap .fieldset-data .data-wrap { margin-bottom: 20px; }
-.fieldset-wrap .fieldset-data .data-wrap input[type='text'],
-.fieldset-wrap .fieldset-data .data-wrap input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
-.fieldset-wrap .fieldset-data .data-wrap input[type='text']:focus,
-.fieldset-wrap .fieldset-data .data-wrap input[type='password']:focus { border: 1px solid #198754; }
+.fieldset-wrap .fieldset-data .data-wrap { display: flex; flex-wrap: wrap; margin-bottom: 20px; }
+.fieldset-wrap .fieldset-data .data-wrap .data-field { width: 100%; }
+.fieldset-wrap .fieldset-data .data-wrap .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap .data-field input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
+.fieldset-wrap .fieldset-data .data-wrap.error .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap.error .data-field input[type='password'] { border: 1px solid #dc3545; }
+.fieldset-wrap .fieldset-data .data-wrap.success .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap.success .data-field input[type='password'] { border: 1px solid #198754; }
+
+.fieldset-wrap .fieldset-data .data-wrap .data-field select { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 15px; }
+
+
+.fieldset-wrap .fieldset-data .data-wrap .data-button { width: 150px; }
+.fieldset-wrap .fieldset-data .data-wrap .data-button button { width: 150px; height: 50px; padding: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; font-size: 12px; }
+
+.fieldset-wrap .fieldset-data .data-wrap .data-msg { width: 100%; margin-top: 5px; font-size: 14px; }
+.fieldset-wrap .fieldset-data .data-wrap .data-msg.error { color: #dc3545; }
+.fieldset-wrap .fieldset-data .data-wrap .data-msg.success { color: #198754; }
 
 .fieldset-wrap .fieldset-button {}
 .fieldset-wrap .fieldset-button button { width: 100%; height: 60px; }
 
+.fieldset-wrap .fieldset-data .data-wrap .data-field input[type='text']:focus,
+.fieldset-wrap .fieldset-data .data-wrap .data-field input[type='password']:focus { border: 1px solid #198754; }
+
+.fieldset-wrap .fieldset-data .data-wrap.button .data-field { width: calc(100% - 150px); }
+.fieldset-wrap .fieldset-data .data-wrap.button .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap.button .data-field input[type='password'] { border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
 
 
 
