@@ -26,10 +26,10 @@
 			var vstatus = "${spaceVo.VStatus}"
 			console.log("vstatus:" + vstatus);
 			
-			console.log('${spaceDetailVo.type}')
+/* 			console.log('${spaceDetailVo.type}')
 			console.log('${dcList[0]}');
 			console.log('${dcList[1]}');
-			
+ */			
 			//radio
 			$("input[name='detailType'][value='${spaceDetailVo.type}']").prop("checked", true);
 			//checkbox
@@ -69,7 +69,9 @@
 	                vstatus = "2"; // VStatus 값을 2로 설정
 	                console.log("vstatus:" + vstatus);
 	            }
+		        document.spaceModifyForm.vstatus.value = vstatus;
 	        });
+	        
 	        
 		    var spaceno = "${spaceVo.spaceno}";
 		    // 이미지 삭제

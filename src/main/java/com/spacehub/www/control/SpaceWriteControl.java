@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -20,6 +21,7 @@ import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.dao.SpaceFacDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.DiscountVO;
+import com.spacehub.www.vo.SmemberVO;
 import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceFacVO;
 import com.spacehub.www.vo.SpaceImageVO;
@@ -29,6 +31,15 @@ import com.spacehub.www.vo.SpaceVO;
 public class SpaceWriteControl extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session =  req.getSession(true);
+		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
+		
+		if (memberData == null) {
+		    return;  // 로그인 페이지로 리다이렉트 또는 포워드
+		}
+		
+		session.setAttribute("member", memberData);
+		
 		SpaceDAO spaceDao = new SpaceDAO();
 		SpaceDetailDAO spcaeDetailDao = new SpaceDetailDAO();
 		SpaceImageDAO spcaeImageDao = new SpaceImageDAO();
