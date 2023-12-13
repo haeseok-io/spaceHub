@@ -142,11 +142,14 @@ public class OrderCommand implements ActionCommand {
 					sna = "호스트의 할인";
 				}
 				
-				int disc = (int)((100-dc)*0.01);
 				
+				
+				int disc = (int)((100-dc)*0.01);
+				System.out.println(disc);
+				
+				req.setAttribute("disc", disc);
 				req.setAttribute("sna", sna);
 				req.setAttribute("crvo", crvo);
-				req.setAttribute("disc", disc);
 				req.setAttribute("tax", tax);
 				req.setAttribute("bark", bark);
 				req.setAttribute("checkin", checkin);
