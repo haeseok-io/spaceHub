@@ -18,15 +18,21 @@ public class CardListCommand implements ActionCommand {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		
-		MemCardDAO dao = new MemCardDAO();
 		HttpSession session = req.getSession();
 		
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
+		
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}else {
+		
+		MemCardDAO dao = new MemCardDAO();
 		ArrayList<MemCardVO> list = dao.getAll(memberVO.getMemno());
 		
 		dao.close();
 		req.setAttribute("list", list);
+		}
 		
 		return "/mypage/guest/cardList.jsp";
 	}

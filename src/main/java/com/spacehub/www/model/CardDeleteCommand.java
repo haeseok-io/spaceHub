@@ -12,15 +12,18 @@ public class CardDeleteCommand implements ActionCommand {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
 		String m = req.getParameter("mcardno");
+		HttpSession session = req.getSession();
 		
-		if(m != null) {
+		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}
+		if(m != null || memberVO != null) {
 			int mcardno = Integer.parseInt(m);
 			MemCardDAO dao = new MemCardDAO();
-			HttpSession session = req.getSession();
-			
-			SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 			
 			dao.deleteTwo(memberVO.getMemno(), mcardno);
+			dao.close();
 		}
 		return "/mypage/guest?cmd=cardList";
 	}

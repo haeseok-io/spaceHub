@@ -29,6 +29,9 @@ public class OrderOkCommand implements ActionCommand {
 		
 		HttpSession session = req.getSession();
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}
 		
 		  String s = req.getParameter("spaceno");
 		  String orderno = req.getParameter("orderno");
@@ -48,7 +51,7 @@ public class OrderOkCommand implements ActionCommand {
 		  String couponname = req.getParameter("couponname");
 		  String creditsprice = req.getParameter("creditsPrice");
 		  
-		  if(s != null || creditsprice != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
+		  if( memberVO!=null || s != null || creditsprice != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
 			  int price = Integer.parseInt(p);
 			  int spaceno = Integer.parseInt(s);
 			  int guest = Integer.parseInt(g);
@@ -136,6 +139,7 @@ public class OrderOkCommand implements ActionCommand {
 				  dao.close();
 			  }
 			  rdao.close();
+			  cdao.close();
 		  }
 		
 		return "/mypage/guest?cmd=spaceList";

@@ -20,13 +20,14 @@ public class ReservationListCommand implements Action {
 		
 		// 미로그인 상태일 경우 null 리턴
 		if( admin==null ) {
-			return "/home";
+			return "/admin/adminLogin.jsp";
 		}else {
 		
 		ReservationDAO dao = new ReservationDAO();
 		ArrayList<ReservationVO> list = dao.getAll();
 		
 		req.setAttribute("list", list);	
+		dao.close();
 		}
 		
 		return "admin/reservationList.jsp";

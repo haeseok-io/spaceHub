@@ -23,10 +23,15 @@ public class ReviewListCommand implements ActionCommand {
 		
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
+		
+		// 미로그인 상태일 경우 null 리턴
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}else {
 		ArrayList<ReviewSpaceVO> list = dao.getSall(memberVO.getMemno());
 		req.setAttribute("list", list);		
 		dao.close();
-		
+		}
 		
 		return "review/reviewList.jsp";
 	}

@@ -6,11 +6,13 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.ReservationDAO;
 import com.spacehub.www.dao.ReviewDAO;
 import com.spacehub.www.vo.ReservationVO;
 import com.spacehub.www.vo.ReviewVO;
+import com.spacehub.www.vo.SmemberVO;
 
 public class ReviewOkCommand implements ActionCommand {
 
@@ -23,8 +25,14 @@ public class ReviewOkCommand implements ActionCommand {
 		String contents = req.getParameter("contents");
 		String r = req.getParameter("rating");
 		String re = req.getParameter("reservno");
+		HttpSession session = req.getSession();
+		SmemberVO smemberData = (SmemberVO)session.getAttribute("member");
 		
-		if(subject != null || contents != null || r != null || re != null) {
+		// 미로그인 상태일 경우 null 리턴
+		if( smemberData==null ) {
+			return "/sign/login.jsp";
+		}
+		if(smemberData!=null || subject != null || contents != null || r != null || re != null) {
 			
 			int rating = Integer.parseInt(r);
 			int reservno = Integer.parseInt(re);
@@ -48,6 +56,7 @@ public class ReviewOkCommand implements ActionCommand {
 			ReviewDAO dao = new ReviewDAO();
 			dao.addOne(vo);
 			dao.close();
+			rdao.close();
 		}
 		
 		return "/review?cmd=reviewList";

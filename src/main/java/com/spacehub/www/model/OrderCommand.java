@@ -34,11 +34,14 @@ public class OrderCommand implements ActionCommand {
 		String guest = req.getParameter("guest");
 		
 		HttpSession session = req.getSession();
+		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 		
-		if((SmemberVO)session.getAttribute("member") != null) {
+		if(memberVO != null) {
+			if(checkin != "" || checkout != "" || guest != "") {
+				return "main.jsp";
+			}
 			if(s != null || checkin != null || checkout != null || guest != null) {
 				int Spaceno = Integer.parseInt(s);
-				SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 				MemCouponDAO mdao = new MemCouponDAO();
 				ArrayList<MCouponVO> list = mdao.getCMem(1,memberVO.getMemno());
 				SpaceDAO dao = new SpaceDAO();
@@ -115,6 +118,11 @@ public class OrderCommand implements ActionCommand {
 				req.setAttribute("smvo", smvo);
 				req.setAttribute("list", list);
 				dao.close();
+				mdao.close();
+				smdao.close();
+				ddao.close();
+				crdao.close();
+				sddao.close();
 			}
 		}else {
 			return "/sign/login.jsp";
