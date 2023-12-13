@@ -38,7 +38,7 @@ public class ModifyOkAction implements Action{
 	        
 	        req.setAttribute("showAlert", true);
 		}
-		return "/mypage/modifyForm.jsp";
+		return "/spaceHub/mypage";
 	}
 
 }

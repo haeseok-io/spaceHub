@@ -53,7 +53,7 @@
 		
 		
 		/* 우측 고정되는 영역 */
-		.detail-content .content-fixed { position: absolute; top: 30px; right: 0; width: 350px; }
+		.detail-content .content-fixed { position: absolute; top: 30px; right: 0; width: 350px; background: #fff; }
 		.detail-content .content-fixed .detail-reservation { box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px; border: 1px solid #ccc; border-radius: 10px; padding: 30px; }
 		.detail-content .content-fixed .detail-reservation .reservation-field {}
 		.detail-content .content-fixed .detail-reservation .reservation-field .reservation-wrap { margin-bottom: 10px; }
@@ -62,6 +62,10 @@
 		.detail-content .content-fixed .detail-reservation .reservation-field .reservation-wrap .item-data input[type='text'] { width: 100%; height: 40px; border: 1px solid #ccc; border-radius: 5px; padding-left: 10px; }
 		.detail-content .content-fixed .detail-reservation .reservation-button { margin-top: 20px; }
 		.detail-content .content-fixed .detail-reservation .reservation-button button { width: 100%; height: 50px; background: #E61B60; border: 0; border-radius: 10px; font-weight: bold; font-size: 16px; color: #fff; }
+		
+		.detail-content .content-fixed .detail-reservation .reservation-field .reservation-wrap.guest .item-data { display: flex; }
+		.detail-content .content-fixed .detail-reservation .reservation-field .reservation-wrap.guest .item-data input[type='text'] { width: calc(100% - 80px); border-radius: 0; border-left: 0; border-right: 0; }
+		.detail-content .content-fixed .detail-reservation .reservation-field .reservation-wrap.guest .item-data button { width: 40px; height: 40px; background: #e0e0e0; border: 1px solid #ccc; }
 		
 		/* 숙소 후기 */
 		.detail-review { padding: 30px 0 50px 0; border-top: 1px solid #e0e0e0; }
@@ -206,6 +210,50 @@
 					checkDateMsg();
 				}
 			});
+			
+			
+			// 게스트 증감
+			$(".guest-control-button").on("click", e => {
+				let _this = $(e.currentTarget);
+				let type = _this.data("type");
+				
+				let buttonEl = $("input[name='guest']");
+				let buttonVal = buttonEl.val();
+				
+				if( type=='minus' ) 	buttonVal = parseInt(buttonVal)-1;
+				else 					buttonVal = parseInt(buttonVal)+1;
+				
+				if( buttonVal<0 ) 		buttonVal = 0;
+				
+				buttonEl.val(buttonVal)
+			});
+			
+			
+			// 우측 예약하기 영역 고정
+			$(window).on("scroll resize", e => {
+				let _this = $(e.currentTarget);
+				let contentEl = $(".detail-content");
+				let fixedEl = $(".content-fixed");
+				
+				// Data
+				let scrollTop = _this.scrollTop();				
+				let contentPos = contentEl.position();
+				let contentWidth = contentEl.outerWidth()/2
+			
+				let fixedStartTopPos = contentPos.top;
+				let fixedEndTopPos = (fixedStartTopPos+contentEl.outerHeight())-(fixedEl.outerHeight()+80);
+				let leftPos = contentPos.left+contentWidth+(contentWidth-fixedEl.outerWidth());
+				let lastTopPos = contentEl.outerHeight()-(fixedEl.outerHeight()+50);
+				
+				// Process
+				if( scrollTop<fixedStartTopPos ){
+					fixedEl.css({position: "absolute", left: "inherit", right: 0});
+				} else if( scrollTop>=fixedStartTopPos && scrollTop<=fixedEndTopPos ){
+					fixedEl.css({position: "fixed", top: "30px", left: leftPos+"px"});
+				} else if( scrollTop>fixedEndTopPos ) {
+					fixedEl.css({position: "absolute", top: lastTopPos+"px", left: "inherit", right: 0});
+				}
+			});
 		});
 		
 		const checkDateMsg = () => {
@@ -270,7 +318,6 @@
 				scrollwheel: false,
 				center: new kakao.maps.LatLng(${detailData.x}, ${detailData.y}),
 			});
-			map.setDraggable(false);
 			
 			var geocoder = new kakao.maps.services.Geocoder();
 			geocoder.addressSearch('${spaceData.addr}', function(result, status) {
@@ -451,10 +498,16 @@
 										<input type="text" name="checkout" placeholder="날짜 선택">
 									</div>
 								</div>
-								<div class="reservation-wrap">
+								<div class="reservation-wrap guest">
 									<p class="item-title">게스트</p>
 									<div class="item-data">
-										<input type="text" name="guest" value="0">
+										<button type="button" class="guest-control-button" data-type="minus">
+											<i class="bi bi-dash-lg"></i>
+										</button>
+										<input type="text" name="guest" value="0" readonly>
+										<button type="button" class="guest-control-button" data-type="plus">
+											<i class="bi bi-plus-lg"></i>
+										</button>
 									</div>
 								</div>
 							</div>
