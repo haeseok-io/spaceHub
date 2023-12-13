@@ -21,6 +21,40 @@ public class ReservationDAO {
 		conn = DBConnection.getConnection();
 	}
 	
+	public ArrayList<ReservationVO> getAll(){
+		ArrayList<ReservationVO> list = new ArrayList<ReservationVO>();
+		
+		sb.setLength(0);
+		sb.append("Select * From reservation Order By reservno desc");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				int reservno = rs.getInt("reservno");
+				String checkin = rs.getString("checkin");
+				String checkout = rs.getString("checkout");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				int price = rs.getInt("price");
+				int guest = rs.getInt("guest");
+				int dcratio = rs.getInt("dcratio");
+				String regdate = rs.getString("regdate");
+				int status = rs.getInt("status");
+				String ip = rs.getString("ip");
+				int spaceno = rs.getInt("spaceno");
+				int memno = rs.getInt("memno");
+				ReservationVO vo = new ReservationVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno);
+				list.add(vo);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
 	public ArrayList<ReservationVO> getSpace(int spaceno){
 		ArrayList<ReservationVO> list = new ArrayList<ReservationVO>();
 		
