@@ -14,15 +14,22 @@ public class SpaceCancelCommand implements ActionCommand {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		ReservationDAO dao = new ReservationDAO();
 		HttpSession session = req.getSession();
 		
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
+		
+		// 미로그인 상태일 경우 null 리턴
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}else {
+		
+		ReservationDAO dao = new ReservationDAO();
 		ArrayList<ResevSpaceVO> list = dao.getTwo(memberVO.getMemno());
 		
 		dao.close();
 		req.setAttribute("list", list);
+		}
 		return "/mypage/guest/spaceCancel.jsp";
 	}
 

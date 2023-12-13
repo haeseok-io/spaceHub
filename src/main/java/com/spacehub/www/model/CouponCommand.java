@@ -14,11 +14,15 @@ public class CouponCommand implements ActionCommand {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
-		MemCouponDAO dao = new MemCouponDAO();
 		HttpSession session = req.getSession();
 		
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
+		if( memberVO==null ) {
+			return "/sign/login.jsp";
+		}else {
+		
+		MemCouponDAO dao = new MemCouponDAO();
 		ArrayList<MCouponVO> list = dao.getMem(memberVO.getMemno());
 		
 		ArrayList<MCouponVO> slist = dao.getCMem(1, memberVO.getMemno());
@@ -28,7 +32,7 @@ public class CouponCommand implements ActionCommand {
 		req.setAttribute("slist", slist);
 		req.setAttribute("elist", elist);
 		dao.close();
-		
+		}
 		return "guest/couponList.jsp";
 	}
 
