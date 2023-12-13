@@ -14,142 +14,134 @@ public class DiscountDAO {
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	private StringBuffer sb = new StringBuffer();
-	
+
 	public DiscountDAO() {
 		conn = DBConnection.getConnection();
 	}
-	
-		//방번호로 검색
-		public ArrayList<DiscountVO> getOne(int spaceno) {
-			ArrayList<DiscountVO> list = new ArrayList<DiscountVO>();
-			
-			sb.setLength(0);
-			sb.append("SELECT * FROM discount WHERE spaceno=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				if( rs.next() ) {
-					list.add(new DiscountVO(
-							rs.getInt("disno"),
-							rs.getString("name"),
-							rs.getInt("dcratio"),
-							rs.getInt("spaceno")
-						));
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
+
+	// 방번호로 검색
+	public ArrayList<DiscountVO> getOne(int spaceno) {
+		ArrayList<DiscountVO> list = new ArrayList<DiscountVO>();
+
+		sb.setLength(0);
+		sb.append("SELECT * FROM discount WHERE spaceno=?");
+
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				list.add(new DiscountVO(rs.getInt("disno"), rs.getString("name"), rs.getInt("dcratio"),
+						rs.getInt("spaceno")));
 			}
-			
-			return list;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		public DiscountVO getTwo(int spaceno) {
-			DiscountVO data = new DiscountVO();
-			
-			sb.setLength(0);
-			sb.append("SELECT * FROM discount WHERE dcratio=20 and spaceno=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				if( rs.next() ) {
-					data.setDisno(rs.getInt("disno"));
-					data.setName(rs.getString("name"));
-					data.setDcratio(rs.getInt("dcratio"));
-					data.setSpaceno(rs.getInt("spaceno"));
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
+
+		return list;
+	}
+
+	public DiscountVO getTwo(int spaceno) {
+		DiscountVO data = new DiscountVO();
+
+		sb.setLength(0);
+		sb.append("SELECT * FROM discount WHERE dcratio=20 and spaceno=?");
+
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				data.setDisno(rs.getInt("disno"));
+				data.setName(rs.getString("name"));
+				data.setDcratio(rs.getInt("dcratio"));
+				data.setSpaceno(rs.getInt("spaceno"));
 			}
-			
-			return data;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		public DiscountVO getWeek(int spaceno) {
-			DiscountVO data = new DiscountVO();
-			
-			sb.setLength(0);
-			sb.append("SELECT * FROM discount WHERE dcratio=10 and spaceno=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				if( rs.next() ) {
-					data.setDisno(rs.getInt("disno"));
-					data.setName(rs.getString("name"));
-					data.setDcratio(rs.getInt("dcratio"));
-					data.setSpaceno(rs.getInt("spaceno"));
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
+
+		return data;
+	}
+
+	public DiscountVO getWeek(int spaceno) {
+		DiscountVO data = new DiscountVO();
+
+		sb.setLength(0);
+		sb.append("SELECT * FROM discount WHERE dcratio=10 and spaceno=?");
+
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				data.setDisno(rs.getInt("disno"));
+				data.setName(rs.getString("name"));
+				data.setDcratio(rs.getInt("dcratio"));
+				data.setSpaceno(rs.getInt("spaceno"));
 			}
-			
-			return data;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		public DiscountVO getMonth(int spaceno) {
-			DiscountVO data = new DiscountVO();
-			
-			sb.setLength(0);
-			sb.append("SELECT * FROM discount WHERE dcratio=18 and spaceno=?");
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				if( rs.next() ) {
-					data.setDisno(rs.getInt("disno"));
-					data.setName(rs.getString("name"));
-					data.setDcratio(rs.getInt("dcratio"));
-					data.setSpaceno(rs.getInt("spaceno"));
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
+
+		return data;
+	}
+
+	public DiscountVO getMonth(int spaceno) {
+		DiscountVO data = new DiscountVO();
+
+		sb.setLength(0);
+		sb.append("SELECT * FROM discount WHERE dcratio=18 and spaceno=?");
+
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				data.setDisno(rs.getInt("disno"));
+				data.setName(rs.getString("name"));
+				data.setDcratio(rs.getInt("dcratio"));
+				data.setSpaceno(rs.getInt("spaceno"));
 			}
-			
-			return data;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-	
+
+		return data;
+	}
+
 	// 공간 번호에 대한 할인 리스트 가져오기
 	public ArrayList<DiscountVO> getSpaceAll(int spaceno) {
 		ArrayList<DiscountVO> list = new ArrayList<DiscountVO>();
-		
+
 		sb.setLength(0);
 		sb.append("Select * From discount Where spaceno=?");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, spaceno);			
+			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
-			
-			while( rs.next() ) {
-				list.add(new DiscountVO(
-					rs.getInt("disno"),
-					rs.getString("name"),
-					rs.getInt("dcratio"),
-					rs.getInt("spaceno")
-				));
+
+			while (rs.next()) {
+				list.add(new DiscountVO(rs.getInt("disno"), rs.getString("name"), rs.getInt("dcratio"),
+						rs.getInt("spaceno")));
 			}
-			
-		} catch(SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	public void addOne(DiscountVO vo) {
 		sb.setLength(0);
 		sb.append("INSERT INTO discount (name, dcratio, spaceno) VALUES (?, ?, ?)");
@@ -163,6 +155,26 @@ public class DiscountDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	//수정
+	public void modifyOne(DiscountVO vo) {
+		sb.setLength(0);	
+		sb.append("update discount set ");
+		sb.append("name=?, dcratio=? ");
+		sb.append("where spaecno=? and disno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, vo.getName());
+			pstmt.setInt(2, vo.getDcratio());
+			pstmt.setInt(3, vo.getSpaceno());
+			pstmt.setInt(4, vo.getDisno());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void close() {

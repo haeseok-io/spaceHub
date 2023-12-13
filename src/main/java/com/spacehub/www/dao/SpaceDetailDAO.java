@@ -85,7 +85,10 @@ public class SpaceDetailDAO {
 				pstmt.setInt(4, vo.getBathroom());
 				pstmt.setString(5,vo.getInDate());
 				pstmt.setString(6, vo.getOutDate());
-				
+				pstmt.setString(7, vo.getX());
+				pstmt.setString(8, vo.getY());
+				pstmt.setInt(9, vo.getSpaceno());
+				pstmt.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
