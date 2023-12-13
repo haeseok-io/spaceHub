@@ -20,8 +20,15 @@
 			      <th scope="col">체크인</th>
 			      <th scope="col">체크아웃</th>
 			      <th scope="col">이름</th>
+			      <th scope="col">전화번호</th>
 			      <th scope="col">가격</th>
+			      <th scope="col">게스트</th>
+			      <th scope="col">할인</th>
+			      <th scope="col">방번호</th>
+			      <th scope="col">예약상태</th>
+			      <th scope="col">예약자번호</th>
 			      <th scope="col">ip</th>
+			      <th scope="col">예약날짜</th>
 			      <th></th>
 			    </tr>
 			  </thead>
@@ -32,8 +39,15 @@
 			      <td>${vo.checkin}</td>
 			      <td>${vo.checkout}</td>
 			      <td>${vo.name}</td>
+			      <td>${vo.phone}</td>
 			      <td>${vo.price}</td>
+			      <td>${vo.guest}</td>
+			      <td>${vo.dcratio}</td>
+			      <td>${vo.spaceno}</td>
+			      <td>${vo.status}</td>
+			      <td>${vo.memno}</td>
 			      <td>${vo.ip}</td>
+			      <td>${vo.regdate}</td>
 			    </tr>
 			  </tbody>
 			</c:forEach>

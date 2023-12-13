@@ -30,7 +30,9 @@ public class AdminControl extends HttpServlet{
 		boolean isRedirect = false;
 		String url = "";
 		
-		if(cmd == null || cmd.equals("admin")) {
+		if( cmd==null ) 	cmd = "admin";
+		
+		if(cmd.equals("admin")) {
 			url = "/admin/adminLogin.jsp";
 		} else if(cmd.equals("loginOk")) {
 			Action ac = new AdminLoginOkCommand();

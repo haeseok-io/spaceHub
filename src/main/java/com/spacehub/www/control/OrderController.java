@@ -27,7 +27,9 @@ public class OrderController extends HttpServlet{
 		String msg = "";
 		String url = "";
 		
-		if(cmd == null || cmd.equals("info")) {
+		if( cmd==null ) 	cmd = "info";
+		
+		if(cmd.equals("info")) {
 			ActionCommand ac = new  OrderCommand();
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("orderOk")) {

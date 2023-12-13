@@ -27,7 +27,9 @@ public class ReviewController extends HttpServlet{
 		String msg = "";
 		String url = "";
 		
-		if(cmd == null || cmd.equals("reviewList")) {
+		if( cmd==null ) 	cmd = "reviewList";
+		
+		if(cmd.equals("reviewList")) {
 			ActionCommand ac = new  ReviewListCommand();
 			url = ac.execute(req, resp);
 		}else if(cmd.equals("review")) {
