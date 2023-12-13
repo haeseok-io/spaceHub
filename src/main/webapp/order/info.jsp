@@ -67,6 +67,24 @@
 			let dcratio = _this.val();
 			let couponname = $("#couponselect option:selected").text();
 			let a = $("#dcp").val();
+			
+		$("#plus").on("click",()=>{
+			let guest = $("#guest").val();
+			let p = Number(guest)+1;
+			let guestmax = $("#guestmax").val();
+			if(guest < guestmax){
+				$("#guest").val(p);
+			}
+		});
+		
+		$("#usecreditsbtn").on("click",()=>{
+			let creditsyet = Number($("#creditsyet").val());
+			let usecredits = Number($("#usecredits").val());
+			let crespan = Number($("#crespan").text());
+			let price = Number($("#price").text());
+			
+			let dcratio = Number($("#coupon-price").text());
+			let a = Number($("#discount-price").text());
 			let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
 			let dprice = ($("#cprice").val())*((100-a)*0.01);
 			let usecredits = Number($("#usecredits").val());
@@ -139,7 +157,6 @@
 		});
 		
 	</script>
-
 <jsp:include page="../common/header.jsp" />
 
 	<div class="main">
@@ -283,6 +300,52 @@
 				<br />
 			</form>
 		</div>
+			    <input type="hidden" name="cprice" id="couponprice" value="0"/>
+			    <input type="hidden" name="dprice" id="discountprice" value="0"/>
+			  </div>
+			  <div class="card-body">
+			    <p class="card-title" id="dis">${sna}</p>
+			    <p class="card-text" style="float: right"> %</p>
+			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
+			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>
+			    <input type="hidden" name="cp" id="cprice" value="${((vo.price*bark)+(vo.price*bark)*0.01)}"/>
+			  </div>
+			   <div class="card-body">
+			    <p class="card-title">사용한 크래딧</p>
+			    <p class="card-text" style="float: right" id="credits-price">0</p>
+			    <p class="card-text" style="float: right">₩ </p>
+			    <input type="hidden" name="creditsPrice" id="creditsprice" value="0" />
+			  </div>
+			  <ul class="list-group list-group-flush">
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${endprice}</p><p class="card-text" style="float: right"> ₩</p></li>
+			  </ul>
+			  <div class="card-body">
+			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>
+			  </div>
+			</div>
+			<br>
+			<hr>
+			<div>
+				<h5>환불 정책</h5><br />
+				<p>체크인 날짜 5일전에 취소하면 환불을 받으실 수 있습니다.</p>
+			</div>
+			<br>
+			<hr>
+			<div>
+				<h5>기본 규칙</h5><br />
+				<span>훌륭한 게스트가 되기 위한 몇 가지 간단한 규칙을 지켜주실 것을 모든 게스트에게 당부드리고 있습니다.</span>
+				<ul>
+					<li>숙소 이용규칙을 준수하세요.</li>
+					<li>호스트의 집도 자신의 집처럼 아껴주세요.</li>				
+				</ul>
+			</div>
+			<br>
+			<div class="d-grid gap-2">
+			  <input type="button" value="결제하기" class="btn btn-outline-secondary" onclick="requestPay()"/>
+			</div>
+			<br />
+			<br />
+		</form>
 	</div>
 </body>
 </html>
