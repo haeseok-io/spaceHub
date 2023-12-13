@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.spacehub.www.model.Action;
 import com.spacehub.www.model.AdminLoginOkCommand;
 import com.spacehub.www.model.AuthOkCommand;
+import com.spacehub.www.model.ExcelDownloadAction;
 import com.spacehub.www.model.LoginOkCommand;
 import com.spacehub.www.model.LogoutCommand;
 import com.spacehub.www.model.PwfindOkCommand;
@@ -45,6 +46,9 @@ public class AdminControl extends HttpServlet{
 			isRedirect = true;
 		} else if(cmd.equals("reservationList")) {
 			Action ac = new ReservationListCommand();
+			url = ac.execute(req, resp);
+		} else if(cmd.equals("downloadExcel")) {
+			Action ac = new ExcelDownloadAction();
 			url = ac.execute(req, resp);
 		} 
 
