@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.spacehub.www.dao.ReviewDAO;
 import com.spacehub.www.vo.ResevSpaceVO;
+import com.spacehub.www.vo.ReviewSpaceVO;
 import com.spacehub.www.vo.ReviewVO;
 import com.spacehub.www.vo.SmemberVO;
 
@@ -22,7 +23,7 @@ public class ReviewListCommand implements ActionCommand {
 		
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 //		System.out.println(memberVO.getMemno());
-		ArrayList<ReviewVO> list = dao.getAll(memberVO.getMemno());
+		ArrayList<ReviewSpaceVO> list = dao.getSall(memberVO.getMemno());
 		req.setAttribute("list", list);		
 		dao.close();
 		

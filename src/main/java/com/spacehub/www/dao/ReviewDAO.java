@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.spacehub.www.vo.ReviewListVO;
+import com.spacehub.www.vo.ReviewSpaceVO;
 import com.spacehub.www.vo.ReviewVO;
 
 public class ReviewDAO {
@@ -67,6 +68,27 @@ public class ReviewDAO {
 						rs.getInt("reviewno"), rs.getString("subject"), rs.getString("contents"),
 						rs.getInt("rating"), rs.getString("regdate"), rs.getInt("status"),
 						rs.getString("ip"), rs.getInt("memno"), rs.getInt("reservno")
+						));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<ReviewSpaceVO> getSall(int memno){
+		ArrayList<ReviewSpaceVO> list = new ArrayList<ReviewSpaceVO>();
+		sb.setLength(0);
+		sb.append("SELECT r.reviewno, r.subject, r.contents, r.rating, r.regdate, r.status, r.ip, r.memno, r.reservno, v.spaceno, s.subject as spacename FROM review r, reservation v, space s WHERE r.reservno=v.reservno AND v.spaceno=s.spaceno AND r.memno=?;");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(new ReviewSpaceVO(
+						rs.getInt("reviewno"), rs.getString("subject"), rs.getString("contents"),
+						rs.getInt("rating"), rs.getString("regdate"), rs.getInt("status"),
+						rs.getString("ip"), rs.getInt("memno"), rs.getInt("reservno"), rs.getInt("spaceno"), rs.getString("spacename")
 						));
 			}
 		} catch (SQLException e) {
