@@ -91,9 +91,11 @@
 		.detail-host .info-img { width: 130px; height: 130px; border: 2px solid #666; border-radius: 100%; margin-right: 30px; overflow: hidden; }
 		.detail-host .info-img img { width: 100%; height: 100%; object-fit: cover; }
 		
-		.detail-host .detail-wrap { margin-top: 0; }
+		.detail-host .detail-wrap { width: 500px; margin-top: 0; }
 		.detail-host .detail-wrap .title-name { color: #333; }
-		.detail-host .detail-wrap .host-button { margin-top: 30px; }
+		.detail-host .detail-wrap .host-message { margin-top: 20px; }
+		.detail-host .detail-wrap .host-message textarea { width: 100%; height: 100px; border: 1px solid #ccc; border-radius: 10px; padding: 10px; resize: none; }
+		.detail-host .detail-wrap .host-button { margin-top: 10px; }
 		.detail-host .detail-wrap .host-button button { background: #fff; border: 1px solid #333; border-radius: 10px; padding: 10px 20px; font-weight: bold; }
 		.detail-host .detail-wrap .host-button button:hover { background: #f9f9f9; }
 		
@@ -256,6 +258,7 @@
 			});
 		});
 		
+		// 체크인/아웃 날짜 선택시 변경되는 문구 제어
 		const checkDateMsg = () => {
 			let dateMsgEl = $(".detail-date .title-name");
 			let dateTermEl = $(".detail-date .title-etc");
@@ -300,6 +303,7 @@
 			dateTermEl.text(dateTerm);
 		}
 		
+		// 날짜 포맷 변경
 		const formatDate = inputDate => {
 			let date = new Date(inputDate);
 			let year = date.getFullYear();
@@ -307,6 +311,31 @@
 			let day = String(date.getDate()).padStart(2, '0');
 			  
 			return year+"-"+month+"-"+day;
+		}
+		
+		// 호스트 문의하기
+		const hostMessageWrite = () => {
+			let form = $("form[name='messageForm']");
+			
+			if( !$("textarea[name='contents']", form).val() ){
+				alert("문의할 메시지를 입력해주세요.");
+				$("textarea[name='contents']", form).focus();
+			}
+			
+			$.ajax({
+				type: "POST",
+				url: "/spaceHub/message",
+				data: form.serialize(),
+				dataType: "json",
+				success: result => {
+					if( result.errorCode ){
+						alert(result.errorMsg);
+						return false;
+					}
+					
+					document.location.href = "/spaceHub/message";
+				}
+			});
 		}
 	</script>
 	<script>
@@ -568,8 +597,16 @@
 						<p class="title-name">호스트 : ${hostData.nickname} 님</p>
 						<div class="title-etc">회원가입일 : ${hostData.regdate}</div>
 					</div>
+					<div class="host-message">
+						<form name="messageForm">
+							<input type="hidden" name="cmd" value="writeOk" />
+							<input type="hidden" name="spaceno" value="${spaceData.spaceno}" />
+							
+							<textarea name="contents" placeholder="호스트에게 궁금한점을 물어보세요!"></textarea>
+						</form>
+					</div>
 					<div class="host-button">
-						<button>호스트에게 문의하기</button>
+						<button type="button" onclick="hostMessageWrite();">호스트에게 문의하기</button>
 					</div>
 				</div>
 			</div>

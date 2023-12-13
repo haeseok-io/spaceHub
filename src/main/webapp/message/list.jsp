@@ -203,10 +203,14 @@
 					contentData.forEach(obj => {
 						let appendHtml = $(appendTemplate);
 						
+						// 문자열 가공
+						let contents = obj.contents;
+						contents = contents.replace(/\r\n/g, '\n').replace(/\n/g, '<br>');
+						
 						appendHtml.find(".item-profile img").attr("src", obj.wprofileImg);
 						appendHtml.find(".subject-name").text(obj.wnickname);
 						appendHtml.find(".subject-date").text(obj.regdate);
-						appendHtml.find(".info-contents").text(obj.contents);
+						appendHtml.find(".info-contents").html(contents);
 						
 						appendEl.append(appendHtml);
 					});
@@ -301,9 +305,18 @@
 			return false;
 		}
 		
+		// 오늘잘짜
 		const getNowDateTime = () => {
 			let date = new Date();
 			return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+		}
+		
+		// 공간 상세페이지 이동
+		const spaceDetailView = () => {
+			let spaceWrap = $(".message-space .space-wrap");
+			let spaceno = spaceWrap.data("spaceno");
+			
+			window.open("/spaceHub/space?cmd=detail&spaceno="+spaceno, "_target");
 		}
 	</script>
 
@@ -393,7 +406,7 @@
 				</div>
 			</div>
 			<div class="space-more">
-				<button>상세보기</button>
+				<button type="button" onclick="spaceDetailView();">상세보기</button>
 			</div>
 		</div>
 	</template>
