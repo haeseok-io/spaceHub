@@ -10,38 +10,45 @@ public class SignupOkCommand implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
+		String emailParam = req.getParameter("email");
+		String passwordParam = req.getParameter("password");
+		String nameParam = req.getParameter("name");
+		String nicknameParam = req.getParameter("nickname");
+		String postParam = req.getParameter("post");
+		String addrParam = req.getParameter("addr");
+		String addrDetailParam = req.getParameter("addr_detail");
+		String bankNameParam = req.getParameter("bank_name");
+		String accountNumParam = req.getParameter("account_num");
 		
-		String email = req.getParameter("email");
-		String pw = req.getParameter("pw");
-		String name = req.getParameter("name");
-		String nickname = req.getParameter("nickname");
-		String post = req.getParameter("post");
-		String a = req.getParameter("address");
-		String da = req.getParameter("detailAddress");
-		String ea = req.getParameter("extraAddress");
-		String address = a+da+ea;
-		String accountNum = req.getParameter("accountNum");
-		
-		if(email != null || pw != null || name != null || nickname != null || post != null || address != null) {
-		
-			SmemberVO vo = new SmemberVO();
-			vo.setEmail(email);
-			vo.setPassword(pw);
-			vo.setName(name);
-			vo.setNickname(nickname);
-			vo.setPost(post);
-			vo.setAddr(address);
-			vo.setAccountNum(accountNum);
-			vo.setCredits(0);
-			
-			SmemberDAO dao = new SmemberDAO();
-			
-			dao.addOne(vo);
-			dao.close();
-		
+		// Check
+		if( emailParam==null || passwordParam==null || nameParam==null || postParam==null || addrParam==null || addrDetailParam==null || emailParam.equals("") || passwordParam.equals("") || nameParam.equals("") || postParam.equals("") || addrParam.equals("") ) {
+			return "/spaceHub/sign?cmd=signup";
 		}
+
+		// Data
+		SmemberDAO smemberDAO = new SmemberDAO();
+		SmemberVO smemberVO = new SmemberVO();
 		
-		return "/sign/login.jsp";
+		// - 주소 가공
+		if( addrDetailParam==null ) addrDetailParam = "";
+		addrParam += " "+addrDetailParam;
+		
+		// - 데이터 담기
+		smemberVO.setEmail(emailParam);
+		smemberVO.setPassword(passwordParam);
+		smemberVO.setName(nameParam);
+		smemberVO.setNickname(nicknameParam);
+		smemberVO.setPost(postParam);
+		smemberVO.setAddr(addrParam);
+		smemberVO.setBankName(bankNameParam);
+		smemberVO.setAccountNum(accountNumParam);
+		
+		// Process
+		smemberDAO.addOne(smemberVO);
+		smemberDAO.close();
+		
+		// Result
+		return "/spaceHub/sign";
 	}
 
 }

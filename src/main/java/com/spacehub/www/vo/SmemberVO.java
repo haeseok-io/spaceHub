@@ -17,6 +17,7 @@ public class SmemberVO {
 	String profileImg;
 	String post;
 	String addr;
+	String bankName;
 	String accountNum;
 	String regdate;
 	int credits;

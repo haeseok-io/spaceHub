@@ -27,7 +27,99 @@
 	
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
+		const regexObj = {
+			email : /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+			password : /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+		}
+	
 		$(() => {
+			// 이메일 중복 체크
+			$("input[name='email']").on("keyup", e => {
+				let _this = $(e.currentTarget);
+				let email = _this.val().trim();
+				
+				// Check
+				if( !email ) {
+					printErrorMsg(_this, "", null);
+					return false;
+				}
+				
+				// - 이메일 정규식 체크
+				if( !regexObj.email.test(email) ) {
+					printErrorMsg(_this, "이메일 형식을 확인해주세요.", true);
+					return false;
+				}
+				
+				// Process
+				$.ajax({
+					type: "GET",
+					url: "/spaceHub/sign",
+					data: {cmd: "emailCheck", email: email},
+					dataType: "json",
+					success: result => {
+						// 오류메시지
+						if( result.errorCode ){
+							printErrorMsg(_this, result.errorMsg, true);
+							return false;
+						}
+						
+						// 정상
+						printErrorMsg(_this, "사용 가능한 이메일입니다.", false);
+					}
+				})
+			});
+			
+			// 비밀번호 체크
+			$("input[name='password']").on("keyup", e => {
+				let _this = $(e.currentTarget);
+				
+				// Init
+				passwordReCheck();
+				if( !_this.val() ){
+					printErrorMsg(_this, "", null);
+					return false;
+				}
+				
+				// Check
+				if( !regexObj.password.test(_this.val()) ){
+					printErrorMsg(_this, "최소 8자 영문+숫자를 포함하여야 합니다.", true);
+					return false;
+				}
+				
+				// Result
+				printErrorMsg(_this, "사용 가능한 비밀번호 입니다.", false);
+			});
+			$("input[name='password_chk']").on("keyup", passwordReCheck);
+			
+			// 닉네임 중복 체크
+			$("input[name='nickname']").on("keyup", e => {
+				let _this = $(e.currentTarget);
+				let nickname = _this.val();
+				
+				// Check
+				if( !nickname ) {
+					printErrorMsg(_this, "", null);
+					return false;
+				}
+				
+				// Process
+				$.ajax({
+					type: "GET",
+					url: "/spaceHub/sign",
+					data: {cmd: "nicknameCheck", nickname: nickname},
+					dataType: "json",
+					success: result => {
+						// 오류메시지
+						if( result.errorCode ){
+							printErrorMsg(_this, result.errorMsg, true);
+							return false;
+						}
+						
+						// 정상
+						printErrorMsg(_this, "사용 가능한 닉네임입니다.", false);
+					}
+				})
+			});
 			
 			// 이용약관 전체 동의
 			$("input[name='agreeAllChk']").on("change", e => {
@@ -44,86 +136,59 @@
 			$("input[name='agree']").on("change", e => {
 				// Val
 				let allChkEl = $("input[name='agreeAllChk']");
-				let allChkState = false;
-				let chkEl = $("input[name='agree']");
-				
-				// Data
-				chkEl.each(el => {
-					let chkState = $(el).is(":checked");
-					console.log(chkState);
-				});
+				let chkLength = $("input[name='agree']").length;;
+				let checkedLength = $("input[name='agree']:checked").length;
 				
 				// Result
-				
-				
-			});
-			
-			
-			$("#emailCk").on("click",()=>{
-				let email = $("#email").val().trim();
-				$.ajax({
-					type: "POST",
-					asyne: true,
-					url : "sign/emailCheck.jsp",
-					data : {"email":email},
-					success : function(response,status,request){
-						if(response.trim() == 'true'){
-							$("#ec").val('y');
-							alert("사용가능합니다.");
-						}else if(response.trim() == 'false'){
-							alert("이메일이 이미 존재합니다.");
-						}else if(response.trim() == 'err'){
-							alert("이메일을 형식을 확인해주세요.")
-						}else {
-							alert("이메일을 입력해주세요.")
-						}
-					}
-				});
-			});
-			
-			$("#pwCk").on("click",()=>{
-				let pw = $("#pw").val().trim();
-				$.ajax({
-					type: "POST",
-					asyne: true,
-					url : "sign/pwCheck.jsp",
-					data : {"pw":pw},
-					success : function(response,status,request){
-						if(response.trim() == 'true'){
-							$("#pc").val('y');
-							alert("사용 가능합니다.");
-						}else if(response.trim() == 'false'){
-							alert("8자리 이상 입력해주세요.");
-						}else {
-							alert("비밀번호를 입력해주세요.")
-						}
-					}
-				});
+				if( chkLength==checkedLength )	allChkEl.prop("checked", true);
+				else 							allChkEl.prop("checked", false);
 				
 			});
-			
-			$("#nkname").on("click",()=>{
-				let nickname = $("#nickname").val().trim();
-				$.ajax({
-					type: "POST",
-					asyne: true,
-					url : "sign/nicknameCheck.jsp",
-					data : {"nickname":nickname},
-					success : function(response,status,request){
-						if(response.trim() == 'true'){
-							$("#nc").val('y');
-							alert("사용 가능합니다.");
-						}else if(response.trim() == 'false'){
-							alert("다른 닉네임을 입력해주세요.");
-						}else {
-							alert("닉네임을 입력해주세요.")
-						}
-					}
-				});
-			});
-			
-			
 		});
+		
+		// 회원가입 폼 체크
+		const checkForm = () => {
+			// Val
+			let form = document.signupForm;
+			
+			// Check
+			if( !form.email.value ) {
+				alert("이메일을 입력해주세요.");
+				form.email.focus();
+				return false;
+			} else if( !regexObj.email.test(form.email.value) ) {
+				alert("이메일 형식을 확인해주세요.");
+				form.email.focus();
+				return false;
+			} else if( !form.password.value ) {
+				alert("비밀번호를 입력해주세요.");
+				form.password.focus();
+				return false;
+			} else if( !regexObj.password.test(form.password.value) ) {
+				alert("비밀번호는 최소 8자 영문+숫자 조합이여야 합니다.");
+				form.password.focus();
+				return false;
+			} else if( form.password.value!=form.password_chk.value ){
+				alert("비밀번호를 다시 확인해주세요.");
+				form.password_chk.focus();
+				return false;
+			} else if( !form.name.value ) {
+				alert("이름을 입력해주세요.");
+				form.name.focus();
+				return false;
+			} else if( !form.post.value || !form.addr.value ) {
+				alert("주소를 입력해주세요.");
+				return false;
+			}
+			
+			// 이용약관 체크
+			let agreeElLength = $("input[name='agree']", form).length;
+			let agreeChkElLength = $("input[name='agree']:checked", form).length;
+			if( agreeElLength!=agreeChkElLength){
+				alert("이용약관을 동의해주세요.");
+				return false;
+			}
+		}
 		
 		// 우편번호 검색창 열기
 		const searchAddress = () => {
@@ -146,9 +211,47 @@
 			$("input[name='addr_detail']", form).focus();
 		}
 		
-		// 회원가입 폼 체크
-		const checkForm = () => {
+		// 비밀번호 재확인
+		const passwordReCheck = () => {
+			let passEl = $("input[name='password']");
+			let repassEl = $("input[name='password_chk']");
 			
+			if( !repassEl.val() ){
+				printErrorMsg(repassEl, "", null);
+				return false;
+			}
+			
+			if( passEl.val()!=repassEl.val() ){
+				printErrorMsg(repassEl, "비밀번호가 일치하지 않습니다.", true);
+				return false;
+			}
+			
+			// Result
+			printErrorMsg(repassEl, "비밀번호가 일치합니다.", false);
+		}
+		
+		// 에러메시지 출력 함수
+		const printErrorMsg = (e, m, t) => {
+			let wrapEl = $(e).parents(".data-wrap");
+			let errorEl = wrapEl.find(".data-msg");
+			
+			// Init
+			wrapEl.removeClass("error").removeClass("success");
+			errorEl.removeClass("error").removeClass("success");
+			
+			// Check
+			if( t==null ) {
+				errorEl.text("");
+				return false;
+			}
+			
+			// Data
+			let errorType = t ? "error" : "success";
+			
+			// Result
+			wrapEl.addClass(errorType);
+			errorEl.addClass(errorType);
+			errorEl.text(m);
 		}
 		
 	</script>
@@ -176,13 +279,13 @@
 						</div>
 						<div class="data-wrap">
 							<div class="data-field">
-								<input type="password" name="pw" placeholder="비밀번호" />
+								<input type="password" name="password" placeholder="비밀번호" />
 							</div>
 							<div class="data-msg"></div>
 						</div>
 						<div class="data-wrap">
 							<div class="data-field">
-								<input type="password" name="pw_chk" placeholder="비밀번호 확인" />
+								<input type="password" name="password_chk" placeholder="비밀번호 확인" />
 							</div>
 							<div class="data-msg"></div>
 						</div>
@@ -199,7 +302,7 @@
 						</div>
 						<div class="data-wrap button">
 							<div class="data-field">
-								<input type="text" name="post" placeholder="우편번호" />
+								<input type="text" name="post" placeholder="우편번호" readonly onclick="searchAddress();" />
 							</div>
 							<div class="data-button">
 								<button type="button" class="btn btn-outline-secondary" onclick="searchAddress();">우편번호 찾기</button>
@@ -207,7 +310,7 @@
 						</div>
 						<div class="data-wrap">
 							<div class="data-field">
-								<input type="text" name="addr" placeholder="주소" />
+								<input type="text" name="addr" placeholder="주소" readonly onclick="searchAddress();" />
 							</div>
 						</div>
 						<div class="data-wrap">
@@ -251,7 +354,7 @@
 											<input type="checkbox" name="agree" id="agree1" />
 											<label for="agree1">
 												<span class="checkbox-view"></span>
-												<span>이용 약관</span>
+												<span>이용약관</span>
 											</label>
 										</div>
 										<div>

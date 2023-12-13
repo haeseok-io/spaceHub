@@ -69,6 +69,11 @@
 .fieldset-wrap .fieldset-data .data-wrap .data-field { width: 100%; }
 .fieldset-wrap .fieldset-data .data-wrap .data-field input[type='text'],
 .fieldset-wrap .fieldset-data .data-wrap .data-field input[type='password'] { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 20px; }
+.fieldset-wrap .fieldset-data .data-wrap.error .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap.error .data-field input[type='password'] { border: 1px solid #dc3545; }
+.fieldset-wrap .fieldset-data .data-wrap.success .data-field input[type='text'],
+.fieldset-wrap .fieldset-data .data-wrap.success .data-field input[type='password'] { border: 1px solid #198754; }
+
 .fieldset-wrap .fieldset-data .data-wrap .data-field select { width: 100%; height: 50px; border: 1px solid #ccc; border-radius: 5px; padding-left: 15px; }
 
 
