@@ -47,7 +47,6 @@ public class AdminControl extends HttpServlet{
 			Action ac = new ReservationListCommand();
 			url = ac.execute(req, resp);
 		} 
-		
 
 		if( isRedirect ) {
 			resp.sendRedirect(url);
