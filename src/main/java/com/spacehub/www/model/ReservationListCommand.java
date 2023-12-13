@@ -27,7 +27,6 @@ public class ReservationListCommand implements Action {
 		ArrayList<ReservationVO> list = dao.getAll();
 		
 		req.setAttribute("list", list);	
-		
 		}
 		
 		return "admin/reservationList.jsp";
