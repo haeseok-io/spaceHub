@@ -40,6 +40,7 @@ public class OrderCommand implements ActionCommand {
 			if(checkin == "" || checkout == "" || guest == "") {
 				return "main.jsp";
 			}
+			
 			if(s != null || checkin != null || checkout != null || guest != null) {
 				int Spaceno = Integer.parseInt(s);
 				MemCouponDAO mdao = new MemCouponDAO();
