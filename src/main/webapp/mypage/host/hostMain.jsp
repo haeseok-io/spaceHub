@@ -6,9 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>호스트 마이페이지</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<jsp:include page="/common/common.jsp" />
 <style>
 	img{
 		width: 200px;
@@ -18,24 +16,34 @@
 	}
 	a {
 		color: black;
+		text-decoration: none;
 	}
 	.spaceInfo p.space_subject {
 	    text-decoration: none; /* P태그의 밑줄 삭제 */
 	}
+	.account a.account_update {
+		text-decoration: underline;
+	}
+	.account {
+		border: 3px solid gray;
+		border-radius: 10px;
+		width: 250px;
+	}
 </style>
-</head>
-<body>
+
+<jsp:include page="/common/header.jsp" />
+
 	<div class="container">
 		<form action="" method="post">
 			<div class="greet">
-				<h1>${member.name }님 안녕하세요</h1>
-				<h2>숙소 등록 후 24시간이 지나면 게스트가 예약을 할 수 있습니다! 예약을 받을 수 있도록 설정을 마쳐보세요!</h2>
+				<h2>${member.name }님 안녕하세요</h2>
+				<h4>숙소 등록 후 24시간이 지나면 게스트가 예약을 할 수 있습니다! 예약을 받을 수 있도록 설정을 마쳐보세요!</h4>
 			</div>
 			<div>
 				<div class="account">
 					<div>계정 정보를 제출하셔야 합니다!</div>
 					<div>대금 수령을 위한 정보가 필요합니다.</div>
-					<a href="/spaceHub/mypage?cmd=modify&memno=${member.memno }">계정 정보 업데이트</a>
+					<a class="account_update" href="/spaceHub/mypage?cmd=modify&memno=${member.memno }">계정 정보 업데이트</a>
 				</div>
 			</div>
 			<div>
@@ -50,8 +58,8 @@
 							</div>
 								<p class="space_subject">${vo.subject }</p>
 							</a>
-							<a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a>
-							<a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a>
+							<button type="button" class="btn btn-secondary"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
+							<button type="button" class="btn btn-secondary"><a href="/spaceHub/space?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
 						</div>
 				 </c:forEach>
 			</div>

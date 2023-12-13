@@ -211,16 +211,15 @@ public class SmemberDAO {
 	public void modifyOne(SmemberVO vo) {
 		sb.setLength(0);
 		sb.append("update smember ");
-		sb.append("set password=?, post=?, addr=?, account_num=? ");
+		sb.append("set post=?, addr=?, account_num=? ");
 		sb.append("where memno=?");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setString(1, vo.getPassword());
-			pstmt.setString(2, vo.getPost());
-			pstmt.setString(3, vo.getAddr());
-			pstmt.setString(4, vo.getAccountNum());
-			pstmt.setInt(5, vo.getMemno());
+			pstmt.setString(1, vo.getPost());
+			pstmt.setString(2, vo.getAddr());
+			pstmt.setString(3, vo.getAccountNum());
+			pstmt.setInt(4, vo.getMemno());
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
