@@ -82,7 +82,7 @@ public class JjimDAO {
 
 		sb.setLength(0);
 		sb.append("select space.spaceno, space.subject, space.price, space_detail.bed, ");
-		sb.append("space_detail.in_date, space_detail.out_date, jjim.jjimno ");
+		sb.append("space.addr, space_detail.in_date, space_detail.out_date, jjim.jjimno ");
 		sb.append("FROM jjim ");
 		sb.append("JOIN space_detail ON space_detail.spaceno = jjim.spaceno ");
 		sb.append("JOIN space ON space.spaceno = jjim.spaceno ");
@@ -97,11 +97,12 @@ public class JjimDAO {
 				int spaceno = rs.getInt("space.spaceno");
 				int price = rs.getInt("space.price");
 				int bed = rs.getInt("space_detail.bed");
+				String addr = rs.getString("space.addr");
 				String inDate = rs.getString("space_detail.in_date");
 				String outDate = rs.getString("space_detail.out_date");
 				int jjimno = rs.getInt("jjim.jjimno");
 				
-				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, inDate, outDate, price, jjimno, null);
+				JjimListVO vo = new JjimListVO(memno, subject, spaceno, bed, addr, inDate, outDate, price, jjimno, null);
 				list.add(vo);
 			}
 		} catch (SQLException e) {

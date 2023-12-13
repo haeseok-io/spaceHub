@@ -16,6 +16,7 @@ public class JjimListVO {
 	String subject;
 	int spaceno;
 	int bed;
+	String addr;
 	String inDate;
 	String outDate;
 	int price;
