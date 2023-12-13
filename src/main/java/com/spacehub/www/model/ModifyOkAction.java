@@ -39,7 +39,7 @@ public class ModifyOkAction implements Action{
 	        req.setAttribute("showAlert", true);
 	        req.setAttribute("alertMessage", "회원 정보 수정이 완료되었습니다.");
 		}
-		return "/mypage/modifyForm.jsp";
+		return "/spaceHub/mypage";
 	}
 
 }

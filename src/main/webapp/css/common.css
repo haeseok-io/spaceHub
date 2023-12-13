@@ -40,7 +40,8 @@
 
 
 #header .header-user { position: relative; z-index: 2; display: flex; align-items: center; }
-#header .header-user .user-advertise { margin-right: 20px; font-size: 14px; color: #888; }
+#header .header-user .user-advertise { margin-right: 20px; }
+#header .header-user .user-advertise a { font-size: 14px; color: #888; }
 #header .header-user .user-menu .menu-toggle { height: 40px; border: 1px solid #ccc; border-radius: 30px; padding: 0 10px; cursor: pointer; }
 #header .header-user .user-menu .menu-toggle i { margin-right: 5px; font-size: 22px; }
 #header .header-user .user-menu .menu-toggle i:last-child { margin-right: 0; }

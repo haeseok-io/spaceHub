@@ -12,9 +12,7 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5e9f8f00127fcd38f89ea645b5f3327f&libraries=services,clusterer,drawing"></script>
 	<style>
 		img{width:200px; height:200px;}
-		*{
-			margin:auto;
-		}
+		
 		.map_wrap {position:relative;width:100%;height:500px;}
 	    .title {font-weight:bold;display:block;}
 	    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}

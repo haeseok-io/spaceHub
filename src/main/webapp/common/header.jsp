@@ -105,10 +105,15 @@
 				</div>
 			</div>
 			
+			<form name="testForm">
+				<input type="hidden" name="x" />
+			</form>
+			
+			
 			</c:if>
 			<div class="header-user">
 				<div class="user-advertise">
-					<p>당신의 공간을 공유해보세요.</p>
+					<p><a href="/spaceHub/space?cmd=write">당신의 공간을 공유해보세요.</a></p>
 				</div>
 				<div class="user-menu">
 					<div class="menu-toggle">
