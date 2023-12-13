@@ -1,5 +1,7 @@
 package com.spacehub.www.model;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,6 @@ public class OrderOkCommand implements ActionCommand {
 		  String addr = req.getParameter("addr");
 		  String postcode = req.getParameter("postcode");
 		  String cardnum = req.getParameter("cardnum");
-		  String ip = req.getRemoteAddr();
 		  String checkin = req.getParameter("checkin");
 		  String checkout = req.getParameter("checkout");
 		  String g = req.getParameter("guest");
@@ -47,7 +48,7 @@ public class OrderOkCommand implements ActionCommand {
 		  String couponname = req.getParameter("couponname");
 		  String creditsprice = req.getParameter("creditsPrice");
 		  
-		  if(s != null || creditsprice != null || ip != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
+		  if(s != null || creditsprice != null || checkin != null || checkout != null || g != null || c != null || d != null || couponname != null || phone != null || p != null || name != null || addr != null || postcode != null) {
 			  int price = Integer.parseInt(p);
 			  int spaceno = Integer.parseInt(s);
 			  int guest = Integer.parseInt(g);
@@ -69,7 +70,12 @@ public class OrderOkCommand implements ActionCommand {
 			  rvo.setPrice(price);
 			  rvo.setGuest(guest);
 			  rvo.setDcratio(dcratio);
-			  rvo.setIp(ip);
+			  try {
+					rvo.setIp(
+					 Inet4Address.getLocalHost().getHostAddress());
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
 			  rvo.setSpaceno(spaceno);
 			  rvo.setMemno(memberVO.getMemno());
 			  
