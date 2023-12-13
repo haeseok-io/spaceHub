@@ -33,7 +33,7 @@ public class SpaceDAO {
 		sb.append("Select s.spaceno ");
 		sb.append("From space s, space_detail d, space_image i, reservation r, review rv ");
 		sb.append("Where s.spaceno=d.spaceno And s.spaceno=i.spaceno And s.spaceno=r.spaceno And r.reservno=rv.reservno ");
-		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("And i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) Or i.seq is null ");
 		sb.append("Group By r.spaceno");
 		sb.append(") as s");
 		
@@ -61,10 +61,10 @@ public class SpaceDAO {
 		sb.append("From ( ");
 		sb.append("Select s.spaceno From space s ");
 		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
-		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join space_image i On s.spaceno=i.spaceno ");
 		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
 		sb.append("Left Join review rv On r.reservno=rv.reservno ");
-		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) Or i.seq is null ");
 		
 		if( subject!=null && !subject.equals("") ) 	sb.append("And s.subject Like '%"+subject+"%' ");		
 		if( inDate!=null && !inDate.equals("") ) 	sb.append("And d.in_date<='"+inDate+"' ");
@@ -144,10 +144,10 @@ public class SpaceDAO {
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
 		sb.append("From space s ");
 		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
-		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join space_image i On s.spaceno=i.spaceno ");
 		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
 		sb.append("Left Join review rv On r.reservno=rv.reservno ");
-		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) Or i.seq is null ");
 		sb.append("Group By s.spaceno");
 		
 		
@@ -172,10 +172,10 @@ public class SpaceDAO {
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
 		sb.append("From space s ");
 		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
-		sb.append("Join space_image i On s.spaceno=i.spaceno ");
+		sb.append("Left Join space_image i On s.spaceno=i.spaceno ");
 		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
 		sb.append("Left Join review rv On r.reservno=rv.reservno ");
-		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) Or i.seq is null ");
 		sb.append("Group By s.spaceno ");
 		sb.append("Limit "+startNo+", "+endNo);
 		
@@ -201,10 +201,10 @@ public class SpaceDAO {
 		sb.append("Select s.spaceno, s.loc, s.subject, s.addr, s.price, s.memno, d.in_date, d.out_date, i.path, avg(rv.rating) as rating ");
 		sb.append("From space s ");
 		sb.append("Join space_detail d On s.spaceno=d.spaceno ");
-		sb.append("Join space_image i On s.spaceno=i.spaceno ");
-		sb.append("Left Join reservation r On s.spaceno=r.spaceno ");
+		sb.append("Left Join space_image i On i.spaceno=s.spaceno ");
+		sb.append("Left Join reservation r On r.spaceno=s.spaceno ");
 		sb.append("Left Join review rv On r.reservno=rv.reservno ");
-		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) ");
+		sb.append("Where i.seq=(Select seq From space_image Where spaceno=i.spaceno Order By seq ASC Limit 1) Or i.seq is null ");
 		
 		if( subject!=null && !subject.equals("") ) 	sb.append("And s.subject Like '%"+subject+"%' ");
 		if( inDate!=null && !inDate.equals("") ) 	sb.append("And d.in_date<='"+inDate+"' ");

@@ -148,6 +148,33 @@ public class MessageDAO {
 		}
 	}
 	
+	// 회원이 문의한 bno 값 추출
+	public int getMyMessageBno(int spaceno, int memno) {
+		int bno = 0;
+		
+		sb.setLength(0);
+		sb.append("SELECT bno ");
+		sb.append("FROM message m ");
+		sb.append("WHERE spaceno=? AND memno=? ");
+		sb.append("And messageno In (SELECT MIN(messageno) FROM message WHERE spaceno=m.spaceno GROUP BY bno) ");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			pstmt.setInt(2, memno);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				bno = rs.getInt("bno");
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return bno;
+	}
+	
 	// 상대방이 보낸 메시지 읽음 처리
 	// - bno 게시물중 memno 가 일치하지 않는값 변경 (상대방이 보낸 메시지)
 	public void readMessage(int bno, int memno) {
@@ -166,6 +193,29 @@ public class MessageDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	// 다음 bno 리턴
+	public int getNextBno() {
+		int lastBno = 0;
+		
+		sb.setLength(0);
+		sb.append("Select max(bno) as max_bno From message");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				lastBno = rs.getInt("max_bno")+1;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lastBno;
+	}
+	
 	
 	//종료
 	public void close()	{

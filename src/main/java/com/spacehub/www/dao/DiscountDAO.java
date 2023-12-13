@@ -31,7 +31,7 @@ public class DiscountDAO {
 			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				list.add(new DiscountVO(rs.getInt("disno"), rs.getString("name"), rs.getInt("dcratio"),
 						rs.getInt("spaceno")));
 			}
@@ -54,7 +54,7 @@ public class DiscountDAO {
 			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				data.setDisno(rs.getInt("disno"));
 				data.setName(rs.getString("name"));
 				data.setDcratio(rs.getInt("dcratio"));
@@ -79,7 +79,7 @@ public class DiscountDAO {
 			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				data.setDisno(rs.getInt("disno"));
 				data.setName(rs.getString("name"));
 				data.setDcratio(rs.getInt("dcratio"));
@@ -104,7 +104,7 @@ public class DiscountDAO {
 			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				data.setDisno(rs.getInt("disno"));
 				data.setName(rs.getString("name"));
 				data.setDcratio(rs.getInt("dcratio"));

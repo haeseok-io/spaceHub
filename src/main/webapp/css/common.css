@@ -59,10 +59,11 @@
 #header .header-user .user-menu .menu-wrap .menu-list li:hover { background: #f4f4f4; }
 
 
+.main .inner { padding: 50px 0; }
+
 
 .page-title { margin-bottom: 30px; }
 .page-title .title-name { font-weight: bold; font-size: 28px; line-height: 30px; }
-
 
 .fieldset-wrap {}
 .fieldset-wrap .fieldset-data {}
