@@ -250,7 +250,7 @@
 			    <input type="hidden" name="dprice" id="discountprice" value="0"/>
 			  </div>
 			  <div class="card-body">
-			    <p class="card-title" id="dis">호스트의 할인</p>
+			    <p class="card-title" id="dis">${sna}</p>
 			    <p class="card-text" style="float: right"> %</p>
 			    <p class="card-text" style="float: right" id="discount-price">${dc}</p>
 			    <input type="hidden" name="dcp" id="dcp" value="${dc}"/>

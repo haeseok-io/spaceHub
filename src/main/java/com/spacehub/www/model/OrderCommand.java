@@ -80,32 +80,71 @@ public class OrderCommand implements ActionCommand {
 				int tax = (int)(vo.getPrice()*(Integer.parseInt(bark))*0.01);
 				
 				int dc = 0;
+				String sna = "";
 				if(dlist != null) {
-					if(dvo != null) {
-						if(sdvo != null) {
-							if(sdvo.getReservno() <= 2){
-								dc = dvo.getDcratio();
-							}
-						}else {
+					if(dvo.getName() != null) {
+						
+						if(sdvo.getReservno() < 3) {
 							dc = dvo.getDcratio();
+							sna = dvo.getName();
+						}else if(dwvo.getName() != null) {
+							
+							if(Integer.parseInt(bark) > 6) {
+								dc = dwvo.getDcratio();
+								sna = dwvo.getName();
+							}
+							
+						}else if(dmvo.getName() != null) {
+							
+							if(Integer.parseInt(bark) > 27) {
+								dc = dmvo.getDcratio();
+								sna = dmvo.getName();
+							}
+							
+						}else {
+							dc = 0;
+							sna = "호스트의 할인";
 						}
-					}else if(dwvo != null) {
-						if(Integer.parseInt(bark)>=7) {
+						
+					}else if(dwvo.getName() != null) {
+						
+						if(Integer.parseInt(bark) > 6) {
 							dc = dwvo.getDcratio();
+							sna = dwvo.getName();
+						}else if(dmvo.getName() != null) {
+							
+							if(Integer.parseInt(bark) > 27) {
+								dc = dmvo.getDcratio();
+								sna = dmvo.getName();
+							}
+							
+						}else {
+							dc = 0;
+							sna = "호스트의 할인";
 						}
-					}else if(dmvo != null) {
-						if(Integer.parseInt(bark)>=28) {
+						
+					}else if(dmvo.getName() != null) {
+						
+						if(Integer.parseInt(bark) > 27) {
 							dc = dmvo.getDcratio();
+							sna = dmvo.getName();
+						}else {
+							dc = 0;
+							sna = "호스트의 할인";
 						}
+						
 					}else {
 						dc = 0;
+						sna = "호스트의 할인";
 					}
 				}else {
 					dc = 0;
+					sna = "호스트의 할인";
 				}
 				
 				int disc = (int)((100-dc)*0.01);
 				
+				req.setAttribute("sna", sna);
 				req.setAttribute("crvo", crvo);
 				req.setAttribute("disc", disc);
 				req.setAttribute("tax", tax);
