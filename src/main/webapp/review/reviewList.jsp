@@ -9,7 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <style>
-	.table{
+	table{
 		text-align: center;
 	}
 </style>
@@ -18,14 +18,8 @@
 	<div class="container">
 		<form action="">
 			<h3>내가 작성한 후기</h3>
-			<table class="table">
-			  <thead>
-			    <tr>
-			      <th scope="col" colspan="5">예약후기</th>
-			    </tr>
-			  </thead>
+			<table class="table table-borderless">
 	<c:forEach var="vo" items="${list}">
-			  <tbody>
 			    <tr>
 			      <th>예약번호 :</th>
 			      <td scope="row">${vo.reservno}</td>
@@ -37,7 +31,7 @@
 			    	<th colspan="1">내용 :</th>
 			    	<td colspan="4">${vo.contents}</td>
 			    </tr>
-			  </tbody>
+			    <hr />
 		</c:forEach>
 			</table>
 		</form>
