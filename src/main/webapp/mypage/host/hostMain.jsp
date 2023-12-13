@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>호스트 마이페이지</title>
 <jsp:include page="/common/common.jsp" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <style>
 	img{
 		width: 200px;
@@ -39,8 +41,33 @@
 	.empty_account a.account_update {
 		text-decoration: underline;
 	}
-</style>
+	.slider {
+        position: relative;
+        max-width: 200px; /* 슬라이더의 최대 너비를 조절 */
+    }
 
+    .slider img {
+        width: 200px; /* 이미지가 슬라이더 안에 꽉 차도록 설정 */
+        height: 200px; /* 가로 비율에 따라 세로 비율 자동 조절 */
+        border-radius: 8px; /* 이미지에 둥근 테두리 적용 */
+    }
+    .img_wrap {
+    	position: relative;
+        width: 100%; /* 슬라이드 전체 너비 */
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.slider').slick({
+			slidesToShow : 1,
+			slidesToScroll : 1,
+			autoplay : false,
+			dots : true,
+			pauseOnFocus: true,
+		});
+	});
+</script>
 <jsp:include page="/common/header.jsp" />
 
 	<div class="container">
@@ -67,16 +94,16 @@
 				<h2>등록한 숙소</h2>
 				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
-							<div class="img_wrap">
+							<div class="img_wrap slider">
 								<c:forEach var="img" items="${vo.imgList }">
-									<a href="/spaceHub/mypage/host?cmd=reservCalender">
 										<img src="${img.path }" alt="" />
 									</a>
 								</c:forEach> 
 							</div>
 							<p class="space_subject">${vo.subject }</p>
-							<button type="button" class="btn btn-secondary"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
-							<button type="button" class="btn btn-secondary"><a href="/spaceHub/mypage/host?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
+							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender">예약자 확인</a></button>
+							<button type="button" class="btn btn-warning"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
+							<button type="button" class="btn btn-danger"><a href="/spaceHub/mypage/host?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
 						</div>
 				 </c:forEach>
 			</div>

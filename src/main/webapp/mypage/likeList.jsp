@@ -34,6 +34,9 @@
         height: 200px; /* 가로 비율에 따라 세로 비율 자동 조절 */
         border-radius: 8px; /* 이미지에 둥근 테두리 적용 */
     }
+    span {
+    	font-weight: bold; font-size: 18px;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
@@ -62,9 +65,9 @@
 							</a>
 						</c:forEach>
 					</div>
-						<p>${vo.subject }</p>
-						<p>침대 : ${vo.bed }개</p>
-						<p>가격 : $${vo.price }/1박	</p>
+						<div><span class="subject">${vo.subject }</span></div>
+						<div>${vo.addr }</div>
+						<div>₩ <span class="price">${vo.price }</span> / 1박</div>
 			</c:forEach>
 			<c:if test="${empty jjimList}">
         		    <p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
