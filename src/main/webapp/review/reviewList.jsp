@@ -12,6 +12,9 @@
 	table{
 		text-align: center;
 	}
+	a{
+		text-decoration:none;
+	}
 </style>
 
 </head>
@@ -19,20 +22,22 @@
 	<div class="container">
 		<form action="">
 			<h3>내가 작성한 후기</h3>
-			<table class="table table-borderless">
+			<table class="table">
+			    <tr>
+			      <th>공간이름</th>
+			      <th>제목</th>
+			      <th>내용</th>
+			      <th>별점</th>
+			      <th>등록일</th>
+			    </tr>
 	<c:forEach var="vo" items="${list}">
 			    <tr>
-			      <th>예약번호 :</th>
-			      <td scope="row">${vo.reservno}</td>
-			      <th>제목 :</th>
+			      <td scope="row"><a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">${vo.spacesubject}</a></td>
 			      <td>${vo.subject}</td>
+			      <td>${vo.contents}</td>
+			      <td>${vo.rating}</td>
 			      <td>${vo.regdate}</td>
 			    </tr>
-			    <tr>
-			    	<th colspan="1">내용 :</th>
-			    	<td colspan="4">${vo.contents}</td>
-			    </tr>
-			    <hr />
 		</c:forEach>
 			</table>
 		</form>
