@@ -1,7 +1,6 @@
 package com.spacehub.www.model;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,15 +11,10 @@ import com.spacehub.www.dao.SpaceDAO;
 import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.dao.SpaceFacDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
-import com.spacehub.www.vo.DiscountVO;
-import com.spacehub.www.vo.HostSpaceImageVO;
 import com.spacehub.www.vo.SmemberVO;
-import com.spacehub.www.vo.SpaceDetailVO;
-import com.spacehub.www.vo.SpaceFacVO;
-import com.spacehub.www.vo.SpaceVO;
 
+public class SpaceDeleteAction implements Action {
 
-public class SpaceModifyAction implements Action {
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String memno = req.getParameter("memno");
@@ -41,17 +35,11 @@ public class SpaceModifyAction implements Action {
 			SpaceFacDAO spaceFacDao = new SpaceFacDAO();
 			DiscountDAO discountDao = new DiscountDAO();
 			
-			SpaceVO spaceVo = spaceDao.getOne(Integer.parseInt(spaceno));
-			SpaceDetailVO spaceDetailVo = spaceDetailDao.getOne(Integer.parseInt(spaceno));
-			SpaceFacVO spaceFacVo = spaceFacDao.getOne(Integer.parseInt(spaceno));
-			ArrayList<HostSpaceImageVO> list = spaceImageDao.getSpaceImages(Integer.parseInt(spaceno),Integer.parseInt(memno));
-			ArrayList<DiscountVO> dcList = discountDao.getOne(Integer.parseInt(spaceno));
-			
-			req.setAttribute("spaceVo", spaceVo);
-			req.setAttribute("spaceDetailVo", spaceDetailVo);
-			req.setAttribute("spaceFacVo", spaceFacVo);
-			req.setAttribute("list", list);
-			req.setAttribute("dcList", dcList);
+			spaceDao.deleteOne(Integer.parseInt(spaceno));
+			spaceDetailDao.deleteOne(Integer.parseInt(spaceno));
+			spaceImageDao.deleteOne(Integer.parseInt(spaceno));
+			spaceFacDao.deleteOne(Integer.parseInt(spaceno));
+			discountDao.deleteOne(Integer.parseInt(spaceno));
 			
 			spaceDao.close();
 			spaceDetailDao.close();
@@ -59,6 +47,7 @@ public class SpaceModifyAction implements Action {
 			spaceFacDao.close();
 			discountDao.close();
 		}
-		return "/space/spaceModifyForm.jsp";
+		return "/spaceHub/mypage/host?cmd=hostMain";
 	}
+
 }

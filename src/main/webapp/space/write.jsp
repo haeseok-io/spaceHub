@@ -31,24 +31,21 @@
 			<input type="hidden" name="x" /> <!-- 경도  -->
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  <h1 class="text-center">숙소 등록 시작하기</h1>
-			</div>
+			</div> <br />
 			<div class="text-center">
 				<div class="form-check form-check-inline">
-					<img src="../upload/house.PNG" class="img-thumbnail" alt="..."><br>
 					<input type="radio" name="detailType" id="house" value="공간전체">
-			  		<label for="house">공간전체</label>
+			  		<h2><i class="bi bi-house"></i>공간전체</h2>
 				</div>
 				<div class="form-check form-check-inline">
-					<img src="../upload/door.PNG" class="img-thumbnail" alt="..."><br>
 					<input type="radio" name="detailType" id="room" value="방">
-			  		<label for="room">방</label>
+			  		<h2><i class="bi bi-door-open"></i>방</h2>
 				</div>
 				<div class="form-check form-check-inline">
-					<img src="" class="img-thumbnail" alt="..."><br>
 					<input type="radio" name="detailType" id="multiRoom" value="도미토리">
-			  		<label for="multiRoom">도미토리</label>
+					<h2><i class="bi bi-people"></i>도미토리</h2>
 				</div>
-			</div>
+			</div> <br />
 			<div class="input-group mb-3">
 			  <label class="input-group-text" for="inputGroupFile01">공간이미지 업로드</label>
 			  <input name="img5" type="file" class="form-control" id="inputGroupFile01">
@@ -87,7 +84,7 @@
 				    <input type="text" class="form-control" id="address" name="address" placeholder="주소">
 				    <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소">
 				    <input type="text" class="form-control" id="extraAddress" name="extraAddress" placeholder="참고항목">
-			   </div>
+			   </div><br />
 					<p style="margin-top:-12px">
 			    <em class="link">
 			        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">

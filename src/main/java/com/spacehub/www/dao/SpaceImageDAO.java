@@ -20,12 +20,12 @@ public class SpaceImageDAO {
 	}
 	
 	//공간 이미지 삭제
-	public void deleteOne(int imgno) {
+	public void deleteOne(int spaceno) {
 		sb.setLength(0);
-		sb.append("delete from space_image where imgno=? ");
+		sb.append("delete from space_image where spaceno=? ");
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, imgno);
+			pstmt.setInt(1, spaceno);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("이미지 삭제 실패");
@@ -39,12 +39,12 @@ public class SpaceImageDAO {
 		sb.setLength(0);
 		sb.append("update space_image ");
 		sb.append("set path=?, seq=? ");
-		sb.append("where imgno=?");
+		sb.append("where spaceno=?");
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setString(1,vo.getPath());
 			pstmt.setInt(2, vo.getSeq());
-			pstmt.setInt(3, vo.getImgno());
+			pstmt.setInt(3, vo.getSpaceno());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("SpaceImageDAO 업데이트 실패");

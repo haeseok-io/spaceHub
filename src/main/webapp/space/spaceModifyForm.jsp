@@ -26,10 +26,10 @@
 			var vstatus = "${spaceVo.VStatus}"
 			console.log("vstatus:" + vstatus);
 			
-			console.log('${spaceDetailVo.type}')
+/* 			console.log('${spaceDetailVo.type}')
 			console.log('${dcList[0]}');
 			console.log('${dcList[1]}');
-			
+ */			
 			//radio
 			$("input[name='detailType'][value='${spaceDetailVo.type}']").prop("checked", true);
 			//checkbox
@@ -69,7 +69,9 @@
 	                vstatus = "2"; // VStatus 값을 2로 설정
 	                console.log("vstatus:" + vstatus);
 	            }
+		        document.spaceModifyForm.vstatus.value = vstatus;
 	        });
+	        
 	        
 		    var spaceno = "${spaceVo.spaceno}";
 		    // 이미지 삭제
@@ -149,11 +151,14 @@
 	        
 	    });//$ end
 	</script>
+	
 <jsp:include page="../common/header.jsp"/>
 	<div class="container">
-		<form name="spaceModifyForm" action="/spaceHub/mypage/host" method="get" enctype="multipart/form-data">
+		<form name="spaceModifyForm" action="/spaceHub/mypage/hostControl" method="post" enctype="multipart/form-data" >
 			<input type="hidden" name="cmd" value="spaceModifyOk" />
 			<input type="hidden" name="memno" value="${member.memno }"/>
+			<input type="hidden" name="spaceno" value="${spaceVo.spaceno }"/>
+			<input type="hidden" name="vstatus" value="${spaceVo.VStatus}"/>
 			<input type="hidden" name="y" /> <!-- 위도  -->
 			<input type="hidden" name="x" /> <!-- 경도  -->
 			<p></p>
@@ -186,17 +191,19 @@
                     <button type="button" class="btn btn-outline-danger deleteBtn">삭제</button>
                 </div>
 			</div>
-			</c:forEach>
+			</c:forEach> 
 				<button type="button" class="btn btn-outline-primary plusImgContainer">사진추가</button>
-			
-			<div class="input-group mb-3">
+		 
+			<%-- <div class="input-group mb-3">
 			  <label class="input-group-text" for="inputGroupFile01">공간이미지 업로드</label>
-			  <input name="img5" type="file" class="form-control" id="inputGroupFile01">
-			  <input name="img4" type="file" class="form-control" id="inputGroupFile02">
-			  <input name="img3" type="file" class="form-control" id="inputGroupFile03">
-			  <input name="img2" type="file" class="form-control" id="inputGroupFile04">
-			  <input name="img1" type="file" class="form-control" id="inputGroupFile05">
-			</div>
+			  <c:forEach var="vo" items="${list }">
+				  <input name="img5" type="file" class="form-control" id="inputGroupFile01" value="${vo.path }">
+				  <input name="img4" type="file" class="form-control" id="inputGroupFile02" value="${vo.path }">
+				  <input name="img3" type="file" class="form-control" id="inputGroupFile03" value="${vo.path }">
+				  <input name="img2" type="file" class="form-control" id="inputGroupFile04" value="${vo.path }">
+				  <input name="img1" type="file" class="form-control" id="inputGroupFile05" value="${vo.path }">
+			  </c:forEach>
+			</div>  --%>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
 			</div>

@@ -345,6 +345,45 @@ public class SpaceDAO {
 		}
 	}
 	
+	//수정
+	public void modifyOne(SpaceVO vo) {
+		sb.setLength(0);
+		sb.append("update space set ");
+		sb.append("type=?, loc=?, subject=?, post=?, addr=?, price=?, regdate=now(), ip=?, v_status=? ");
+		sb.append("where spaceno=? and memno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, vo.getType());
+			pstmt.setString(2, vo.getLoc());
+			pstmt.setString(3, vo.getSubject());
+			pstmt.setString(4, vo.getPost());
+			pstmt.setString(5, vo.getAddr());
+			pstmt.setInt(6, vo.getPrice());
+			pstmt.setString(7, vo.getIp());
+			pstmt.setInt(8, vo.getVStatus());
+			pstmt.setInt(9, vo.getSpaceno());
+			pstmt.setInt(10, vo.getMemno());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//삭제
+	public void deleteOne(int spaceno) {
+		sb.setLength(0);
+		sb.append("delete from space where spaceno=?");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, spaceno);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	//종료
 	public void close()	{
 		try {
@@ -355,5 +394,7 @@ public class SpaceDAO {
 			e.printStackTrace();
 		}
 	}
+
+
 
 }// class end

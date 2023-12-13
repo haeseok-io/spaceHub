@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.spacehub.www.dao.DiscountDAO;
@@ -27,17 +29,13 @@ import com.spacehub.www.vo.SpaceFacVO;
 import com.spacehub.www.vo.SpaceImageVO;
 import com.spacehub.www.vo.SpaceVO;
 
-@WebServlet("/spaceRegister")
-public class SpaceWriteControl extends HttpServlet {
+@WebServlet("/mypage/hostControl")
+public class SpaceModifyOkControl extends HttpServlet {
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session =  req.getSession(true);
 		SmemberVO memberData = (SmemberVO) session.getAttribute("member");
-		
-		if (memberData == null) {
-		    return;  // 로그인 페이지로 리다이렉트 또는 포워드
-		}
-		
 		session.setAttribute("member", memberData);
 		
 		SpaceDAO spaceDao = new SpaceDAO();
@@ -60,6 +58,7 @@ public class SpaceWriteControl extends HttpServlet {
 			mr = new MultipartRequest(req, saveFolder, size, "UTF-8", new DefaultFileRenamePolicy());
 			
 			//공간 정보(space)
+			String spaceno = mr.getParameter("spaceno");
 			String type = mr.getParameter("type");	
 			//지역 앞부분만 잘라오기
 			String loc = mr.getParameter("address");	
@@ -69,7 +68,9 @@ public class SpaceWriteControl extends HttpServlet {
 			String subject = mr.getParameter("subject");		
 			String post = mr.getParameter("post");		
 			String addr = mr.getParameter("address");		
-			String price = mr.getParameter("price");		
+			String price = mr.getParameter("price");	
+			String vstatus	= mr.getParameter("vstatus");
+			String memno = mr.getParameter("memno");
 			//String regdate = req.getParameter("regdate");	
 			System.out.println("spacetype:"+type);
 			System.out.println("spaceloc:"+locSplit[0]);
@@ -78,12 +79,15 @@ public class SpaceWriteControl extends HttpServlet {
 			System.out.println("spacetype:"+type);
 			System.out.println("spaceaddr:"+addr);
 			System.out.println("spaceprice:"+price);
+			System.out.println("vstatus:"+vstatus);
+			System.out.println("memno:"+memno);
 			try {
 				String ip = Inet4Address.getLocalHost().getHostAddress();
 				System.out.println("spaceip:"+ip);
 			} catch (UnknownHostException e) {
+				System.out.println("space정보 가져오기 실패");
 				e.printStackTrace();
-			}		
+			}
 			
 			//공간 상세정보(space_detail)
 			String detailType = mr.getParameter("detailType"); // 집,방,다인실 선택
@@ -142,10 +146,10 @@ public class SpaceWriteControl extends HttpServlet {
 			String[] disName = mr.getParameterValues("disName");
 			System.out.println("dcRatio:"+dcRatio);
 			System.out.println("disName:"+disName);
-			
-///////////////////////vo.set, addOne/////////////////////////
+///////////////////////vo.set, modifyOne/////////////////////////
 
-			//공간 정보(space) 추가
+			//공간 정보(space) 수정
+			spaceVo.setSpaceno(Integer.parseInt(spaceno));
 			spaceVo.setType(type);
 			spaceVo.setLoc(locSplit[0]);
 			spaceVo.setSubject(subject);
@@ -159,17 +163,13 @@ public class SpaceWriteControl extends HttpServlet {
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
-			//spaceVo.setVStatus(Integer.parseInt(vStatus));
+			spaceVo.setVStatus(Integer.parseInt(vstatus));
 			//spaceVo.setStatus(Integer.parseInt(status));
-			spaceVo.setMemno(11);
-			spaceDao.addOne(spaceVo);
-			
-			//LastInsertId
-			int lastInsert = spaceDao.getLastInsert();
-			System.out.println("마지막 번호 : " + lastInsert);
+			spaceVo.setMemno(Integer.parseInt(memno));
+			spaceDao.modifyOne(spaceVo);
 			
 			//공간 상세정보(space_detail)
-			spaceDetailVo.setSpaceno(lastInsert);
+			spaceDetailVo.setSpaceno(Integer.parseInt(spaceno));
 			spaceDetailVo.setType(detailType);
 			spaceDetailVo.setDetail(detail);
 			spaceDetailVo.setMaxGuest(Integer.parseInt(maxGuest));
@@ -179,16 +179,17 @@ public class SpaceWriteControl extends HttpServlet {
 			spaceDetailVo.setOutDate(outDate);
 			spaceDetailVo.setX(x);
 			spaceDetailVo.setY(y);
-			spcaeDetailDao.addOne(spaceDetailVo);
-			
+			spcaeDetailDao.modifyOne(spaceDetailVo);
+					
+		
 			// 공간 이미지(space_image)
-			
+		
 			//String uploadedFilePath = mr.getFilesystemName("path"); // fileInputFieldName은 파일 입력 필드의 이름으로 대체되어야 합니다.
-//			String[] path = mr.getParameterValues("path");
+			//String[] path = mr.getParameterValues("path");
 			
 			System.out.println(mr.getFileNames());
-			System.out.println(mr.getFilesystemName("img1"));
-			System.out.println(mr.getOriginalFileName("img1"));
+			System.out.println(mr.getFilesystemName("img"));
+			System.out.println(mr.getOriginalFileName("img"));
 			
 			 // 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
@@ -201,19 +202,19 @@ public class SpaceWriteControl extends HttpServlet {
 		        if (uploadedFilePath != null) {
 		            // 업로드된 파일의 경로를 DB에 저장하거나 다른 작업 수행
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
-		            spaceImageVo.setSpaceno(lastInsert); // 공간 번호 설정
+		            spaceImageVo.setSpaceno(Integer.parseInt(spaceno)); // 공간 번호 설정
 		            //spaceImageVo.setImgno(1); // 이미지 번호 설정
 		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
 		            spaceImageVo.setSeq(seq++); // 순서 설정
 
 		            // 해당 파일 정보를 DB에 추가
-		            spcaeImageDao.addOne(spaceImageVo);
+		            spcaeImageDao.modifyOne(spaceImageVo);
 		            System.out.println(seq);
 		        }
 		    }
-			
+		    
 			//공간 편의시설(space_fac)
-			spaceFacVo.setSpaceno(lastInsert);
+			spaceFacVo.setSpaceno(Integer.parseInt(spaceno));
 			if(wifi!=null) spaceFacVo.setWifi(Integer.parseInt(wifi));
 			if(tv!=null) spaceFacVo.setTv(Integer.parseInt(tv));
 			if(kitchen!=null) spaceFacVo.setKitchen(Integer.parseInt(kitchen));
@@ -228,16 +229,17 @@ public class SpaceWriteControl extends HttpServlet {
 			if(firealarm!=null) spaceFacVo.setFirealarm(Integer.parseInt(firealarm));
 			if(aidkit!=null) spaceFacVo.setAidkit(Integer.parseInt(aidkit));
 			if(firearm!=null) spaceFacVo.setFirearm(Integer.parseInt(firearm));
-			spcaeFacDao.addOne(spaceFacVo);
+			spcaeFacDao.modifyOne(spaceFacVo);
 			
 			//할인등록(discount)
 			for(int i=0; i<dcRatio.length; i++)	{
 				DiscountVO discountVo = new DiscountVO();
-				discountVo.setSpaceno(lastInsert);
+				discountVo.setSpaceno(Integer.parseInt(spaceno));
 				discountVo.setName(disName[i]);
 				discountVo.setDcratio(Integer.parseInt(dcRatio[i]));
-				discountDao.addOne(discountVo);
+				discountDao.modifyOne(discountVo);
 			}
+			
 			
 		}  catch (IOException e) { //end of try
 			e.printStackTrace();
@@ -251,7 +253,8 @@ public class SpaceWriteControl extends HttpServlet {
 		discountDao.close();
 		
 		// 처리가 끝난 후 /spaceHub/home 으로 이동
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/home");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/mypage/host?cmd=hostMain");
 		dispatcher.forward(req, resp);
 	}
 }
+	
