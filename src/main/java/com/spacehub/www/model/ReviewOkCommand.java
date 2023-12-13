@@ -1,5 +1,7 @@
 package com.spacehub.www.model;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,6 @@ public class ReviewOkCommand implements ActionCommand {
 		String contents = req.getParameter("contents");
 		String r = req.getParameter("rating");
 		String re = req.getParameter("reservno");
-		String ip = req.getRemoteAddr();
 		
 		if(subject != null || contents != null || r != null || re != null) {
 			
@@ -35,7 +36,12 @@ public class ReviewOkCommand implements ActionCommand {
 			vo.setSubject(subject);
 			vo.setContents(contents);
 			vo.setRating(rating);
-			vo.setIp(ip);
+			try {
+				vo.setIp(
+				 Inet4Address.getLocalHost().getHostAddress());
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 			vo.setMemno(rvo.getMemno());
 			vo.setReservno(reservno);
 			

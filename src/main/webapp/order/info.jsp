@@ -49,7 +49,7 @@
 		    buyer_addr : addr,
 		    buyer_postcode : post
 		  }, function (rsp) {
-			    console.log(rsp);
+			    /* console.log(rsp); */
 			    if (rsp.success) {
 			      var msg = '결제가 완료되었습니다.';
 			      msg += "고유ID", rsp.imp_uid;
