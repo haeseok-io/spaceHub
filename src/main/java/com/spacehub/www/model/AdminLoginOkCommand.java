@@ -48,7 +48,7 @@ public class AdminLoginOkCommand implements Action {
 		
 		// 회원정보가 있다면 세션에 담기
 		session.setAttribute("admin", adminVO);
-		return "/spaceHub/home";
+		return "/spaceHub/admin?cmd=reservationList";
 	}
 
 }
