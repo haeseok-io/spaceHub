@@ -1,9 +1,9 @@
 package com.spacehub.www.control;
 
-import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.spacehub.www.dao.*;
+import com.spacehub.www.vo.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,22 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.json.simple.JSONObject;
-
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import com.spacehub.www.dao.DiscountDAO;
-import com.spacehub.www.dao.SpaceDAO;
-import com.spacehub.www.dao.SpaceDetailDAO;
-import com.spacehub.www.dao.SpaceFacDAO;
-import com.spacehub.www.dao.SpaceImageDAO;
-import com.spacehub.www.vo.DiscountVO;
-import com.spacehub.www.vo.SmemberVO;
-import com.spacehub.www.vo.SpaceDetailVO;
-import com.spacehub.www.vo.SpaceFacVO;
-import com.spacehub.www.vo.SpaceImageVO;
-import com.spacehub.www.vo.SpaceVO;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 @WebServlet("/mypage/hostControl")
 public class SpaceModifyOkControl extends HttpServlet {
