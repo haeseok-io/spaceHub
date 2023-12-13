@@ -37,7 +37,7 @@ public class OrderCommand implements ActionCommand {
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 		
 		if(memberVO != null) {
-			if(checkin != "" || checkout != "" || guest != "") {
+			if(checkin == "" || checkout == "" || guest == "") {
 				return "main.jsp";
 			}
 			if(s != null || checkin != null || checkout != null || guest != null) {
