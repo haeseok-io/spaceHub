@@ -124,7 +124,7 @@
 			let price = Number($("#price").text());
 			
 			let dcratio = Number($("#coupon-price").text());
-			let a = $("#dcp").val();
+			let a = Number($("#discount-price").text());
 			let cprice = ($("#cprice").val())*((100-dcratio)*0.01);
 			let dprice = ($("#cprice").val())*((100-a)*0.01);
 			let allprice = cprice+dprice-$("#cprice").val();
@@ -263,7 +263,7 @@
 			    <input type="hidden" name="creditsPrice" id="creditsprice" value="0" />
 			  </div>
 			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${((vo.price*bark)+tax)*disc}</p><p class="card-text" style="float: right"> ₩</p></li>
+			    <li class="list-group-item">총 합계 (KRW) <p class="card-text" style="float: right" id="price" >${endprice}</p><p class="card-text" style="float: right"> ₩</p></li>
 			  </ul>
 			  <div class="card-body">
 			    <p>해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.</p>

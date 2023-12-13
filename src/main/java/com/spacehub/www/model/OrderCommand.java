@@ -144,10 +144,10 @@ public class OrderCommand implements ActionCommand {
 				
 				
 				
-				int disc = (int)((100-dc)*0.01);
-				System.out.println(disc);
+				double disc = (100-dc)*0.01;
+				int endprice = (int)((vo.getPrice()*Integer.parseInt(bark)+tax)*disc);
 				
-				req.setAttribute("disc", disc);
+				req.setAttribute("endprice", endprice);
 				req.setAttribute("sna", sna);
 				req.setAttribute("crvo", crvo);
 				req.setAttribute("tax", tax);
