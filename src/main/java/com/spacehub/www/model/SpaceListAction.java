@@ -12,7 +12,9 @@ import org.json.simple.JSONObject;
 
 import com.spacehub.www.dao.JjimDAO;
 import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceImageVO;
 import com.spacehub.www.vo.SpaceListVO;
 
 public class SpaceListAction implements JsonAction {
@@ -29,6 +31,7 @@ public class SpaceListAction implements JsonAction {
 		int maxGuest = 0;
 		
 		SpaceDAO spaceDAO = new SpaceDAO();
+		SpaceImageDAO spaceImageDAO = new SpaceImageDAO();
 		JjimDAO jjimDAO = new JjimDAO();
 		
 		HttpSession session = req.getSession();
@@ -68,12 +71,18 @@ public class SpaceListAction implements JsonAction {
 		SmemberVO memberData = (SmemberVO)session.getAttribute("member");
 		
 		// - 공간 정보
-		ArrayList<HashMap<String, String>> spaceList = new ArrayList<HashMap<String, String>>();
+		ArrayList<HashMap<String, Object>> spaceList = new ArrayList<HashMap<String, Object>>();
 		DecimalFormat formatter = new DecimalFormat("###,###");
 		
 		for(SpaceListVO data : spaceDAO.getList(startNum, endNum, subjectParam, inDateParam, outDateParam, maxGuest)) {
 			
-			// 회원 찜
+			// 이미지 리스트
+			ArrayList<String> imgList = new ArrayList<String>();
+			for(SpaceImageVO imgData : spaceImageDAO.getSpaceImages(data.getSpaceno())) {
+				imgList.add(imgData.getPath());
+			}
+			
+			// 찜 여부
 			String jjimStatus = "N";
 			if( memberData!=null ) {
 				jjimStatus = jjimDAO.checkUser(data.getSpaceno(), memberData.getMemno());
@@ -84,7 +93,7 @@ public class SpaceListAction implements JsonAction {
 			data.setPriceFormat(formatter.format(data.getPrice()));
 			
 			// 배열 담기
-			HashMap<String, String> obj = new HashMap<String, String>();
+			HashMap<String, Object> obj = new HashMap<String, Object>();
 			obj.put("spaceno", ""+data.getSpaceno());
 			obj.put("loc", data.getLoc());
 			obj.put("subject", data.getSubject());
@@ -95,6 +104,7 @@ public class SpaceListAction implements JsonAction {
 			obj.put("inDate", ""+data.getInDate());
 			obj.put("outDate", ""+data.getOutDate());
 			obj.put("path", ""+data.getPath());
+			obj.put("imgList", imgList);
 			obj.put("rating", ""+data.getRating());
 			obj.put("userJjimStatus", data.getJjimStatus());
 			
@@ -103,6 +113,7 @@ public class SpaceListAction implements JsonAction {
 
 		// Etc
 		spaceDAO.close();
+		spaceImageDAO.close();
 		jjimDAO.close();
 		
 		// Result

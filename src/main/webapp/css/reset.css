@@ -7,3 +7,4 @@ ul li { list-style: none; }
 input { outline: none; }
 p { margin-bottom: 0; }
 select { outline: none; }
+textarea { outline: none; }
