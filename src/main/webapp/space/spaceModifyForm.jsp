@@ -32,8 +32,30 @@
  */			
 			//radio
 			$("input[name='detailType'][value='${spaceDetailVo.type}']").prop("checked", true);
-			//checkbox
-			$("input[type='checkbox'][value='1']").prop("checked", true);
+ 
+			//편의시설 checkbox 값 가져와서 체크드 해주기
+			let obj = {
+					wifi : "${spaceFacVo.wifi}",
+					tv : "${spaceFacVo.tv}",
+					kitchen : "${spaceFacVo.kitchen}",
+					wm : "${spaceFacVo.wm}",
+					aircon : "${spaceFacVo.aircon}",
+					canpark : "${spaceFacVo.canpark}",
+					canfreepark : "${spaceFacVo.canfreepark}",
+					swim : "${spaceFacVo.swim}",
+					bbq : "${spaceFacVo.bbq}",
+					pooltable : "${spaceFacVo.pooltable}",
+					fireplace : "${spaceFacVo.fireplace}",
+					firealarm : "${spaceFacVo.firealarm}",
+					aidkit : "${spaceFacVo.aidkit}",
+					firearm : "${spaceFacVo.firearm}"
+			}
+			
+			 $.each(obj, (key, value) => {
+		            if( value==1 ){
+		               $("input[name='"+key+"']").prop("checked", true);
+		            }
+		     });
 			
 			<%-- dcList를 자바스크립트 배열로 변환 --%>
 			var dcList = [
@@ -78,34 +100,12 @@
 		    $(".deleteBtn").on("click", function() {
 		        var container = $(this).closest('.imageContainer'); // 삭제할 이미지 컨테이너
 		        container.remove(); // 이미지 컨테이너 삭제
-		        
-		        var imgno = container.data('imgno'); // 데이터 속성에서 imgno 값을 가져옴
-		        console.log("이미지 번호:", imgno);
-		        
-		        // Ajax 요청
-		        $.ajax({
-		            url: "/spaceHub/mypage/host",
-		            data: { cmd: 'imgDeleteOk', spaceno: spaceno, imgno: imgno },
-		            dataType: "json",
-		            success: function(data) {
-		                if (data.errorCode) {
-		                    alert(data.errorMsg);
-		                    if (data.errorCode === "member empty") {
-		                        document.location.href = "/spaceHub/sign?cmd=login";
-		                    }
-		                    return false;
-		                }
-		            },
-		            error: function(xhr, status, error) {
-		                console.error("오류 발생", error);
-		            }
-		        });
 		    });
 
 	        // 이미지 컨테이너
 	        $(".plusImgContainer").on("click", function() {
 	            var imageContainers = $('.imageContainer').length; // 이미지 컨테이너의 개수 확인
-
+	            var cnt = imageContainers + 1; // 이미지 컨테이너의 개수를 기준으로 cnt 설정
 	            if (imageContainers < 10) { // 이미지 컨테이너 개수가 10개 미만인 경우에만 새 이미지 추가 가능
 	                var newImageContainer = "<div class='imageContainer' style='display: inline-block; vertical-align: top;'>" +
 	                    "<img src='' class='img-thumbnail' alt='...'>" +
@@ -113,11 +113,14 @@
 	                    "<button type='button' class='btn btn-outline-danger deleteBtn'>삭제</button>" +
 	                    "</div>" +
 	                    "<div class='plusBtnDiv'>" +
-	                    "<input type='file' class='fileUpload' style='display: none;' accept='image/*'>" +
+	                    "<input type='file' name='img"+cnt+"'class='fileUpload' style='display: none;' accept='image/*'>" +
 	                    "</div>" +
 	                    "</div>";
 
 	                $(this).before(newImageContainer);
+	                
+	                // 이미지 컨테이너 추가 후 cnt 증가
+	                cnt++;
 
 	                // 새로 생성된 이미지 컨테이너의 삭제 버튼에 대한 이벤트 핸들러 연결
 	                $(this).prev('.imageContainer').find('.deleteBtn').on('click', function() {
@@ -140,8 +143,8 @@
 	                        reader.readAsDataURL(fileInput.files[0]);
 	                    }
 	                }).click(); // 파일 업로드 창을 띄우기 위해 click 이벤트 호출
-	            }
-
+	            }    
+	            cnt++;
 	            // 이미지 컨테이너가 10개인 경우 사진 추가 버튼 숨김 처리
 	            if ($('.imageContainer').length >= 10) {
 	                $(this).hide();
@@ -159,8 +162,8 @@
 			<input type="hidden" name="memno" value="${member.memno }"/>
 			<input type="hidden" name="spaceno" value="${spaceVo.spaceno }"/>
 			<input type="hidden" name="vstatus" value="${spaceVo.VStatus}"/>
-			<input type="hidden" name="y" /> <!-- 위도  -->
-			<input type="hidden" name="x" /> <!-- 경도  -->
+			<input type="hidden" name="y" value="${spaceDetailVo.y }"/> <!-- 위도  -->
+			<input type="hidden" name="x" value="${spaceDetailVo.x }"/> <!-- 경도  -->
 			<p></p>
 			<div>
 				<h2>숙소 정보 수정하기</h2>
@@ -169,41 +172,28 @@
 			</div>
 			<div class="text-left" >
 				<div class="form-check form-check-inline">
-					<img src="../upload/house.PNG" class="img-thumbnail" alt="..."><br>
+			  		<h2><i class="bi bi-house"></i>공간전체</h2>
 					<input type="radio" name="detailType" id="house" value="공간전체">
-			  		<label for="house">공간전체</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<img src="../upload/door.PNG" class="img-thumbnail" alt="..."><br>
+			  		<h2><i class="bi bi-door-open"></i>방</h2>
 					<input type="radio" name="detailType" id="room" value="방">
-			  		<label for="room">방</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<img src="" class="img-thumbnail" alt="..."><br>
-					<input type="radio" name="detailType" id="multiRoom" value="도미토리" >
-			  		<label for="multiRoom">도미토리</label>
+					<h2><i class="bi bi-people"></i>도미토리</h2>
+					<input type="radio" name="detailType" id="multiRoom" value="도미토리">
 				</div>
-			</div>
-			<c:forEach var="vo" items="${list }">
+			</div> <br />
+			<%-- <c:forEach var="vo" items="${list }">
 			<div class="imageContainer" style="display: inline-block;" data-imgno="${vo.imgno}">
-				<img src=${vo.path } class="img-thumbnail" alt="...">
+				<input type="hidden" name="imgno" value="${vo.imgno}"/>
+				<img src=${vo.path } class="img-thumbnail" alt="..." name="img">
 				 <div class="deleteBtnDiv">
                     <button type="button" class="btn btn-outline-danger deleteBtn">삭제</button>
                 </div>
 			</div>
-			</c:forEach> 
+			</c:forEach>  --%>
 				<button type="button" class="btn btn-outline-primary plusImgContainer">사진추가</button>
-		 
-			<%-- <div class="input-group mb-3">
-			  <label class="input-group-text" for="inputGroupFile01">공간이미지 업로드</label>
-			  <c:forEach var="vo" items="${list }">
-				  <input name="img5" type="file" class="form-control" id="inputGroupFile01" value="${vo.path }">
-				  <input name="img4" type="file" class="form-control" id="inputGroupFile02" value="${vo.path }">
-				  <input name="img3" type="file" class="form-control" id="inputGroupFile03" value="${vo.path }">
-				  <input name="img2" type="file" class="form-control" id="inputGroupFile04" value="${vo.path }">
-				  <input name="img1" type="file" class="form-control" id="inputGroupFile05" value="${vo.path }">
-			  </c:forEach>
-			</div>  --%>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
 			</div>
@@ -378,59 +368,59 @@
 			숙소 편의시설 정보 추가
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="wifi" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${spaceFacVo.wifi }">
+			  <input name="wifi" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1">
 			  <label class="form-check-label" for="inlineCheckbox1">WIFI</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="tv" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="${spaceFacVo.tv }">
+			  <input name="tv" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">TV</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="kitchen" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="${spaceFacVo.kitchen }">
+			  <input name="kitchen" class="form-check-input" type="checkbox" id="inlineCheckbox3" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">주방</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="wm" class="form-check-input" type="checkbox" id="inlineCheckbox4" value="${spaceFacVo.wm }">
+			  <input name="wm" class="form-check-input" type="checkbox" id="inlineCheckbox4" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">세탁기</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="aircon" class="form-check-input" type="checkbox" id="inlineCheckbox5" value="${spaceFacVo.aircon }">
+			  <input name="aircon" class="form-check-input" type="checkbox" id="inlineCheckbox5" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">에어컨</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="canpark" class="form-check-input" type="checkbox" id="inlineCheckbox6" value="${spaceFacVo.canpark }">
+			  <input name="canpark" class="form-check-input" type="checkbox" id="inlineCheckbox6" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">주차가능</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="canfreepark" class="form-check-input" type="checkbox" id="inlineCheckbox7" value="${spaceFacVo.canfreepark }">
+			  <input name="canfreepark" class="form-check-input" type="checkbox" id="inlineCheckbox7" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">무료주차</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="swim" class="form-check-input" type="checkbox" id="inlineCheckbox8" value="${spaceFacVo.swim }">
+			  <input name="swim" class="form-check-input" type="checkbox" id="inlineCheckbox8" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">수영장</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="bbq" class="form-check-input" type="checkbox" id="inlineCheckbox9" value="${spaceFacVo.bbq }">
+			  <input name="bbq" class="form-check-input" type="checkbox" id="inlineCheckbox9" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">바비큐</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="pooltable" class="form-check-input" type="checkbox" id="inlineCheckbox10" value="${spaceFacVo.pooltable }">
+			  <input name="pooltable" class="form-check-input" type="checkbox" id="inlineCheckbox10" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">당구대</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="fireplace" class="form-check-input" type="checkbox" id="inlineCheckbox11" value="${spaceFacVo.fireplace }">
+			  <input name="fireplace" class="form-check-input" type="checkbox" id="inlineCheckbox11" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">벽난로</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="firealarm" class="form-check-input" type="checkbox" id="inlineCheckbox12" value="${spaceFacVo.firealarm }">
+			  <input name="firealarm" class="form-check-input" type="checkbox" id="inlineCheckbox12" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">화재경보기</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="aidkit" class="form-check-input" type="checkbox" id="inlineCheckbox13" value="${spaceFacVo.aidkit }">
+			  <input name="aidkit" class="form-check-input" type="checkbox" id="inlineCheckbox13" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">구급상자</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="firearm" class="form-check-input" type="checkbox" id="inlineCheckbox14" value="${spaceFacVo.firearm }">
+			  <input name="firearm" class="form-check-input" type="checkbox" id="inlineCheckbox14" value="1">
 			  <label class="form-check-label" for="inlineCheckbox2">소화기</label>
 			</div>
 			<br /> <br />

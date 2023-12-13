@@ -43,6 +43,7 @@ public class SpaceModifyOkControl extends HttpServlet {
 		SpaceImageDAO spcaeImageDao = new SpaceImageDAO();
 		SpaceFacDAO spcaeFacDao = new SpaceFacDAO();
 		DiscountDAO discountDao = new DiscountDAO();
+		
 		SpaceVO spaceVo = new SpaceVO();
 		SpaceDetailVO spaceDetailVo = new SpaceDetailVO();
 		SpaceFacVO spaceFacVo = new SpaceFacVO();
@@ -183,10 +184,6 @@ public class SpaceModifyOkControl extends HttpServlet {
 					
 		
 			// 공간 이미지(space_image)
-		
-			//String uploadedFilePath = mr.getFilesystemName("path"); // fileInputFieldName은 파일 입력 필드의 이름으로 대체되어야 합니다.
-			//String[] path = mr.getParameterValues("path");
-			
 			System.out.println(mr.getFileNames());
 			System.out.println(mr.getFilesystemName("img"));
 			System.out.println(mr.getOriginalFileName("img"));
@@ -194,10 +191,11 @@ public class SpaceModifyOkControl extends HttpServlet {
 			 // 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
 		    int seq = 1; // 순서를 지정하기 위한 변수
+		    
 		    while (fileInputNames.hasMoreElements()) {
 		        String inputName = fileInputNames.nextElement();
 		        String uploadedFilePath = mr.getFilesystemName(inputName);
-
+		        System.out.println(" uploadedFilePath : " + uploadedFilePath);
 		        // 파일 업로드가 실패한 경우, 파일 경로는 null일 수 있습니다.
 		        if (uploadedFilePath != null) {
 		            // 업로드된 파일의 경로를 DB에 저장하거나 다른 작업 수행
@@ -207,9 +205,12 @@ public class SpaceModifyOkControl extends HttpServlet {
 		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
 		            spaceImageVo.setSeq(seq++); // 순서 설정
 
-		            // 해당 파일 정보를 DB에 추가
-		            spcaeImageDao.modifyOne(spaceImageVo);
-		            System.out.println(seq);
+		            // 해당 파일 정보를 DB에 삭제 후 추가
+		            System.out.println("이미지 VO : " + spaceImageVo);
+		            spcaeImageDao.deleteOne(Integer.parseInt(spaceno));
+		            spcaeImageDao.addOne(spaceImageVo);
+		            spcaeImageDao.close();
+		            //System.out.println(seq);
 		        }
 		    }
 		    
