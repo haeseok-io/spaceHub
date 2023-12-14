@@ -13,7 +13,6 @@ import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.dao.SpaceFacDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.DiscountVO;
-import com.spacehub.www.vo.HostSpaceImageVO;
 import com.spacehub.www.vo.SmemberVO;
 import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceFacVO;
@@ -42,15 +41,17 @@ public class SpaceModifyAction implements Action {
 			DiscountDAO discountDao = new DiscountDAO();
 			
 			SpaceVO spaceVo = spaceDao.getOne(Integer.parseInt(spaceno));
+			//System.out.println(spaceVo);
+			
 			SpaceDetailVO spaceDetailVo = spaceDetailDao.getOne(Integer.parseInt(spaceno));
 			SpaceFacVO spaceFacVo = spaceFacDao.getOne(Integer.parseInt(spaceno));
-			ArrayList<HostSpaceImageVO> list = spaceImageDao.getSpaceImages(Integer.parseInt(spaceno),Integer.parseInt(memno));
+			//ArrayList<HostSpaceImageVO> list = spaceImageDao.getSpaceImages(Integer.parseInt(spaceno),Integer.parseInt(memno));
 			ArrayList<DiscountVO> dcList = discountDao.getOne(Integer.parseInt(spaceno));
 			
 			req.setAttribute("spaceVo", spaceVo);
 			req.setAttribute("spaceDetailVo", spaceDetailVo);
 			req.setAttribute("spaceFacVo", spaceFacVo);
-			req.setAttribute("list", list);
+			//req.setAttribute("list", list);
 			req.setAttribute("dcList", dcList);
 			
 			spaceDao.close();

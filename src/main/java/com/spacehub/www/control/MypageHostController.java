@@ -34,10 +34,7 @@ public class MypageHostController extends HttpServlet {
 		} else if (cmd.equals("spaceModify")) {
 			Action ac = new SpaceModifyAction();
 			url = ac.execute(req, resp);
-		} else if (cmd.equals("imgDeleteOk")) {
-			JsonAction ac = new ImageDeleteOkAction();
-			jsonObject = ac.execute(req, resp);
-		} else if (cmd.equals("sapceDelete")) {
+		}  else if (cmd.equals("sapceDelete")) {
 			Action ac = new SpaceDeleteAction();
 			url = ac.execute(req, resp);
 			isRedirect = true;

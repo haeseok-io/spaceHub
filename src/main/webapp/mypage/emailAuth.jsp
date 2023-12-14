@@ -26,7 +26,7 @@
 		Properties p = new Properties();
 		
 		p.put("mail.smtp.starttls.enable", "true");
-		p.put("mail.tansport.protocol", "smtp");
+		p.put("mail.transport.protocol", "smtp");
 		p.put("mail.smtp.host", "smtp.gmail.com");
 		p.put("mail.smtp.auth", "true");
 		p.put("mail.stmp.port", "465");
@@ -49,7 +49,7 @@
 		String username = "gkfnglfn@gmail.com";
 		String password = "xegw urzj xmoc guri";
 		// 받는 사람
-		String receiver = "gkfnglfn@naver.com";
+		String receiver = email;
 		
 		Session ss = Session.getInstance(p, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {

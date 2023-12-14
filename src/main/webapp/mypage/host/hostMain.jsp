@@ -32,7 +32,7 @@
 	.account a.account_update {
 		text-decoration: underline;
 	}
-	.empty_account {
+	.empty_account, .empty_hostSpace {
 		border: 3px solid gray;
 		border-radius: 10px;
 		width: fit-content; /* 텍스트 크기에 맞게 조절될 수 있도록 수정 */
@@ -55,6 +55,21 @@
     	position: relative;
         width: 100%; /* 슬라이드 전체 너비 */
     }
+    .hostSpace_update {
+    	text-decoration: underline;
+    }
+    
+    /* slick 플러그인 제어 */
+		.slick-slider {}
+		.slick-dotted.slick-slider { margin-bottom: 0; }
+		
+		.slick-prev, .slick-next { z-index: 2; }
+		.slick-prev { left: 10px; }
+		.slick-next { right: 10px; }
+		
+		.slick-dots { bottom: 10px; }
+		.slick-dots li button:before { font-size: 10px; color: #fff; }
+		.slick-dots li.slick-active button:before { color: #fff; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
@@ -67,6 +82,17 @@
 			pauseOnFocus: true,
 		});
 	});
+	
+    function confirmSpaceDeletion(memno, spaceno) {
+        var confirmation = confirm("정말로 이 공간을 삭제하시겠습니까?");
+        if (confirmation) {
+            window.location.href = "/spaceHub/mypage/host?cmd=sapceDelete&memno="+memno+"&spaceno="+spaceno+"";
+        } else {
+            // 사용자가 취소를 선택한 경우
+            // 추가적인 작업을 할 수 있으면 여기에 추가합니다.
+        }
+    }
+
 </script>
 <jsp:include page="/common/header.jsp" />
 
@@ -92,6 +118,13 @@
 		</div>
 			<div>
 				<h2>등록한 숙소</h2>
+				<c:if test="${empty hostList }">
+					<div class="empty_hostSpace">
+						<div>등록한 공간이 없습니다!</div>
+						<a class="hostSpace_update" href="/spaceHub/space?cmd=write&memno=${member.memno }">공간 등록하러 가기</a>
+					</div>
+				</c:if>
+				<c:if test="${not empty hostList }">
 				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
 							<div class="img_wrap slider">
@@ -103,9 +136,10 @@
 							<p class="space_subject">${vo.subject }</p>
 							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender">예약자 확인</a></button>
 							<button type="button" class="btn btn-warning"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
-							<button type="button" class="btn btn-danger"><a href="/spaceHub/mypage/host?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
+							<button type="button" class="btn btn-danger" onclick="confirmSpaceDeletion(${member.memno}, ${vo.spaceno})">공간 삭제</button>
 						</div>
-				 </c:forEach>
+				</c:forEach>
+				</c:if>
 			</div>
 		</form>
 	</div>

@@ -67,14 +67,10 @@
 		
 		
 	</script>
-	
 <jsp:include page="../../common/header.jsp" />
 
 	<div class="main">
 		<div class="inner">
-			<div class="page-title">
-				<div class="title-name">예약 확인</div>
-			</div>
 			<div class="calendar-wrap">
 				<div class="calendar-control">
 					<button type="button" onclick="calendarController('prev');">이전달</button>
@@ -87,6 +83,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

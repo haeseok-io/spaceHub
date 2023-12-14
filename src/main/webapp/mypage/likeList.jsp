@@ -37,6 +37,22 @@
     span {
     	font-weight: bold; font-size: 18px;
     }
+    .content {
+    	display: inline-block;
+    	margin: 0 30px;
+    }
+    
+    /* slick 플러그인 제어 */
+		.slick-slider {}
+		.slick-dotted.slick-slider { margin-bottom: 0; }
+		
+		.slick-prev, .slick-next { z-index: 2; }
+		.slick-prev { left: 10px; }
+		.slick-next { right: 10px; }
+		
+		.slick-dots { bottom: 10px; }
+		.slick-dots li button:before { font-size: 10px; color: #fff; }
+		.slick-dots li.slick-active button:before { color: #fff; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
@@ -57,22 +73,24 @@
 		<input type="hidden" name="memno" value="${member.memno }" />
 		<div class="container">		
 		<h1>찜한 숙소</h1>
-			<c:forEach var="vo" items="${jjimList }">
-					<div class="wrap slider">
-						<c:forEach var="img" items="${vo.imgList }">
-							<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
-								<img src="${img.path }" alt="" />			
-							</a>
-						</c:forEach>
-					</div>
+				<c:forEach var="vo" items="${jjimList }">
+					<div class="content">
+						<div class="wrap slider">
+							<c:forEach var="img" items="${vo.imgList }">
+								<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
+									<img src="${img.path }" alt="" />			
+								</a>
+							</c:forEach>
+						</div>
 						<div><span class="subject">${vo.subject }</span></div>
 						<div>${vo.addr }</div>
 						<div>₩ <span class="price">${vo.price }</span> / 1박</div>
-			</c:forEach>
+					</div>
+				</c:forEach>
+			</div>
 			<c:if test="${empty jjimList}">
         		    <p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
         	</c:if>
-		</div>
 	</form>
 </body>
 </html>

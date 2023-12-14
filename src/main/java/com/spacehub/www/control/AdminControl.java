@@ -4,6 +4,7 @@ import com.spacehub.www.model.Action;
 import com.spacehub.www.model.AdminLoginOkCommand;
 import com.spacehub.www.model.LogoutCommand;
 import com.spacehub.www.model.ReservationListCommand;
+import com.spacehub.www.model.ExcelDownloadAction;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,7 +42,10 @@ public class AdminControl extends HttpServlet {
 		} else if(cmd.equals("reservationList")) {
 			Action ac = new ReservationListCommand();
 			url = ac.execute(req, resp);
-		} 
+		} else if(cmd.equals("downloadExcel")) {
+			Action ac = new ExcelDownloadAction();
+			url = ac.execute(req, resp);
+		}
 
 		if( isRedirect ) {
 			resp.sendRedirect(url);

@@ -26,7 +26,8 @@ public class SpaceImageDAO {
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, spaceno);
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			System.out.println("영향 받은 row 수 : " + result);
 		} catch (SQLException e) {
 			System.out.println("이미지 삭제 실패");
 			e.printStackTrace();
@@ -114,19 +115,20 @@ public class SpaceImageDAO {
 	}
 	
 	// 데이터 추가
-		public void addOne(SpaceImageVO vo) {
-			sb.setLength(0);
-			sb.append("INSERT INTO space_image (path, seq, spaceno) VALUES (?, ?, ?)");
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setString(1, vo.getPath());
-				pstmt.setInt(2, vo.getSeq());
-				pstmt.setInt(3, vo.getSpaceno());
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public void addOne(SpaceImageVO vo) {
+		sb.setLength(0);
+		System.out.println("seq: " + vo.getSeq());
+		sb.append("INSERT INTO space_image (path, seq, spaceno) VALUES (?, ?, ?)");
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setString(1, vo.getPath());
+			pstmt.setInt(2, vo.getSeq());
+			pstmt.setInt(3, vo.getSpaceno());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// 공간 대표 이미지 추출
