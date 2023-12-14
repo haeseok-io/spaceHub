@@ -67,6 +67,17 @@
 			pauseOnFocus: true,
 		});
 	});
+	
+    function confirmSpaceDeletion(memno, spaceno) {
+        var confirmation = confirm("정말로 이 공간을 삭제하시겠습니까?");
+        if (confirmation) {
+            window.location.href = "/spaceHub/mypage/host?cmd=sapceDelete&memno="+memno+"&spaceno="+spaceno+"";
+        } else {
+            // 사용자가 취소를 선택한 경우
+            // 추가적인 작업을 할 수 있으면 여기에 추가합니다.
+        }
+    }
+
 </script>
 <jsp:include page="/common/header.jsp" />
 
@@ -103,7 +114,7 @@
 							<p class="space_subject">${vo.subject }</p>
 							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender">예약자 확인</a></button>
 							<button type="button" class="btn btn-warning"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
-							<button type="button" class="btn btn-danger"><a href="/spaceHub/mypage/host?cmd=sapceDelete&memno=${member.memno }&spaceno=${vo.spaceno }">공간 삭제</a></button>
+							<button type="button" class="btn btn-danger" onclick="confirmSpaceDeletion(${member.memno}, ${vo.spaceno})">공간 삭제</button>
 						</div>
 				 </c:forEach>
 			</div>

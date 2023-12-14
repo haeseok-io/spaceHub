@@ -116,10 +116,11 @@
 	                    "</div>" +
 	                    "</div>";
 
-	                $(this).before(newImageContainer);
+	                $('.plusImgContainer').before(newImageContainer);
+
 	                
 	                // 이미지 컨테이너 추가 후 cnt 증가
-	                cnt++;
+	                //cnt--;
 
 	                // 새로 생성된 이미지 컨테이너의 삭제 버튼에 대한 이벤트 핸들러 연결
 	                $(this).prev('.imageContainer').find('.deleteBtn').on('click', function() {
@@ -143,7 +144,6 @@
 	                    }
 	                }).click(); // 파일 업로드 창을 띄우기 위해 click 이벤트 호출
 	            }    
-	            cnt++;
 	            // 이미지 컨테이너가 10개인 경우 사진 추가 버튼 숨김 처리
 	            if ($('.imageContainer').length >= 10) {
 	                $(this).hide();
@@ -160,14 +160,28 @@
 	                event.preventDefault(); // 폼 제출 막음
 	            }
 	        });
-
 	        
 	    });//$start end
+	</script>
+	<script>
+	 function validateForm() {
+ 	    // 필수 입력 필드를 확인합니다.
+ 	    var subject = document.forms["spaceModifyForm"]["subject"].value;
+ 	    var detail = document.forms["spaceModifyForm"]["detail"].value;
+ 	    var price = document.forms["spaceModifyForm"]["price"].value;
+ 	    var inOutDate = document.forms["spaceModifyForm"]["inOutDate"].value;
+ 	
+ 	    if (subject == "" || detail == "" || price == "" || inOutDate=="" || price.equlas("")) {
+ 	      alert("모든 필수 항목을 입력하세요!");
+ 	      return false;
+ 	    }
+ 	    return true;
+ 	  }
 	</script>
 	
 <jsp:include page="../common/header.jsp"/>
 	<div class="container">
-		<form name="spaceModifyForm" action="/spaceHub/mypage/hostSpaceControl" method="post" enctype="multipart/form-data" >
+		<form name="spaceModifyForm" action="/spaceHub/mypage/hostSpaceControl" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" >
 			<input type="hidden" name="memno" value="${member.memno }"/>
 			<input type="hidden" name="spaceno" value="${spaceVo.spaceno }"/>
 			<input type="hidden" name="vstatus" value="${spaceVo.VStatus}"/>

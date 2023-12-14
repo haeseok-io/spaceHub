@@ -19,11 +19,26 @@
 	    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
 	    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	</style>
+	<script>
+	  function validateForm() {
+	    // 필수 입력 필드를 확인합니다.
+	    var subject = document.forms["spaceForm"]["subject"].value;
+	    var detail = document.forms["spaceForm"]["detail"].value;
+	    var price = document.forms["spaceForm"]["price"].value;
+	    var inOutDate = document.forms["spaceForm"]["inOutDate"].value;
+	
+	    if (subject == "" || detail == "" || price == "" || inOutDate=="") {
+	      alert("모든 필수 항목을 입력하세요!");
+	      return false;
+	    }
+	    return true;
+	  }
+	</script>
 
 <jsp:include page="../common/header.jsp"></jsp:include>
 
 	<div class="container">
-		<form name="spaceForm" action="/spaceHub/spaceRegister" method="post" enctype="multipart/form-data" >
+		<form name="spaceForm" action="/spaceHub/spaceRegister" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 			<input type="hidden" name="cmd" value="writeOk" />
 			<input type="hidden" name="y" /> <!-- 위도  -->
 			<input type="hidden" name="x" /> <!-- 경도  -->
