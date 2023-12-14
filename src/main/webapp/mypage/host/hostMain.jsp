@@ -134,7 +134,7 @@
 								</c:forEach> 
 							</div>
 							<p class="space_subject">${vo.subject }</p>
-							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender">예약자 확인</a></button>
+							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${vo.spaceno}">예약자 확인</a></button>
 							<button type="button" class="btn btn-warning"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
 							<button type="button" class="btn btn-danger" onclick="confirmSpaceDeletion(${member.memno}, ${vo.spaceno})">공간 삭제</button>
 						</div>
