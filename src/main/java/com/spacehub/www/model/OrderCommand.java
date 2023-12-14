@@ -37,11 +37,11 @@ public class OrderCommand implements ActionCommand {
 		SmemberVO memberVO = (SmemberVO)session.getAttribute("member");
 		
 		if(memberVO != null) {
-			if(checkin == "" || checkout == "" || guest == "") {
+			if(checkin == "" || checkout == "" || guest == "" || checkin == null || checkout == null || guest == null) {
 				return "main.jsp";
 			}
 			
-			if(s != null || checkin != null || checkout != null || guest != null) {
+			if(s != null || checkin != null || checkout != null || guest != null || checkin != "" || checkout != "" || guest != "") {
 				int Spaceno = Integer.parseInt(s);
 				MemCouponDAO mdao = new MemCouponDAO();
 				ArrayList<MCouponVO> list = mdao.getCMem(1,memberVO.getMemno());
