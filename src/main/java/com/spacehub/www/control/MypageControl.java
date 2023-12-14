@@ -36,7 +36,6 @@ public class MypageControl extends HttpServlet{
 		}else if(cmd.equals("modifyOk")) {
 			Action action = new ModifyOkAction();
 			url = action.execute(req, resp);
-			isRedirect = true;
 		}else if(cmd.equals("likeList")) {
 			Action action = new LikeAction();
 			url = action.execute(req, resp);

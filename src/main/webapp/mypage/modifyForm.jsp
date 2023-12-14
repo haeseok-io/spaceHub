@@ -9,12 +9,12 @@
 <jsp:include page="/common/common.jsp" />
 
 <script>
-	window.onload = function () {		
-		<% if (request.getAttribute("showAlert") != null) { %>
-			alert("${alertMessage}");
-			window.location.replace("/spaceHub/mypage");
-		<% } %>
-	}
+    window.onload = function () {
+        <% if (request.getAttribute("showAlert") != null && (boolean) request.getAttribute("showAlert")) { %>
+            alert("${alertMessage}");
+            window.location.replace("/spaceHub/mypage");
+        <% } %>
+    }
 </script>
 
 <jsp:include page="/common/header.jsp" />
