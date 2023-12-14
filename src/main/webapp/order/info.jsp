@@ -126,7 +126,7 @@
 				$("#credits-price").text(usecredits);
 				$("#price").text(allprice-usecredits);
 				$("#creditsprice").val(usecredits);
-				$("#shin").val(usecredits);
+				$("#shin").val(allprice-usecredits);
 			}else if(usecredits > creditsyet){
 				alert("크래딧이 부족합니다.");
 			}else if(usecredits > price){
