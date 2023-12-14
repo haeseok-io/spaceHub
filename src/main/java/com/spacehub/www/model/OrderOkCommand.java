@@ -98,9 +98,9 @@ public class OrderOkCommand implements ActionCommand {
 			  
 			  MemCardDAO memdao = new MemCardDAO();
 			  MemCardVO memvo = new MemCardVO();
-			  MemCardVO memcardvo = memdao.getOne(cardnum, memberVO.getMemno());
+			  MemCardVO memcvo = memdao.getOne(cardnum, memberVO.getMemno());
 			  
-			  if(memcardvo == null || memcardvo.getCardNum() != cardnum) {
+			  if(memcvo == null) {
 				  memvo.setCardNum(cardnum);
 				  memvo.setEDate("11-05");
 				  memvo.setCvc(111);
@@ -109,7 +109,6 @@ public class OrderOkCommand implements ActionCommand {
 				  memvo.setMemno(memberVO.getMemno());
 				  
 				  memdao.addOne(memvo);
-				  memdao.close();
 			  }
 			  
 			  
@@ -140,6 +139,7 @@ public class OrderOkCommand implements ActionCommand {
 			  }
 			  rdao.close();
 			  cdao.close();
+			  memdao.close();
 		  }
 		
 		return "/mypage/guest?cmd=spaceList";
