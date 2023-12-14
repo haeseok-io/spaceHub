@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<style>
+<jsp:include page="../../common/common.jsp" />
+	<title>spaceHub - 리스트</title>
+	
+	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+	
+	<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+	<style>
 	.btn-group{
 		float:right;
 	}
@@ -16,16 +15,20 @@
 		text-align: center;
 	}
 </style>
-
-</head>
-<body>
+<jsp:include page="../../common/header.jsp" />
+	<div class="main">
+		<div class="inner">
+			<div class="page-title">
+				<div class="title-name">리스트</div>
+				<div class="btn-group">
+				  <a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${spaceno}" class="btn btn-outline-secondary" aria-current="page">달력</a>
+				  <a href="#" class="btn btn-outline-secondary active">리스트</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<form action="">
-			<h2>리스트</h2>
-			<div class="btn-group">
-			  <a href="/spaceHub/mypage/host?cmd=reservCalender&spaceno=${spaceno}" class="btn btn-outline-secondary" aria-current="page">달력</a>
-			  <a href="#" class="btn btn-outline-secondary active">리스트</a>
-			</div>
 			<table class="table">
 			    <tr>
 			      <th scope="col">예약번호</th>
