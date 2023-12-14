@@ -14,6 +14,9 @@
         <input type="hidden" name="cmd" value="downloadExcel"/>
         <input type="hidden" name="adminno" value="${admin.adminno }"/>
             <h2>예약 리스트</h2>
+            <div>
+				<a href="/spaceHub/admin?cmd=logoutOk" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" style="float:right;">관리자 로그아웃</a>
+			</div>
             <table class="table">
                 <thead class="table-light">
                     <tr>
