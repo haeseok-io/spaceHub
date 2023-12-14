@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.spacehub.www.model.ActionCommand;
 import com.spacehub.www.model.CancelCommand;
 import com.spacehub.www.model.OrderCommand;
@@ -23,8 +25,8 @@ public class OrderController extends HttpServlet{
 		resp.setContentType("text/html;charset=UTF-8");
 		
 		String cmd = req.getParameter("cmd");
-		
-		String msg = "";
+		boolean isRedirect = false;
+		JSONObject jsonObject = new JSONObject();
 		String url = "";
 		
 		if( cmd==null ) 	cmd = "info";
@@ -40,8 +42,23 @@ public class OrderController extends HttpServlet{
 			url = ac.execute(req, resp);
 		}
 		
-		RequestDispatcher rd = req.getRequestDispatcher(url);
-		rd.forward(req, resp);
+		// url값이 null일 경우 메인페이지로 리다이렉트
+				if( url==null ) {
+					url = "/spaceHub/home";
+					isRedirect = true;
+				}
+		
+		if (!url.equals("")) {
+			if (isRedirect) {
+				resp.sendRedirect(url);
+			} else {
+				RequestDispatcher rd = req.getRequestDispatcher(url);
+				rd.forward(req, resp);
+			}
+		} else {
+			resp.getWriter().print(jsonObject.toJSONString());
+			resp.getWriter().flush();
+		}
 	}
 	
 	@Override

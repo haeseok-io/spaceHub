@@ -38,7 +38,7 @@ public class OrderCommand implements ActionCommand {
 		
 		if(memberVO != null) {
 			if(checkin == "" || checkout == "" || guest == "" || checkin == null || checkout == null || guest == null) {
-				return "main.jsp";
+				return null;
 			}
 			
 			if(s != null || checkin != null || checkout != null || guest != null || checkin != "" || checkout != "" || guest != "") {
