@@ -30,7 +30,7 @@
 	<div class="container">
 		<form action="">
 			<table class="table">
-			    <tr>
+			    <tr onclick="yet()">
 			      <th scope="col">예약번호</th>
 			      <th scope="col">이름</th>
 			      <th scope="col">체크인</th>
@@ -48,8 +48,6 @@
 			      <td>${vo.phone}</td>
 			      <td>${vo.guest}</td>
 			      <td>${vo.price}</td>
-			    </tr>
-			    <tr>
 			    </tr>
 			</c:forEach>
 			</table>

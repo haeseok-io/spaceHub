@@ -100,10 +100,10 @@ public class OrderOkCommand implements ActionCommand {
 			  MemCardVO memvo = new MemCardVO();
 			  MemCardVO memcardvo = memdao.getOne(cardnum, memberVO.getMemno());
 			  
-			  if(memcardvo != null) {
+			  if(memcardvo == null) {
 				  memvo.setCardNum(cardnum);
-				  memvo.setEDate("");
-				  memvo.setCvc(0);
+				  memvo.setEDate("11-05");
+				  memvo.setCvc(111);
 				  memvo.setPost(postcode);
 				  memvo.setLoc("한국");
 				  memvo.setMemno(memberVO.getMemno());
