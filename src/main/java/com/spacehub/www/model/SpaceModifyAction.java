@@ -13,7 +13,6 @@ import com.spacehub.www.dao.SpaceDetailDAO;
 import com.spacehub.www.dao.SpaceFacDAO;
 import com.spacehub.www.dao.SpaceImageDAO;
 import com.spacehub.www.vo.DiscountVO;
-import com.spacehub.www.vo.HostSpaceImageVO;
 import com.spacehub.www.vo.SmemberVO;
 import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceFacVO;
@@ -42,7 +41,7 @@ public class SpaceModifyAction implements Action {
 			DiscountDAO discountDao = new DiscountDAO();
 			
 			SpaceVO spaceVo = spaceDao.getOne(Integer.parseInt(spaceno));
-			System.out.println(spaceVo);
+			//System.out.println(spaceVo);
 			
 			SpaceDetailVO spaceDetailVo = spaceDetailDao.getOne(Integer.parseInt(spaceno));
 			SpaceFacVO spaceFacVo = spaceFacDao.getOne(Integer.parseInt(spaceno));

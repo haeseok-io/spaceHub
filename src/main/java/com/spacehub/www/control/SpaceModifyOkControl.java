@@ -187,11 +187,12 @@ public class SpaceModifyOkControl extends HttpServlet {
 			System.out.println(mr.getFilesystemName("img"));
 			System.out.println(mr.getOriginalFileName("img"));
 			
-			 // 첫 번째 파일 처리
+			// 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
+
 		    int seq = 1; // 순서를 지정하기 위한 변수
-		    System.out.println("hashcode:"+fileInputNames.hashCode());
 		    spcaeImageDao.deleteOne(Integer.parseInt(spaceno));
+		    
 		    while (fileInputNames.hasMoreElements()) {
 		        String inputName = fileInputNames.nextElement();
 		        String imgIdx = inputName.substring(3);//img(?) 번호 가져오기
@@ -199,21 +200,21 @@ public class SpaceModifyOkControl extends HttpServlet {
 		        
 		        System.out.println("inputName:" + inputName );
 		        System.out.println("uploadedFilePath : " + uploadedFilePath);
-		        System.out.println("imgIdx: "+imgIdx);
+		        System.out.println("imgIdx: "+ imgIdx);
+		        
 		        // 파일 업로드가 실패한 경우, 파일 경로는 null일 수 있습니다.
 		        if (uploadedFilePath != null) {
 		            // 업로드된 파일의 경로를 DB에 저장하거나 다른 작업 수행
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
 		            spaceImageVo.setSeq(Integer.parseInt(imgIdx)); // 순서 설정
 		            spaceImageVo.setSpaceno(Integer.parseInt(spaceno)); // 공간 번호 설정
-		            //spaceImageVo.setImgno(1); // 이미지 번호 설정
 		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
 
 		            // 해당 파일 정보를 DB에 삭제 후 추가
-		            System.out.println("이미지 VO : " + spaceImageVo);
+		            //System.out.println("이미지 VO : " + spaceImageVo);
 		            spcaeImageDao.addOne(spaceImageVo);
 		        }
-		    }
+		    } //while end
 		    
 			//공간 편의시설(space_fac)
 			spaceFacVo.setSpaceno(Integer.parseInt(spaceno));
