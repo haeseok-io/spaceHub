@@ -32,7 +32,7 @@
 	.account a.account_update {
 		text-decoration: underline;
 	}
-	.empty_account {
+	.empty_account, .empty_hostSpace {
 		border: 3px solid gray;
 		border-radius: 10px;
 		width: fit-content; /* 텍스트 크기에 맞게 조절될 수 있도록 수정 */
@@ -54,6 +54,9 @@
     .img_wrap {
     	position: relative;
         width: 100%; /* 슬라이드 전체 너비 */
+    }
+    .hostSpace_update {
+    	text-decoration: underline;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
@@ -103,6 +106,13 @@
 		</div>
 			<div>
 				<h2>등록한 숙소</h2>
+				<c:if test="${empty hostList }">
+					<div class="empty_hostSpace">
+						<div>등록한 공간이 없습니다!</div>
+						<a class="hostSpace_update" href="/spaceHub/space?cmd=write&memno=${member.memno }">공간 등록하러 가기</a>
+					</div>
+				<c:if test="${not empty hostList }">
+				</c:if>
 				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
 							<div class="img_wrap slider">
@@ -116,7 +126,8 @@
 							<button type="button" class="btn btn-warning"><a href="/spaceHub/mypage/host?cmd=spaceModify&memno=${member.memno }&spaceno=${vo.spaceno }">공간 수정</a></button>
 							<button type="button" class="btn btn-danger" onclick="confirmSpaceDeletion(${member.memno}, ${vo.spaceno})">공간 삭제</button>
 						</div>
-				 </c:forEach>
+				</c:forEach>
+				</c:if>
 			</div>
 		</form>
 	</div>
