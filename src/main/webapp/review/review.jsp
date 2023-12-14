@@ -9,7 +9,7 @@
 	<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
 	<style>
 		.container{
-			margin-bottom:100px;
+			margin-bottom:50px;
 		}
 	</style>
 <jsp:include page="../common/header.jsp" />
@@ -19,8 +19,7 @@
 				<div class="title-name">후기 작성</div>
 			</div>
 		</div>
-	</div>
-	<div class="container">
+		<div class="container">
 		<c:forEach var="vo" items="${list}">
 		<form action="/spaceHub/review" method="post" >
 			<div class="mb-3 row">
@@ -69,6 +68,7 @@
 			</div>
 		</form>
 		</c:forEach>
+	</div>
 	</div>
 </body>
 </html>
