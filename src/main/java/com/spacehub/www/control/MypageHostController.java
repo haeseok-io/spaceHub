@@ -25,16 +25,10 @@ public class MypageHostController extends HttpServlet {
 		if (cmd == null || cmd.equals("hostMain")) {
 			Action ac = new HostMainAction();
 			url = ac.execute(req, resp);
-		} else if (cmd.equals("reservCalender")) {
-			ActionCommand ac = new ReservCalenderCommand();
-			url = ac.execute(req, resp);
-		} else if (cmd.equals("reservList")) {
-			ActionCommand ac = new ReservListCommand();
-			url = ac.execute(req, resp);
 		} else if (cmd.equals("spaceModify")) {
 			Action ac = new SpaceModifyAction();
 			url = ac.execute(req, resp);
-		}  else if (cmd.equals("sapceDelete")) {
+		} else if (cmd.equals("sapceDelete")) {
 			Action ac = new SpaceDeleteAction();
 			url = ac.execute(req, resp);
 			isRedirect = true;
