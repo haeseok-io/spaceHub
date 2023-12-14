@@ -258,7 +258,8 @@ public class SpaceDAO {
 			sb.setLength(0);
 			sb.append("Select s.spaceno, s.type, s.loc, s.subject, s.post, s.addr, s.price, s.regdate, s.ip, s.v_status, s.status, s.memno, i.path ");
 			sb.append("From space s, space_image i ");
-			sb.append("Where s.spaceno=i.spaceno AND i.seq=1 AND s.spaceno=?");
+			sb.append("Where s.spaceno=i.spaceno AND s.spaceno=? ");
+			sb.append("AND i.seq=(Select min(seq) From space_image Where spaceno=s.spaceno)");
 			
 			try {
 				pstmt = conn.prepareStatement(sb.toString());
