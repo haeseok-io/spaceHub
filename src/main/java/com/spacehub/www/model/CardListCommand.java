@@ -13,7 +13,7 @@ import com.spacehub.www.vo.ReservationVO;
 import com.spacehub.www.vo.ResevSpaceVO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class CardListCommand implements ActionCommand {
+public class CardListCommand implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {

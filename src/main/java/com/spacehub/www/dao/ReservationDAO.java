@@ -6,9 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.spacehub.www.vo.ReservationListVO;
 import com.spacehub.www.vo.ReservationVO;
-import com.spacehub.www.vo.ResevSpaceVO;
-import com.spacehub.www.vo.SpaceDetailVO;
 import com.spacehub.www.vo.SpaceHostVO;
 
 public class ReservationDAO {
@@ -55,88 +54,108 @@ public class ReservationDAO {
 		return list;
 	}
 	
-	public ArrayList<ReservationVO> getSpace(int spaceno){
-		ArrayList<ReservationVO> list = new ArrayList<ReservationVO>();
+	// 게스트 - 전체 예약내역 가져오기
+	public ArrayList<ReservationListVO> getGuestAll(int memno) {
+		ArrayList<ReservationListVO> list = new ArrayList<ReservationListVO>();
 		
 		sb.setLength(0);
-		sb.append("Select * From reservation where spaceno=? Order By checkin asc");
+		sb.append("Select r.reservno, r.checkin, r.checkout, r.price, r.guest, r.dcratio, r.regdate, r.status, r.spaceno, ");
+		sb.append("s.type, s.loc, s.subject, s.addr, s.price as space_price, si.path AS space_main_path ");
+		sb.append("From reservation r ");
+		sb.append("Join space s On s.spaceno=r.spaceno ");
+		sb.append("Join space_image si On si.spaceno=r.spaceno ");
+		sb.append("Where r.memno=? And si.seq=(Select min(seq) From space_image Where spaceno=r.spaceno)");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1,spaceno);
+			pstmt.setInt(1, memno);
 			rs = pstmt.executeQuery();
 			
 			while( rs.next() ) {
-				int reservno = rs.getInt("reservno");
-				String checkin = rs.getString("checkin");
-				String checkout = rs.getString("checkout");
-				String name = rs.getString("name");
-				String phone = rs.getString("phone");
-				int price = rs.getInt("price");
-				int guest = rs.getInt("guest");
-				int dcratio = rs.getInt("dcratio");
-				String regdate = rs.getString("regdate");
-				int status = rs.getInt("status");
-				String ip = rs.getString("ip");
-				int memno = rs.getInt("memno");
-				ReservationVO vo = new ReservationVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno);
-				list.add(vo);
+				list.add(new ReservationListVO(
+					rs.getInt("reservno"),
+					rs.getString("checkin"),
+					rs.getString("checkout"),
+					rs.getInt("price"),
+					rs.getInt("guest"),
+					rs.getInt("dcratio"),
+					rs.getString("regdate"),
+					rs.getInt("status"),
+					rs.getInt("spaceno"),
+					rs.getString("type"),
+					rs.getString("loc"),
+					rs.getString("subject"),
+					rs.getString("addr"),
+					rs.getInt("space_price"),
+					rs.getString("space_main_path")
+				));
 			}
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return list;
 	}
+	
+	// 게스트 - 상태별 예약내역 가져오기
+	public ArrayList<ReservationListVO> getGuestAll(int memno, int status) {
+		ArrayList<ReservationListVO> list = new ArrayList<ReservationListVO>();
+		
+		sb.setLength(0);
+		sb.append("Select r.reservno, r.checkin, r.checkout, r.price, r.guest, r.dcratio, r.regdate, r.status, r.spaceno, ");
+		sb.append("s.type, s.loc, s.subject, s.addr, s.price as space_price, si.path AS space_main_path ");
+		sb.append("From reservation r ");
+		sb.append("Join space s On s.spaceno=r.spaceno ");
+		sb.append("Join space_image si On si.spaceno=r.spaceno ");
+		sb.append("Where r.memno=? And r.status=? And si.seq=(Select min(seq) From space_image Where spaceno=r.spaceno)");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, memno);
+			pstmt.setInt(2, status);
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				list.add(new ReservationListVO(
+					rs.getInt("reservno"),
+					rs.getString("checkin"),
+					rs.getString("checkout"),
+					rs.getInt("price"),
+					rs.getInt("guest"),
+					rs.getInt("dcratio"),
+					rs.getString("regdate"),
+					rs.getInt("status"),
+					rs.getInt("spaceno"),
+					rs.getString("type"),
+					rs.getString("loc"),
+					rs.getString("subject"),
+					rs.getString("addr"),
+					rs.getInt("space_price"),
+					rs.getString("space_main_path")
+				));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	
 	
 	public ReservationVO getSpaceOne(int spaceno) {
-			
-			sb.setLength(0);
-			sb.append("SELECT max(reservno) AS reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno From reservation where spaceno=?");
-			ReservationVO vo = null;
-			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, spaceno);
-				rs = pstmt.executeQuery();
-				
-				while( rs.next() ) {
-					String checkin = rs.getString("checkin");
-					String checkout = rs.getString("checkout");
-					String name = rs.getString("name");
-					String phone = rs.getString("phone");
-					int price = rs.getInt("price");
-					int guest = rs.getInt("guest");
-					int dcratio = rs.getInt("dcratio");
-					String regdate = rs.getString("regdate");
-					int status = rs.getInt("status");
-					String ip = rs.getString("ip");
-					int reservno = rs.getInt("reservno");
-					int memno = rs.getInt("memno");
-					vo = new ReservationVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno);
-				}
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-			
-			return vo;
-		}
-	
-	//상태1
-	public ArrayList<ResevSpaceVO> getAll(int memno){
-		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
-		
 		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and checkout >= date(NOW()) and r.status=1 and r.memno=? and i.seq=1 order by checkin asc");
+		sb.append("SELECT max(reservno) AS reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno From reservation where spaceno=?");
+		ReservationVO vo = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, memno);
+			pstmt.setInt(1, spaceno);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				int reservno = rs.getInt("reservno");
+			while( rs.next() ) {
 				String checkin = rs.getString("checkin");
 				String checkout = rs.getString("checkout");
 				String name = rs.getString("name");
@@ -147,107 +166,19 @@ public class ReservationDAO {
 				String regdate = rs.getString("regdate");
 				int status = rs.getInt("status");
 				String ip = rs.getString("ip");
-				int spaceno = rs.getInt("spaceno");
-				String type = rs.getString("type");
-				String loc = rs.getString("loc");
-				String subject = rs.getString("subject");
-				String post = rs.getString("post");
-				String addr = rs.getString("addr");
-				String path = rs.getString("path");
-				int seq = rs.getInt("seq");
-				ResevSpaceVO vo = new ResevSpaceVO(reservno, checkin, checkout, name, phone, price,guest,dcratio,regdate,status,ip,spaceno,memno,type,loc,subject,post,addr,path,seq);
-				list.add(vo);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return list;
-	}
-	
-	//상태4
-	public ArrayList<ResevSpaceVO> getTwo(int memno){
-		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
-		
-		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.status=4 and r.memno=? and i.seq=1 order by checkin asc");
-		
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, memno);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
 				int reservno = rs.getInt("reservno");
-				String checkin = rs.getString("checkin");
-				String checkout = rs.getString("checkout");
-				String name = rs.getString("name");
-				String phone = rs.getString("phone");
-				int price = rs.getInt("price");
-				int guest = rs.getInt("guest");
-				int dcratio = rs.getInt("dcratio");
-				String regdate = rs.getString("regdate");
-				int status = rs.getInt("status");
-				String ip = rs.getString("ip");
-				int spaceno = rs.getInt("spaceno");
-				String type = rs.getString("type");
-				String loc = rs.getString("loc");
-				String subject = rs.getString("subject");
-				String post = rs.getString("post");
-				String addr = rs.getString("addr");
-				String path = rs.getString("path");
-				int seq = rs.getInt("seq");
-				ResevSpaceVO vo = new ResevSpaceVO(reservno, checkin, checkout, name, phone, price,guest,dcratio,regdate,status,ip,spaceno,memno,type,loc,subject,post,addr,path,seq);
-				list.add(vo);
+				int memno = rs.getInt("memno");
+				vo = new ReservationVO(reservno, checkin, checkout, name, phone, price, guest, dcratio, regdate, status, ip, spaceno, memno);
 			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return list;
-	}
-	
-	public ArrayList<ResevSpaceVO> getEnd(int memno){
-		ArrayList<ResevSpaceVO> list = new ArrayList<ResevSpaceVO>();
-		
-		sb.setLength(0);
-		sb.append("select r.reservno, r.checkin, r.checkout, r.name, r.phone, r.price, r.guest, r.dcratio, r.regdate, r.status, r.ip, r.spaceno, r.memno, s.type, s.loc, s.subject, s.post, s.addr, i.path, i.seq from reservation r, space s, space_image i where r.spaceno=s.spaceno and s.spaceno=i.spaceno and r.status=1 and checkout < date(NOW()) and r.memno=? and i.seq=1 order by checkin asc");
-		
-		try {
-			pstmt = conn.prepareStatement(sb.toString());
-			pstmt.setInt(1, memno);
-			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				int reservno = rs.getInt("reservno");
-				String checkin = rs.getString("checkin");
-				String checkout = rs.getString("checkout");
-				String name = rs.getString("name");
-				String phone = rs.getString("phone");
-				int price = rs.getInt("price");
-				int guest = rs.getInt("guest");
-				int dcratio = rs.getInt("dcratio");
-				String regdate = rs.getString("regdate");
-				int status = rs.getInt("status");
-				String ip = rs.getString("ip");
-				int spaceno = rs.getInt("spaceno");
-				String type = rs.getString("type");
-				String loc = rs.getString("loc");
-				String subject = rs.getString("subject");
-				String post = rs.getString("post");
-				String addr = rs.getString("addr");
-				String path = rs.getString("path");
-				int seq = rs.getInt("seq");
-				ResevSpaceVO vo = new ResevSpaceVO(reservno, checkin, checkout, name, phone, price,guest,dcratio,regdate,status,ip,spaceno,memno,type,loc,subject,post,addr,path,seq);
-				list.add(vo);
-			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return list;
+		return vo;
 	}
 	
+	// ?? 뭐하는건지 적어주세용
 	public ArrayList<SpaceHostVO> getHone(int reservno){
 		ArrayList<SpaceHostVO> list = new ArrayList<SpaceHostVO>();
 		
@@ -362,23 +293,23 @@ public class ReservationDAO {
 	}
 	
 	// 데이터 변경
-		public void modifyStatus(ReservationVO vo) {
-			sb.setLength(0);
-			sb.append("Update reservation Set ");
-			sb.append("status=? ");
-			sb.append("Where reservno=?");
+	public void modifyStatus(ReservationVO vo) {
+		sb.setLength(0);
+		sb.append("Update reservation Set ");
+		sb.append("status=? ");
+		sb.append("Where reservno=?");
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			pstmt.setInt(1, vo.getStatus());
+			pstmt.setInt(2, vo.getReservno());
 			
-			try {
-				pstmt = conn.prepareStatement(sb.toString());
-				pstmt.setInt(1, vo.getStatus());
-				pstmt.setInt(2, vo.getReservno());
-				
-				pstmt.executeUpdate();
-				
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
+			pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
+	}
 	
 	// 데이터 컬럼 변경	
 	public void modifyOnePart(int reservno, String field, String value) {

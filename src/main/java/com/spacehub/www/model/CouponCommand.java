@@ -10,7 +10,7 @@ import com.spacehub.www.dao.MemCouponDAO;
 import com.spacehub.www.vo.MCouponVO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class CouponCommand implements ActionCommand {
+public class CouponCommand implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {

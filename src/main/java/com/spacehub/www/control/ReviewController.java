@@ -13,7 +13,6 @@ import com.spacehub.www.model.ActionCommand;
 import com.spacehub.www.model.ReviewCommand;
 import com.spacehub.www.model.ReviewListCommand;
 import com.spacehub.www.model.ReviewOkCommand;
-import com.spacehub.www.model.SpaceListCommand;
 
 @WebServlet("/review")
 public class ReviewController extends HttpServlet{

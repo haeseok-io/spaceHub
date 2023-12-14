@@ -26,15 +26,14 @@ public class MessageControl extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+		
 		// Val
 		String cmd = req.getParameter("cmd");
 		url = "";
 		jsonObject = null;
 		isRedirect = false;
-		
-		// Init
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html;charset=UTF-8");
 		
 		// Check
 		// - cmd 값이 없을경우 list 로 고정
@@ -58,15 +57,15 @@ public class MessageControl extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+		
 		// Val
 		String cmd = req.getParameter("cmd");
 		url = "";
 		jsonObject = null;
 		isRedirect = true;
 		
-		// Init
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html;charset=UTF-8");
 		
 		// Data
 		if( cmd.equals("writeOk") ) {

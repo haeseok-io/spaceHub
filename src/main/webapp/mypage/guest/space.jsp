@@ -7,92 +7,148 @@
 	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 	
 	<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-	<style type="text/css">
-	#cd{
-		float:left;
-	}
+	<script>
+		const Calendar = window.tui.Calendar;
+		let calendar;
 	
-	#re{
-		float: right;
-	}
-	
-	a{
-		text-decoration-line:none;
-	}
-	
-	#hm{
-		float:left;
-	}
-	
-	#de{
-		float: right;
-	}
-	img{
-		width:287px;
-		height:202px;
-	}
-	.col{
-		margin-right:30px;
-		margin-top : 80px;
-		width: 300px;
-	}
-	#can{
-		text-align: center;
-		display: block;
-	}
-	.container{
-		bottom:100px;
-	}
-</style>
+		$(() => {
+			calendar = new Calendar('#calendar', {
+				defaultView: 'month',
+				isReadOnly: true,
+				useDetailPopup: true,
+				usageStatistics: false,
+				gridSelection: {
+					enableDbClick: false,
+					enableClick: false,
+				},
+				month: {
+					startDayOfWeek: 0,
+					dayNames: ["일", "월", "화", "수", "목", "금", "토"],
+				},
+				template: {
+					popupDelete() {
+						return '예약취소';
+					},
+					popupEdit(){
+						return '예약수정';
+					}
+				},
+			});
+			
+			// 
+			calendar.on('beforeDeleteEvent', (eventObj) => {
+			  	calendar.deleteEvent(eventObj.id, eventObj.calendarId);
+			});
+			
+			
+			$(document).on("click", ".detail-view-button", e => {
+				let _this = $(e.currentTarget);
+				let spaceno = _this.data("spaceno");
+				
+				window.open("/spaceHub/space?cmd=detail&spaceno="+spaceno);
+			});
+			
+			callList();			
+		});
+		
+		const callList = date => {
+			let appendTemplate = $("#calendar-detail-template").html();
+			
+			
+			$.ajax({
+				type: "GET",
+				url: "/spaceHub/mypage/guest",
+				data: {cmd: "reservationData"},
+				dataType: "json",
+				success: result => {
+					let reservationData = result.data;
+					let calendarData = new Array();
+					
+					reservationData.forEach(obj => {
+						let appendHtml = $(appendTemplate);
+						
+						appendHtml.find(".detail-spaceImage img").attr("src", obj.spaceImage);
+						appendHtml.find(".info-addr span").text(obj.spaceAddr);
+						appendHtml.find(".info-type span").text(obj.spaceType);
+						appendHtml.find(".info-regdate span").text(obj.regdate);
+						appendHtml.find(".info-guest span").text(obj.guest);
+						appendHtml.find(".price-space").text(obj.price);
+						appendHtml.find(".price-total").text(obj.spacePrice);
+						appendHtml.find(".detail-button button").attr("data-spaceno", obj.spaceno);
+						
+						// 상태별 색상 처리
+						let statusColor = "#999999";
+						if( obj.status==2 ) 		statusColor = "#5A78FF";
+						else if( obj.status==3 )	statusColor = "#B04F53";
+						else if( obj.status==4 ) 	statusColor = "#666666";
+						
+						
+						calendarData.push({
+							id: obj.reservno,
+						    calendarId: obj.spaceno,
+						   	backgroundColor: statusColor,
+						   	color: "#fff",
+						    category: 'allday',
+						    start: obj.checkin,
+						    end: obj.checkout,						    
+						    title: obj.spaceSubject,
+						    body: appendHtml.html(),
+						    attendees: "",
+						    state: "",
+						})
+					});
+					
+					calendar.createEvents(calendarData);
+				}
+			});
+			
+		}
+		
+		// 달력 컨트롤러 제어
+		const calendarController = type => {
+			if( type=="prev" ) 			calendar.prev();
+			else if( type=="next" )		calendar.next();
+			else if( type=="today" ) 	calendar.today();
+		}
+		
+		
+	</script>
 <jsp:include page="../../common/header.jsp" />
 
 	<div class="main">
 		<div class="inner">
-			<div class="page-title">
-				<div class="title-name">예약 확인</div>
-				<div class="btn-group" style="float: right;">
-				  <a href="#" class="btn btn-secondary active" aria-current="page"" >여행 예정</a>
-				  <a href="/spaceHub/mypage/guest?cmd=spaceEnd" class="btn btn-secondary">지난 여행</a>
-				  <a href="/spaceHub/mypage/guest?cmd=spaceCancel" class="btn btn-secondary">취소한 여행</a>
+			<div class="calendar-wrap">
+				<div class="calendar-control" style="display: flex; justify-content: space-between;">
+					<button type="button" class="btn btn-primary" onclick="calendarController('prev');">이전달</button>
+					<button type="button" class="btn btn-primary" onclick="calendarController('next');">다음달</button>
 				</div>
-				<div class="container">
-					<form action="">
-					<div class="row row-cols-1 row-cols-md-4 g-4" style="width:1500px;">
-					<c:forEach var="vo" items="${list}">
-			 		 <div class="col">
-						<div class="card h-100" style="width: 18rem;">
-						  <a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno}"><img src="${vo.path}" alt="..."></a>
-						  <div class="card-body">
-						    <h5 class="card-title">${vo.subject}</h5>
-						  </div>
-						  <div class="card-body">
-						    <p class="card-text" id="cd">체크인날짜</p>
-						    <p class="card-text" id="re">${vo.checkin}</p>
-						  </div>
-						  <div class="card-body">
-						    <p class="card-text" id="cd">체크아웃날짜</p>
-						    <p class="card-text" id="re">${vo.checkout}</p>
-						  </div>
-						  <ul class="list-group list-group-flush">
-						    <li class="list-group-item">게스트 인원 <p class="card-text" id="re">${vo.guest}</p></li>
-						    <li class="list-group-item">예약 번호 <p class="card-text" id="sreserv" style="float: right;">${vo.reservno}</p></li>
-						    <li class="list-group-item">결제 가격 <p class="card-text" id="re">₩ ${vo.price}</p></li>
-						  </ul>
-						  <div class="card-footer">
-						    <a href="/spaceHub/message" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="hm">호스트에게메세지</a>
-						    <a href="/spaceHub/review?cmd=review&reservno=${vo.reservno}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" id="de">후기쓰기</a>
-						  </div>
-						   <div class="card-footer">
-						    <a href="/spaceHub/order?cmd=cancel&reservno=${vo.reservno}" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"  id="can" onclick="return confirm('예약을 취소하시겠습니까?')">예약 취소</a>
-						  </div>
-						</div>
-						</div>
-					</c:forEach>
-						</div>
-					</form>
-				</div>
+				<div id="calendar" style="height: 600px;"></div>
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	<template id="calendar-detail-template">
+		<div class="calendar-detail-wrap">
+			<div class="detail-spaceImage">
+				<img src="" alt="" width="100%" />
+			</div>
+			<div class="detail-info">
+				<p class="info-addr">숙소위치: <span></span></p>
+				<p class="info-type">숙소형태: <span></span></p>
+				<p class="info-regdate">예약일: <span></span></p>
+				<p class="info-guest">게스트: <span></span></p>
+			</div>
+			<div class="detail-price">
+				<p>1박금액 : <span class="price-space"></span></p>
+				<p>결제금액 : <span class="price-total"></span></p>
+			</div>
+			<div class="detail-button">
+				<button type="button" class="detail-view-button" data-spaceno="" style="display: block; width: 100%;">상세보기</button>
+			</div>
+		</div>
+	</template>
+	
 </body>
 </html>

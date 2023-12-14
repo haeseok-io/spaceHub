@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.spacehub.www.dao.MemCardDAO;
 import com.spacehub.www.vo.SmemberVO;
 
-public class CardDeleteCommand implements ActionCommand {
+public class CardDeleteCommand implements Action {
 
 	@Override
 	public String execute(HttpServletRequest req, HttpServletResponse resp) {
