@@ -117,6 +117,7 @@ public class SpaceImageDAO {
 	// 데이터 추가
 		public void addOne(SpaceImageVO vo) {
 			sb.setLength(0);
+			System.out.println("seq: "+vo.getSeq());
 			sb.append("INSERT INTO space_image (path, seq, spaceno) VALUES (?, ?, ?)");
 			try {
 				pstmt = conn.prepareStatement(sb.toString());

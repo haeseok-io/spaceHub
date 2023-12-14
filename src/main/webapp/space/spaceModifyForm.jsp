@@ -95,7 +95,6 @@
 	        });
 	        
 	        
-		    var spaceno = "${spaceVo.spaceno}";
 		    // 이미지 삭제
 		    $(".deleteBtn").on("click", function() {
 		        var container = $(this).closest('.imageContainer'); // 삭제할 이미지 컨테이너
@@ -150,15 +149,25 @@
 	                $(this).hide();
 	            }
 	        });
+	        
+	    	 // 폼 제출 이벤트
+	        $('form[name="spaceModifyForm"]').submit(function(event) {
+	            var imageCount = $('.imageContainer').length; // 이미지 컨테이너의 개수 확인
+
+	            // 이미지 개수가 5개 미만인 경우 제출을 막음
+	            if (imageCount < 5) {
+	                alert('이미지는 최소 5개 이상 추가해야 합니다.');
+	                event.preventDefault(); // 폼 제출 막음
+	            }
+	        });
 
 	        
-	    });//$ end
+	    });//$start end
 	</script>
 	
 <jsp:include page="../common/header.jsp"/>
 	<div class="container">
-		<form name="spaceModifyForm" action="/spaceHub/mypage/hostControl" method="post" enctype="multipart/form-data" >
-			<input type="hidden" name="cmd" value="spaceModifyOk" />
+		<form name="spaceModifyForm" action="/spaceHub/mypage/hostSpaceControl" method="post" enctype="multipart/form-data" >
 			<input type="hidden" name="memno" value="${member.memno }"/>
 			<input type="hidden" name="spaceno" value="${spaceVo.spaceno }"/>
 			<input type="hidden" name="vstatus" value="${spaceVo.VStatus}"/>
@@ -186,13 +195,13 @@
 			</div> <br />
 			<%-- <c:forEach var="vo" items="${list }">
 			<div class="imageContainer" style="display: inline-block;" data-imgno="${vo.imgno}">
-				<input type="hidden" name="imgno" value="${vo.imgno}"/>
 				<img src=${vo.path } class="img-thumbnail" alt="..." name="img">
 				 <div class="deleteBtnDiv">
                     <button type="button" class="btn btn-outline-danger deleteBtn">삭제</button>
                 </div>
 			</div>
-			</c:forEach>  --%>
+			</c:forEach> --%> 
+			<h3>숙소이미지를 다시 등록해주세요.</h3>
 				<button type="button" class="btn btn-outline-primary plusImgContainer">사진추가</button>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
@@ -430,7 +439,7 @@
 			</div>
 			<div class="form-floating">
 			  <textarea name="detail" class="form-control" placeholder="숙소 설명을 작성해주세요." id="floatingTextarea2" style="height: 100px" >
-			  	${spaceDetailVo.detail }
+			  	${spaceDetailVo.detail.trim() }
 			  </textarea>
 			  <label for="floatingTextarea2">숙소 설명을 작성해주세요.</label>
 			</div> <br />
