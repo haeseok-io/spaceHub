@@ -156,7 +156,7 @@
 			    <input type="hidden" name="postcode" id="post" value="${smvo.post}" />
 			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
 			    <input type="hidden" name="spaceno" id="spaceno" value="${vo.spaceno}" />
-			    <input type="hidden" name="guest" id="guestmax" value="${sddvo.maxGuest}" />
+			    <input type="hidden" name="guestmax" id="guestmax" value="${sddvo.maxGuest}" />
 			    <input type="hidden" name="orderno" value="" />
 			    <input type="hidden" name="amount" value="" />
 			    <input type="hidden" name="cardCondirmno" value="" />
