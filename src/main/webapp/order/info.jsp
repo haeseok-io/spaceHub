@@ -30,7 +30,7 @@
 		    pay_method: "card",
 		    merchant_uid : 'm_'+new Date().getTime(),
 		    name : space,
-			amount : pricenum,
+			amount : 1,
 		    buyer_email : email,
 		    buyer_name : memname,
 		    buyer_tel : ' ',
@@ -62,6 +62,28 @@
 			  });
 		}
 	
+	function requestPay2() {
+
+			let price = $("#price").text();
+			let space = $("#sname").text();
+			const pricenum = Number(price);
+			let memname = $("#memname").val();
+			let email = $("#email").val();
+			let post = $("#post").val();
+			let addr = $("#addr").val();
+			let phone = $("#phone").val();
+				  
+				  document.orderform.orderno.value = '45788898';
+				  document.orderform.amount.value = pricenum;
+				  document.orderform.cardCondirmno.value = '787878985';
+				  document.orderform.cardnum.value = '4984-4988-6154-4498';
+				  
+				  alert("예약이 완료되었습니다.");
+				  
+				  document.orderform.submit();
+				  
+			    }
+	
 	function couchange(el){
 		let _this = $(el);
 		let dcratio = _this.val();
@@ -77,14 +99,12 @@
 			$("#couponprice").val(dcratio);
 			$("#discountprice").val(0);
 			$("#price").text(cprice-usecredits);
-			$("#shin").val(cprice-usecredits);
 		}else{
 			$("#coupon-price").text(0);
 			$("#discount-price").text(a);
 			$("#couponprice").val(0);
 			$("#discountprice").val(a);
 			$("#price").text(dprice-usecredits);
-			$("#shin").val(dprice-usecredits);
 		}
 		$("#couponname").val(couponname);
 	}
@@ -126,7 +146,6 @@
 				$("#credits-price").text(usecredits);
 				$("#price").text(allprice-usecredits);
 				$("#creditsprice").val(usecredits);
-				$("#shin").val(allprice-usecredits);
 			}else if(usecredits > creditsyet){
 				alert("크래딧이 부족합니다.");
 			}else if(usecredits > price){
@@ -135,10 +154,8 @@
 				$("#price").text(0);
 				$("#credits-price").text(price);
 				$("#creditsprice").val(price);
-				$("#shin").val(0);
 			}else if(usecredits == 0){
 				$("#price").text(allprice);
-				$("#shin").val(allprice);
 			}
 		});
 	});
@@ -162,10 +179,10 @@
 			    <input type="hidden" name="addr" id="addr" value="${smvo.addr}" />
 			    <input type="hidden" name="spaceno" id="spaceno" value="${vo.spaceno}" />
 			    <input type="hidden" name="guestmax" id="guestmax" value="${sddvo.maxGuest}" />
-			    <input type="hidden" name="orderno" value="165156" />
-			    <input type="hidden" name="amount" id="shin" value="${endprice}" />
-			    <input type="hidden" name="cardCondirmno" value="516551" />
-			    <input type="hidden" name="cardnum" value="5427-2757-7252-4651" />
+			    <input type="hidden" name="orderno" value="" />
+			    <input type="hidden" name="amount" value="" />
+			    <input type="hidden" name="cardCondirmno" value="" />
+			    <input type="hidden" name="cardnum" value="" />
 			  </div>
 			  <div class="card-body">
 			    <h5 class="card-title">체크인</h5>
@@ -281,8 +298,8 @@
 			</div>
 			<br>
 			<div class="d-grid gap-2">
-			  <!-- <input type="button" value="결제하기" class="btn btn-outline-secondary" onclick="requestPay()"/> -->
-			  <input type="submit" value="결제하기" class="btn btn-outline-secondary"/>
+			  <input type="button" value="결제하기" class="btn btn-outline-secondary" onclick="requestPay()"/>
+			  <input type="button" value="결제하기(완료)" class="btn btn-outline-secondary" onclick="requestPay2()"/>
 			</div>
 			<br />
 			<br />
