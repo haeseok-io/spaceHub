@@ -30,7 +30,7 @@
 	<div class="container">
 		<form action="">
 			<table class="table">
-			    <tr onclick="yet()">
+			    <tr>
 			      <th scope="col">예약번호</th>
 			      <th scope="col">이름</th>
 			      <th scope="col">체크인</th>
