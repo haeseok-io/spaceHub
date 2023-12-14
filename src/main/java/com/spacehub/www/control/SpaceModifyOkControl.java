@@ -1,9 +1,9 @@
 package com.spacehub.www.control;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import com.spacehub.www.dao.*;
-import com.spacehub.www.vo.*;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,12 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
 
-@WebServlet("/mypage/hostControl")
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.spacehub.www.dao.DiscountDAO;
+import com.spacehub.www.dao.SpaceDAO;
+import com.spacehub.www.dao.SpaceDetailDAO;
+import com.spacehub.www.dao.SpaceFacDAO;
+import com.spacehub.www.dao.SpaceImageDAO;
+import com.spacehub.www.vo.DiscountVO;
+import com.spacehub.www.vo.SmemberVO;
+import com.spacehub.www.vo.SpaceDetailVO;
+import com.spacehub.www.vo.SpaceFacVO;
+import com.spacehub.www.vo.SpaceImageVO;
+import com.spacehub.www.vo.SpaceVO;
+
+@WebServlet("/mypage/hostSpaceControl")
 public class SpaceModifyOkControl extends HttpServlet {
 	
 	@Override
@@ -61,6 +71,7 @@ public class SpaceModifyOkControl extends HttpServlet {
 			String vstatus	= mr.getParameter("vstatus");
 			String memno = mr.getParameter("memno");
 			//String regdate = req.getParameter("regdate");	
+			System.out.println("spaceno:"+spaceno);
 			System.out.println("spacetype:"+type);
 			System.out.println("spaceloc:"+locSplit[0]);
 			System.out.println("spacesubject:"+subject);
@@ -138,7 +149,7 @@ public class SpaceModifyOkControl extends HttpServlet {
 ///////////////////////vo.set, modifyOne/////////////////////////
 
 			//공간 정보(space) 수정
-			spaceVo.setSpaceno(Integer.parseInt(spaceno));
+			//spaceVo.setSpaceno(Integer.parseInt(spaceno));
 			spaceVo.setType(type);
 			spaceVo.setLoc(locSplit[0]);
 			spaceVo.setSubject(subject);
@@ -179,26 +190,28 @@ public class SpaceModifyOkControl extends HttpServlet {
 			 // 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
 		    int seq = 1; // 순서를 지정하기 위한 변수
-		    
+		    System.out.println("hashcode:"+fileInputNames.hashCode());
+		    spcaeImageDao.deleteOne(Integer.parseInt(spaceno));
 		    while (fileInputNames.hasMoreElements()) {
 		        String inputName = fileInputNames.nextElement();
-		        String uploadedFilePath = mr.getFilesystemName(inputName);
-		        System.out.println(" uploadedFilePath : " + uploadedFilePath);
+		        String imgIdx = inputName.substring(3);//img(?) 번호 가져오기
+		        String uploadedFilePath = mr.getOriginalFileName(inputName);
+		        
+		        System.out.println("inputName:" + inputName );
+		        System.out.println("uploadedFilePath : " + uploadedFilePath);
+		        System.out.println("imgIdx: "+imgIdx);
 		        // 파일 업로드가 실패한 경우, 파일 경로는 null일 수 있습니다.
 		        if (uploadedFilePath != null) {
 		            // 업로드된 파일의 경로를 DB에 저장하거나 다른 작업 수행
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
+		            spaceImageVo.setSeq(Integer.parseInt(imgIdx)); // 순서 설정
 		            spaceImageVo.setSpaceno(Integer.parseInt(spaceno)); // 공간 번호 설정
 		            //spaceImageVo.setImgno(1); // 이미지 번호 설정
 		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
-		            spaceImageVo.setSeq(seq++); // 순서 설정
 
 		            // 해당 파일 정보를 DB에 삭제 후 추가
 		            System.out.println("이미지 VO : " + spaceImageVo);
-		            spcaeImageDao.deleteOne(Integer.parseInt(spaceno));
 		            spcaeImageDao.addOne(spaceImageVo);
-		            spcaeImageDao.close();
-		            //System.out.println(seq);
 		        }
 		    }
 		    
