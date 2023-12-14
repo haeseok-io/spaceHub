@@ -7,6 +7,11 @@
 	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 	
 	<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+	<style>
+		.container{
+			margin-bottom:100px;
+		}
+	</style>
 <jsp:include page="../common/header.jsp" />
 	<div class="main">
 		<div class="inner">
