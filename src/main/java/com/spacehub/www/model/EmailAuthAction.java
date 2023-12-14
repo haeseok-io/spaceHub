@@ -23,24 +23,22 @@ public class EmailAuthAction implements Action{
 		String m = req.getParameter("memno");
 		
 		if(m != null) {
-				
-			int memno = Integer.parseInt(m);
-		
-			SmemberDAO dao = new SmemberDAO();
-			SmemberVO vo = dao.getOne(memno);
+			HttpSession session = req.getSession();
 			
-			String email = vo.getEmail();
-			System.out.println();
+			SmemberVO memberData = (SmemberVO) session.getAttribute("member");
+
+			String email = memberData.getEmail();
+			System.out.println(email);
 			Properties p = new Properties();
 			
-			p.put("mail.tansport.protocol", "smtp");
+			p.put("mail.transport.protocol", "smtp");
 			p.put("mail.smtp.host", "smtp.gmail.com");
 			p.put("mail.smtp.port", "465");
 			p.put("mail.smtp.auth", "true");
 			
 			p.put("mail.smtp.quitwait", "false");
-			p.put("mail.smtp.socKetFactory.port", "false");
-			p.put("mail.smtp.socKetFactory.class", "javax.net.ssl.SSLSocketFactory");
+			p.put("mail.smtp.socketFactory.port", "false");
+			p.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			p.put("mail.smtp.socketFactory.fallback", "false");
 			
 			String num = "" + (int)(Math.random()*100000);
@@ -49,8 +47,6 @@ public class EmailAuthAction implements Action{
 			StringBuffer sb = new StringBuffer();
 			sb.append("<h3>인증번호</h3>");
 			sb.append("<h3>" + num + "</h3>");
-			
-			HttpSession session = req.getSession();
 			
 			session.setAttribute("authNum", num);
 			// 보내는 사람
