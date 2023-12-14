@@ -58,6 +58,18 @@
     .hostSpace_update {
     	text-decoration: underline;
     }
+    
+    /* slick 플러그인 제어 */
+		.slick-slider {}
+		.slick-dotted.slick-slider { margin-bottom: 0; }
+		
+		.slick-prev, .slick-next { z-index: 2; }
+		.slick-prev { left: 10px; }
+		.slick-next { right: 10px; }
+		
+		.slick-dots { bottom: 10px; }
+		.slick-dots li button:before { font-size: 10px; color: #fff; }
+		.slick-dots li.slick-active button:before { color: #fff; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
@@ -111,8 +123,8 @@
 						<div>등록한 공간이 없습니다!</div>
 						<a class="hostSpace_update" href="/spaceHub/space?cmd=write&memno=${member.memno }">공간 등록하러 가기</a>
 					</div>
-				<c:if test="${not empty hostList }">
 				</c:if>
+				<c:if test="${not empty hostList }">
 				<c:forEach var="vo" items="${hostList }">
 						<div class="spaceInfo">
 							<div class="img_wrap slider">

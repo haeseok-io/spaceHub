@@ -41,6 +41,18 @@
     	display: inline-block;
     	margin: 0 30px;
     }
+    
+    /* slick 플러그인 제어 */
+		.slick-slider {}
+		.slick-dotted.slick-slider { margin-bottom: 0; }
+		
+		.slick-prev, .slick-next { z-index: 2; }
+		.slick-prev { left: 10px; }
+		.slick-next { right: 10px; }
+		
+		.slick-dots { bottom: 10px; }
+		.slick-dots li button:before { font-size: 10px; color: #fff; }
+		.slick-dots li.slick-active button:before { color: #fff; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
