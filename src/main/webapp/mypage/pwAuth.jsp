@@ -45,7 +45,7 @@ $(() => {
 				email: "${vo.email}",
 			},
 			success: function (data) {
-				alert("인증번호가 전송되었습니다.");
+				alert("가입하신 이메일로 인증번호가 전송되었습니다.");
 			},
 			error: function (xhr, status, error) {
 				alert("전송 중 오류가 발생했습니다.");
@@ -98,8 +98,8 @@ $(() => {
 		<div>
 			<p>변경할 비밀번호 : </p>
 			<input type="password" name="password" id="password" />
-			<input type="button" name="pwCheck" id="pwCheck" value="확인"/>
-			<input type="button" name="emailAuth" id="emailAuth" value="전송" />
+			<input type="button" name="pwCheck" id="pwCheck" value="비밀번호 확인"/>
+			<input type="button" name="emailAuth" id="emailAuth" value="인증번호 전송" />
 		</div>
 		<p>인증번호 :</p>
 		<input type="text" name="emailKey" id="emailKey" />
