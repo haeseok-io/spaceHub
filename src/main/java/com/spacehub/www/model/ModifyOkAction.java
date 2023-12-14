@@ -30,16 +30,17 @@ public class ModifyOkAction implements Action{
 			vo.setAccountNum(accountNum);
 			
 			dao.modifyOne(vo);
-			dao.close();
-	        
+
+			// 수정 성공 알림을 JSP에 전달
+			req.setAttribute("showAlert", true);
+			req.setAttribute("alertMessage", "수정이 성공적으로 완료되었습니다!");
+
 	        memberData.setAccountNum(accountNum);
 	        memberData.setPost(post);
 	        memberData.setAddr(addr);
 	        
-	        req.setAttribute("showAlert", true);
-	        req.setAttribute("alertMessage", "회원 정보 수정이 완료되었습니다.");
+	        dao.close();        
 		}
-		return "/spaceHub/mypage";
+		return "mypage/modifyForm.jsp";
 	}
-
 }

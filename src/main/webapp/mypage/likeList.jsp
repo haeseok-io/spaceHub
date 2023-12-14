@@ -39,7 +39,7 @@
     }
     .content {
     	display: inline-block;
-    	
+    	margin: 0 30px;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
