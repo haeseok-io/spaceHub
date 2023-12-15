@@ -14,7 +14,6 @@
 		width: 200px;
 		height: 200px;
 		display: inline-block; /* 이미지를 옆으로 배열하려면 인라인 블록 요소로 설정 */
-        margin-right: 20px;
 	}
 	a {
 		color: black;
