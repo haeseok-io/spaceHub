@@ -27,7 +27,6 @@ public class SpaceImageDAO {
 			pstmt = conn.prepareStatement(sb.toString());
 			pstmt.setInt(1, spaceno);
 			int result = pstmt.executeUpdate();
-			System.out.println("영향 받은 row 수 : " + result);
 		} catch (SQLException e) {
 			System.out.println("이미지 삭제 실패");
 			e.printStackTrace();

@@ -124,7 +124,6 @@ public class SpaceWriteControl extends HttpServlet {
 			
 			//LastInsertId
 			int lastInsert = spaceDao.getLastInsert();
-			System.out.println("마지막 번호 : " + lastInsert);
 			
 			//공간 상세정보(space_detail)
 			spaceDetailVo.setSpaceno(lastInsert);

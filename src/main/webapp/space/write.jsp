@@ -20,6 +20,26 @@
 	    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	</style>
 	<script>
+		$(document).ready(function() {
+		    $('form[name="spaceForm"]').submit(function(event) {
+		        var imageCount = 0;
+	
+		        // 각 이미지 업로드 필드를 순회하면서 파일이 첨부되었는지 확인
+		        $('.imageContainer').each(function() {
+		            if ($(this).prop('files').length > 0) {
+		                imageCount++;
+		            }
+		        });
+	
+		        // 이미지 개수가 5개 미만이고, 파일이 첨부되지 않았을 경우 폼 제출을 막음
+		        if (imageCount < 5) {
+		            alert('이미지는 최소 5개 이상 추가해야 합니다.');
+		            event.preventDefault(); // 폼 제출 막음
+		        }
+		    });
+		});
+
+	  
 	  function validateForm() {
 	    // 필수 입력 필드를 확인합니다.
 	    var subject = document.forms["spaceForm"]["subject"].value;
@@ -61,11 +81,11 @@
 			</div> <br />
 			<div class="input-group mb-3">
 			  <label class="input-group-text" for="inputGroupFile01">공간이미지 업로드</label>
-			  <input name="img5" type="file" class="form-control" id="inputGroupFile01">
-			  <input name="img4" type="file" class="form-control" id="inputGroupFile02">
-			  <input name="img3" type="file" class="form-control" id="inputGroupFile03">
-			  <input name="img2" type="file" class="form-control" id="inputGroupFile04">
-			  <input name="img1" type="file" class="form-control" id="inputGroupFile05">
+			  <input name="img5" type="file" class="form-control imageContainer" id="inputGroupFile01">
+			  <input name="img4" type="file" class="form-control imageContainer" id="inputGroupFile02">
+			  <input name="img3" type="file" class="form-control imageContainer" id="inputGroupFile03">
+			  <input name="img2" type="file" class="form-control imageContainer" id="inputGroupFile04">
+			  <input name="img1" type="file" class="form-control imageContainer" id="inputGroupFile05">
 			</div>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
 			  다음 중 숙소를 가장 잘 설명하는 것은 무엇인가요?
