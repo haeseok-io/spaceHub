@@ -10,49 +10,31 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <style>
-	img {
-		height: 200px;
-		width: 200px;
-		display: inline-block; /* 이미지를 옆으로 배열하려면 인라인 블록 요소로 설정 */
-        margin-right: 20px;
-	}
-	p {
-		color : black;
-	}
-    .wrap {
-        position: relative;
-        width: 100%; /* 슬라이드 전체 너비 */
-    }
+	.content-wrap { display: flex; flex-wrap: wrap; }
+	.content-wrap .content { width: 25%; padding: 0 20px; margin-bottom: 30px; }
+	
+    .content-wrap .content .wrap { position: relative; width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .content-wrap .content .wrap .slick-list { width: 100%; height: 100%; }
+    .content-wrap .content .wrap .slick-list .slick-track { height: 100%; }
+    .content-wrap .content .wrap .slick-list .slick-track img { width: 100%; height: 100%; object-fit: cover; }
 
-    .slider {
-        position: relative;
-        max-width: 200px; /* 슬라이더의 최대 너비를 조절 */
-    }
-
-    .slider img {
-        width: 200px; /* 이미지가 슬라이더 안에 꽉 차도록 설정 */
-        height: 200px; /* 가로 비율에 따라 세로 비율 자동 조절 */
-        border-radius: 8px; /* 이미지에 둥근 테두리 적용 */
-    }
-    span {
-    	font-weight: bold; font-size: 18px;
-    }
-    .content {
-    	display: inline-block;
-    	margin: 0 30px;
-    }
+	.content-wrap .content .subject { display: block; width: 100%; font-weight: bold; font-size: 18px; text-overflow: ellipsis; overflow: hidden;  white-space: nowrap;  }
+	.content-wrap .content .addr { display: block; width: 100%; font-size: 14px; color: #666; text-overflow: ellipsis; overflow: hidden;  white-space: nowrap; }
+	.content-wrap .content .price { margin-top: 10px; font-size: 14px; color: #666; }
+	.content-wrap .content .price span { font-weight: bold; font-size: 16px; color: #333; }
+    
     
     /* slick 플러그인 제어 */
-		.slick-slider {}
-		.slick-dotted.slick-slider { margin-bottom: 0; }
-		
-		.slick-prev, .slick-next { z-index: 2; }
-		.slick-prev { left: 10px; }
-		.slick-next { right: 10px; }
-		
-		.slick-dots { bottom: 10px; }
-		.slick-dots li button:before { font-size: 10px; color: #fff; }
-		.slick-dots li.slick-active button:before { color: #fff; }
+	.slick-slider {}
+	.slick-dotted.slick-slider { margin-bottom: 0; }
+	
+	.slick-prev, .slick-next { z-index: 2; }
+	.slick-prev { left: 10px; }
+	.slick-next { right: 10px; }
+	
+	.slick-dots { bottom: 10px; }
+	.slick-dots li button:before { font-size: 10px; color: #fff; }
+	.slick-dots li.slick-active button:before { color: #fff; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
@@ -72,25 +54,27 @@
 		<input type="hidden" name="cmd" value="likeList"/>
 		<input type="hidden" name="memno" value="${member.memno }" />
 		<div class="container">		
-		<h1>찜한 숙소</h1>
+			<h1>찜한 숙소</h1>
+			<div class="content-wrap">
 				<c:forEach var="vo" items="${jjimList }">
-					<div class="content">
-						<div class="wrap slider">
-							<c:forEach var="img" items="${vo.imgList }">
-								<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
-									<img src="${img.path }" alt="" />			
-								</a>
-							</c:forEach>
-						</div>
-						<div><span class="subject">${vo.subject }</span></div>
-						<div>${vo.addr }</div>
-						<div>₩ <span class="price">${vo.price }</span> / 1박</div>
+				<div class="content">
+					<div class="wrap slider">
+						<c:forEach var="img" items="${vo.imgList }">
+							<a href="/spaceHub/space?cmd=detail&spaceno=${vo.spaceno }">
+								<img src="${img.path }" alt="" />			
+							</a>
+						</c:forEach>
 					</div>
+					<div class="subject">${vo.subject }</div>
+					<div class="addr">${vo.addr }</div>
+					<div class="price">₩ <span>${vo.price }</span> / 1박</div>
+				</div>
 				</c:forEach>
 			</div>
-			<c:if test="${empty jjimList}">
-        		    <p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
-        	</c:if>
+		</div>
+		<c:if test="${empty jjimList}">
+	    <p>찜한 숙소가 없습니다. 숙소를 찜하려면 하트를 클릭해주세요.</p>
+       	</c:if>
 	</form>
 </body>
 </html>
