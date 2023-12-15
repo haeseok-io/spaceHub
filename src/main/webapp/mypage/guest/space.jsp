@@ -40,7 +40,13 @@
 			  	calendar.deleteEvent(eventObj.id, eventObj.calendarId);
 			});
 			
+			// 이전 다음달 선택
+			$(".calendar-control button").on("click", e => {
+				let date = calendar.getDate();
+				printDate(date);
+			});
 			
+			// 상세보기
 			$(document).on("click", ".detail-view-button", e => {
 				let _this = $(e.currentTarget);
 				let spaceno = _this.data("spaceno");
@@ -48,7 +54,8 @@
 				window.open("/spaceHub/space?cmd=detail&spaceno="+spaceno);
 			});
 			
-			callList();			
+			printDate(calendar.getDate());
+			callList();
 		});
 		
 		const callList = date => {
@@ -104,6 +111,15 @@
 			
 		}
 		
+		// 현재 월 표기
+		const printDate = date => {
+			let year = date.getFullYear();
+			let month = date.getMonth()+1;
+			
+			let rangeMsg = year+"년 "+String(month).padStart(2, '0')+"월";
+			$(".calendar-range").text(rangeMsg);
+		}
+		
 		// 달력 컨트롤러 제어
 		const calendarController = type => {
 			if( type=="prev" ) 			calendar.prev();
@@ -122,8 +138,9 @@
 			</div>
 		
 			<div class="calendar-wrap">
-				<div class="calendar-control" style="display: flex; justify-content: space-between;">
+				<div class="calendar-control" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
 					<button type="button" class="btn btn-primary" onclick="calendarController('prev');">이전달</button>
+					<h3 class="calendar-range">ㅇㅇㅇㅇ</h3>
 					<button type="button" class="btn btn-primary" onclick="calendarController('next');">다음달</button>
 				</div>
 				<div id="calendar" style="height: 600px;"></div>
