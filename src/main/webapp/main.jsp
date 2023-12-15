@@ -51,6 +51,8 @@
 		.slick-dots { bottom: 10px; }
 		.slick-dots li button:before { font-size: 10px; color: #fff; }
 		.slick-dots li.slick-active button:before { color: #fff; }
+		
+		.air-datepicker { z-index: 9999; }
 	</style>
 	
 	<script src="/spaceHub/js/air-datepicker.js"></script>
@@ -84,11 +86,13 @@
 			});
 			
 			// 검색메뉴 외 클릭시 닫기
-			document.addEventListener('click', e => {
+			$(document).on("click", e => {
 				let target = $(e.target);
 				let searchEl = $("#header .header-search");
 				
-				if( searchState && !target.is('#header, #header *') ){
+				
+				
+				if( searchState && !target.is('#header, #header *') && !target.is(".air-datepicker, .air-datepicker *") ){
 					searchState = false;
 					searchEl.removeClass("active");
 				}
