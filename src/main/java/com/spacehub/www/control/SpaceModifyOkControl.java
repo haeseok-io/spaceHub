@@ -47,7 +47,6 @@ public class SpaceModifyOkControl extends HttpServlet {
 		
 		//업로드할 경로
 		String saveFolder = req.getRealPath("/upload");
-		System.out.println(saveFolder);
 		//첨부파일 크기
 		int size = 1024*1024*100;
 		
