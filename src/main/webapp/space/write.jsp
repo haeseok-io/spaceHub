@@ -313,22 +313,22 @@
 			</div>
 			<div class="form-check">
 				<input type="hidden" name="disName" value="신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)" />
-				<input name="dcRatio" class="form-check-input" type="checkbox" value="20" id="flexCheckDefault">
-				<label  class="form-check-label" for="flexCheckDefault">
+				<input name="dcRatio" class="form-check-input" type="checkbox" value="20" id="flexCheckDefault1">
+				<label class="form-check-label" for="flexCheckDefault1">
 				 신규 숙소 프로모션 (첫 3건의 예약에 20% 할인 제공)
 				</label>
 			</div>
 			<div class="form-check">
 				<input type="hidden" name="disName" value="주간 할인 (7박 이상의 숙박에 적용되는 할인)" />
-			  	<input name="dcRatio" class="form-check-input" type="checkbox" value="10" id="flexCheckDefault">
-			  	<label class="form-check-label" for="flexCheckDefault">
+			  	<input name="dcRatio" class="form-check-input" type="checkbox" value="10" id="flexCheckDefault2">
+			  	<label class="form-check-label" for="flexCheckDefault2">
    			   주간 할인 (7박 이상의 숙박에 적용되는 할인)
 			  	</label>
 			</div>
 			<div class="form-check">
 				<input type="hidden" name="disName" value="월간 할인 (28박 이상의 숙박에 적용되는 할인)" />
-			  <input name="dcRatio" class="form-check-input" type="checkbox" value="18" id="flexCheckDefault">
-			  <label class="form-check-label" for="flexCheckDefault">
+			  <input name="dcRatio" class="form-check-input" type="checkbox" value="18" id="flexCheckDefault3">
+			  <label class="form-check-label" for="flexCheckDefault3">
 			   월간 할인 (28박 이상의 숙박에 적용되는 할인)
 			  </label>
 			</div>
