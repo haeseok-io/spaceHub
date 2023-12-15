@@ -117,6 +117,10 @@
 
 	<div class="main">
 		<div class="inner">
+			<div class="page-title">
+				<div class="title-name">예약 내역</div>
+			</div>
+		
 			<div class="calendar-wrap">
 				<div class="calendar-control" style="display: flex; justify-content: space-between;">
 					<button type="button" class="btn btn-primary" onclick="calendarController('prev');">이전달</button>
