@@ -14,7 +14,7 @@
 		.detail-wrap { margin-top: 30px; font-size: 14px; color: #666; }
 		
 		.detail-subject { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-		.detail-subject .subject-name { font-weight: bold; font-size: 26px; }
+		.detail-subject .subject-name { font-weight: bold; font-size: 24px; }
 		.detail-subject .subject-etc { display: flex; }
 		.detail-subject .subject-etc button { background: #fff; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; color: #666; cursor: pointer; }
 		.detail-subject .subject-etc button:hover { background: #e0e0e0; }

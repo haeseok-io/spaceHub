@@ -52,6 +52,10 @@ public class SpaceDetailAction implements Action {
 		if( hostData.getNickname()==null ) 		hostData.setNickname(hostData.getName());
 		if( hostData.getProfileImg()==null )	hostData.setProfileImg("/spaceHub/upload/profile_empty.jpeg");
 		
+		// 공간정보 가공
+		String detailHtml = detailData.getDetail().replaceAll("\r?\n|\r", "<br>");
+		detailData.setDetail(detailHtml);
+		
 		// 리뷰 가공
 		for(ReviewListVO reviewData : reviewDAO.getSpaceAll(spaceno)) {
 			
