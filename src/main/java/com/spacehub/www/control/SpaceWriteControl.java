@@ -38,8 +38,6 @@ public class SpaceWriteControl extends HttpServlet {
 		    return;  // 로그인 페이지로 리다이렉트 또는 포워드
 		}
 		
-		session.setAttribute("member", memberData);
-		
 		SpaceDAO spaceDao = new SpaceDAO();
 		SpaceDetailDAO spcaeDetailDao = new SpaceDetailDAO();
 		SpaceImageDAO spcaeImageDao = new SpaceImageDAO();
@@ -51,7 +49,6 @@ public class SpaceWriteControl extends HttpServlet {
 		
 		//업로드할 경로
 		String saveFolder = req.getRealPath("/upload");
-		System.out.println(saveFolder);
 		//첨부파일 크기
 		int size = 1024*1024*100;
 		
@@ -64,23 +61,12 @@ public class SpaceWriteControl extends HttpServlet {
 			//지역 앞부분만 잘라오기
 			String loc = mr.getParameter("address");	
 			String[] locSplit = loc.split(" ");
-			//String loc1 = "경기 성남시 도곡동";
-			//String[] locSplit = loc1.split(" ");
 			String subject = mr.getParameter("subject");		
 			String post = mr.getParameter("post");		
 			String addr = mr.getParameter("address");		
 			String price = mr.getParameter("price");		
-			//String regdate = req.getParameter("regdate");	
-			System.out.println("spacetype:"+type);
-			System.out.println("spaceloc:"+locSplit[0]);
-			System.out.println("spacesubject:"+subject);
-			System.out.println("spacepost:"+post);
-			System.out.println("spacetype:"+type);
-			System.out.println("spaceaddr:"+addr);
-			System.out.println("spaceprice:"+price);
 			try {
 				String ip = Inet4Address.getLocalHost().getHostAddress();
-				System.out.println("spaceip:"+ip);
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}		
@@ -97,15 +83,6 @@ public class SpaceWriteControl extends HttpServlet {
 			String outDate = inOutDate.substring(idx+1);
 			String x = mr.getParameter("x");
 			String y = mr.getParameter("y");
-			System.out.println("spacedetailType:"+detailType);
-			System.out.println("detail:"+detail);
-			System.out.println("maxGuest:"+maxGuest);
-			System.out.println("bed:"+bed);
-			System.out.println("bathroom:"+bathroom);
-			System.out.println("inDate:"+inDate);
-			System.out.println("outDate:"+outDate);
-			System.out.println("x:"+x);
-			System.out.println("y:"+y);
 			
 			//공간 편의시설(space_fac)
 			String wifi = mr.getParameter("wifi");
@@ -122,26 +99,10 @@ public class SpaceWriteControl extends HttpServlet {
 			String firealarm = mr.getParameter("firealarm");
 			String aidkit = mr.getParameter("aidkit");
 			String firearm = mr.getParameter("firearm");
-			System.out.println("wifi:"+wifi);
-			System.out.println("tv:"+tv);
-			System.out.println("kitchen:"+kitchen);
-			System.out.println("wm:"+wm);
-			System.out.println("aircon:"+aircon);
-			System.out.println("canpark:"+canpark);
-			System.out.println("canfreepark:"+canfreepark);
-			System.out.println("swim:"+swim);
-			System.out.println("bbq:"+bbq);
-			System.out.println("pooltable:"+pooltable);
-			System.out.println("fireplace:"+fireplace);
-			System.out.println("firealarm:"+firealarm);
-			System.out.println("aidkit:"+aidkit);
-			System.out.println("firearm:"+firearm);
 			
 			//할인등록
 			String[] dcRatio = mr.getParameterValues("dcRatio");
 			String[] disName = mr.getParameterValues("disName");
-			System.out.println("dcRatio:"+dcRatio);
-			System.out.println("disName:"+disName);
 			
 ///////////////////////vo.set, addOne/////////////////////////
 
@@ -152,16 +113,13 @@ public class SpaceWriteControl extends HttpServlet {
 			spaceVo.setPost(post);
 			spaceVo.setAddr(addr);
 			spaceVo.setPrice(Integer.parseInt(price));
-			//spaceVo.setRegdate(regdate);
 			try {
 				spaceVo.setIp(
 				 Inet4Address.getLocalHost().getHostAddress());
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
-			//spaceVo.setVStatus(Integer.parseInt(vStatus));
-			//spaceVo.setStatus(Integer.parseInt(status));
-			spaceVo.setMemno(11);
+			spaceVo.setMemno(memberData.getMemno());
 			spaceDao.addOne(spaceVo);
 			
 			//LastInsertId
@@ -182,15 +140,7 @@ public class SpaceWriteControl extends HttpServlet {
 			spcaeDetailDao.addOne(spaceDetailVo);
 			
 			// 공간 이미지(space_image)
-			
-			//String uploadedFilePath = mr.getFilesystemName("path"); // fileInputFieldName은 파일 입력 필드의 이름으로 대체되어야 합니다.
-//			String[] path = mr.getParameterValues("path");
-			
-			System.out.println(mr.getFileNames());
-			System.out.println(mr.getFilesystemName("img1"));
-			System.out.println(mr.getOriginalFileName("img1"));
-			
-			 // 첫 번째 파일 처리
+			// 첫 번째 파일 처리
 		    Enumeration<String> fileInputNames = mr.getFileNames(); // 모든 파일 업로드 필드의 이름들을 가져옴
 		    int seq = 1; // 순서를 지정하기 위한 변수
 		    while (fileInputNames.hasMoreElements()) {
@@ -208,7 +158,6 @@ public class SpaceWriteControl extends HttpServlet {
 
 		            // 해당 파일 정보를 DB에 추가
 		            spcaeImageDao.addOne(spaceImageVo);
-		            System.out.println(seq);
 		        }
 		    }
 			
