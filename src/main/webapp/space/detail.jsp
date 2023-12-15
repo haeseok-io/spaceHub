@@ -406,7 +406,7 @@
 				</div>
 				<div class="images-sub">
 					<ul class="images-list">
-						<c:forEach begin="0" end="3" var="i" step="1">
+						<c:forEach begin="1" end="4" var="i" step="1">
 						<li>
 							<img src="${imageList[i].path}" alt="" />
 						</li>
