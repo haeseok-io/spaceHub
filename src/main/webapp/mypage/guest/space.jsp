@@ -72,8 +72,8 @@
 						appendHtml.find(".info-type span").text(obj.spaceType);
 						appendHtml.find(".info-regdate span").text(obj.regdate);
 						appendHtml.find(".info-guest span").text(obj.guest);
-						appendHtml.find(".price-space").text(obj.price);
-						appendHtml.find(".price-total").text(obj.spacePrice);
+						appendHtml.find(".price-space").text(obj.spacePrice);
+						appendHtml.find(".price-total").text(obj.price);
 						appendHtml.find(".detail-button button").attr("data-spaceno", obj.spaceno);
 						
 						// 상태별 색상 처리
