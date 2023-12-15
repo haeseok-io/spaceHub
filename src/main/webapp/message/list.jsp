@@ -31,7 +31,7 @@
 		.message-list .message-wrap .list-item .item-info { width: calc(100% - 70px); font-size: 12px; }
 		.message-list .message-wrap .list-item .item-info .info-subject { display: flex; justify-content: flex-start; align-items: center; }
 		.message-list .message-wrap .list-item .item-info .info-subject .badge { margin-right: 5px; padding: 4px 6px; font-weight: normal; font-size: 10px; }
-		.message-list .message-wrap .list-item .item-info .info-subject .subject-name { font-size: 14px; }
+		.message-list .message-wrap .list-item .item-info .info-subject .subject-name { width:  font-size: 14px; }
 		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename { color: #999; }
 		.message-list .message-wrap .list-item .item-info .info-subject .subject-spacename:before { content: "·"; padding: 0 5px; }
 		.message-list .message-wrap .list-item .item-info .info-contents { width: 100%; margin-top: 5px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis }
@@ -163,6 +163,9 @@
 							let qnaBadge = "<span class='badge text-bg-success'>공간문의</span>";
 							appendHtml.find(".info-subject").prepend(qnaBadge);
 						}
+						
+						
+						obj.spaceName = obj.spaceName.length>10 ? obj.spaceName.slice(0, 10)+"..." : obj.spaceName;
 						
 						// 데이터 담기
 						appendHtml.attr("data-bno", obj.bno);
