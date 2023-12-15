@@ -149,14 +149,13 @@ public class SpaceModifyOkControl extends HttpServlet {
 ///////////////////////vo.set, modifyOne/////////////////////////
 
 			//공간 정보(space) 수정
-			//spaceVo.setSpaceno(Integer.parseInt(spaceno));
+			spaceVo.setSpaceno(Integer.parseInt(spaceno));
 			spaceVo.setType(type);
 			spaceVo.setLoc(locSplit[0]);
 			spaceVo.setSubject(subject);
 			spaceVo.setPost(post);
 			spaceVo.setAddr(addr);
 			spaceVo.setPrice(Integer.parseInt(price));
-			//spaceVo.setRegdate(regdate);
 			try {
 				spaceVo.setIp(
 				 Inet4Address.getLocalHost().getHostAddress());
@@ -195,9 +194,8 @@ public class SpaceModifyOkControl extends HttpServlet {
 		    
 		    while (fileInputNames.hasMoreElements()) {
 		        String inputName = fileInputNames.nextElement();
-		        String imgIdx = inputName.substring(3);//img(?) 번호 가져오기
 		        String uploadedFilePath = mr.getOriginalFileName(inputName);
-		        
+		        String imgIdx = inputName.substring(3);//img(?) 번호 가져오기
 		        System.out.println("inputName:" + inputName );
 		        System.out.println("uploadedFilePath : " + uploadedFilePath);
 		        System.out.println("imgIdx: "+ imgIdx);
@@ -208,7 +206,7 @@ public class SpaceModifyOkControl extends HttpServlet {
 		            SpaceImageVO spaceImageVo = new SpaceImageVO(); // 파일 정보를 담을 객체 생성
 		            spaceImageVo.setSeq(Integer.parseInt(imgIdx)); // 순서 설정
 		            spaceImageVo.setSpaceno(Integer.parseInt(spaceno)); // 공간 번호 설정
-		            spaceImageVo.setPath("/spaceHub/upload/"+uploadedFilePath); // 파일 경로 설정
+		            spaceImageVo.setPath("/spaceHub/upload/" + uploadedFilePath ); // 파일 경로 설정
 
 		            // 해당 파일 정보를 DB에 삭제 후 추가
 		            //System.out.println("이미지 VO : " + spaceImageVo);

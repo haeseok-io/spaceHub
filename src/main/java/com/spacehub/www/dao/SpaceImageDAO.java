@@ -58,7 +58,7 @@ public class SpaceImageDAO {
 		ArrayList<SpaceImageVO> list = new ArrayList<SpaceImageVO>();
 		
 		sb.setLength(0);
-		sb.append("Select imgno, path, seq, spaceno From space_image Where spaceno=?");
+		sb.append("Select imgno, path, seq, spaceno From space_image Where spaceno=? order by seq asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
@@ -89,7 +89,7 @@ public class SpaceImageDAO {
 		sb.append("Select space_image.imgno, space_image.path, space_image.seq, space_image.spaceno, space.memno ");
 		sb.append("From space_image ");
 		sb.append("join space on space_image.spaceno = space.spaceno ");
-		sb.append("where space_image.spaceno=? and space.memno=?");
+		sb.append("where space_image.spaceno=? and space.memno=? oreder by seq asc");
 		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
