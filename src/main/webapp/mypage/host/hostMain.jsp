@@ -108,8 +108,8 @@
 							<div class="img_wrap slider">
 								<c:forEach var="img" items="${vo.imgList }">
 										<img src="${img.path }" alt="" />
-									</a>
-								</c:forEach> 
+									</a> 
+								</c:forEach> <br />
 							</div>
 							<p class="space_subject">${vo.subject }</p>
 							<button type="button" class="btn btn-primary"><a href="/spaceHub/mypage/host?cmd=reservCalender">예약자 확인</a></button>

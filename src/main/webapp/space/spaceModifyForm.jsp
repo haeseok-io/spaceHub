@@ -100,11 +100,12 @@
 		        var container = $(this).closest('.imageContainer'); // 삭제할 이미지 컨테이너
 		        container.remove(); // 이미지 컨테이너 삭제
 		    });
-
+			
+		    
 	        // 이미지 컨테이너
 	        $(".plusImgContainer").on("click", function() {
 	            var imageContainers = $('.imageContainer').length; // 이미지 컨테이너의 개수 확인
-	            var cnt = imageContainers + 1; // 이미지 컨테이너의 개수를 기준으로 cnt 설정
+	            var cnt = imageContainers + 1;
 	            if (imageContainers < 10) { // 이미지 컨테이너 개수가 10개 미만인 경우에만 새 이미지 추가 가능
 	                var newImageContainer = "<div class='imageContainer' style='display: inline-block; vertical-align: top;'>" +
 	                    "<img src='' class='img-thumbnail' alt='...'>" +
@@ -112,15 +113,11 @@
 	                    "<button type='button' class='btn btn-outline-danger deleteBtn'>삭제</button>" +
 	                    "</div>" +
 	                    "<div class='plusBtnDiv'>" +
-	                    "<input type='file' name='img"+cnt+"'class='fileUpload' style='display: none;' accept='image/*'>" +
+	                    "<input type='file' name='img"+cnt+"' class='fileUpload' style='display: none;' accept='image/*'>" +
 	                    "</div>" +
 	                    "</div>";
 
 	                $('.plusImgContainer').before(newImageContainer);
-
-	                
-	                // 이미지 컨테이너 추가 후 cnt 증가
-	                //cnt--;
 
 	                // 새로 생성된 이미지 컨테이너의 삭제 버튼에 대한 이벤트 핸들러 연결
 	                $(this).prev('.imageContainer').find('.deleteBtn').on('click', function() {
@@ -143,7 +140,9 @@
 	                        reader.readAsDataURL(fileInput.files[0]);
 	                    }
 	                }).click(); // 파일 업로드 창을 띄우기 위해 click 이벤트 호출
-	            }    
+	            }   
+	            // 이미지 컨테이너 추가 후 cnt 증가
+               	cnt++;
 	            // 이미지 컨테이너가 10개인 경우 사진 추가 버튼 숨김 처리
 	            if ($('.imageContainer').length >= 10) {
 	                $(this).hide();
@@ -166,12 +165,11 @@
 	<script>
 	 function validateForm() {
  	    // 필수 입력 필드를 확인합니다.
- 	    var subject = document.forms["spaceModifyForm"]["subject"].value;
- 	    var detail = document.forms["spaceModifyForm"]["detail"].value;
- 	    var price = document.forms["spaceModifyForm"]["price"].value;
- 	    var inOutDate = document.forms["spaceModifyForm"]["inOutDate"].value;
+ 	    let detail = document.forms["spaceModifyForm"]["detail"].value;
+ 	    let price = document.forms["spaceModifyForm"]["price"].value;
+ 	    let inOutDate = document.forms["spaceModifyForm"]["inOutDate"].value;
  	
- 	    if (subject == "" || detail == "" || price == "" || inOutDate=="" || price.equlas("")) {
+ 	    if (detail == "" || price == "" || inOutDate=="" || price.equlas("")) {
  	      alert("모든 필수 항목을 입력하세요!");
  	      return false;
  	    }
@@ -207,14 +205,6 @@
 					<input type="radio" name="detailType" id="multiRoom" value="도미토리">
 				</div>
 			</div> <br />
-			<%-- <c:forEach var="vo" items="${list }">
-			<div class="imageContainer" style="display: inline-block;" data-imgno="${vo.imgno}">
-				<img src=${vo.path } class="img-thumbnail" alt="..." name="img">
-				 <div class="deleteBtnDiv">
-                    <button type="button" class="btn btn-outline-danger deleteBtn">삭제</button>
-                </div>
-			</div>
-			</c:forEach> --%> 
 			<h3>숙소이미지를 다시 등록해주세요.</h3>
 				<button type="button" class="btn btn-outline-primary plusImgContainer">사진추가</button>
 			<div class="p-3 text-primary-emphasis --bs-info-border-subtle border border-primary-subtle rounded-3">
