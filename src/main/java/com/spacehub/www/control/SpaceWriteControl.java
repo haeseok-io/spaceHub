@@ -200,7 +200,6 @@ public class SpaceWriteControl extends HttpServlet {
 		discountDao.close();
 		
 		// 처리가 끝난 후 /spaceHub/home 으로 이동
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/mypage/host?cmd=hostMain");
-		dispatcher.forward(req, resp);
+		resp.sendRedirect("/spaceHub/mypage/host?cmd=hostMain");
 	}
 }
