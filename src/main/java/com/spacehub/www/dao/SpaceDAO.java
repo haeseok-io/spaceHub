@@ -214,9 +214,6 @@ public class SpaceDAO {
 		sb.append("Group By s.spaceno ");
 		sb.append("Limit "+startNo+", "+endNo);
 		
-		System.out.println(sb.toString());
-		
-		
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();

@@ -24,7 +24,8 @@
 		.space-list .list-item .item-thumbnail .space-jjim .bi-heart-fill { color: red; }
 		
 		.space-list .list-item .item-subject { display: flex; justify-content: space-between; margin-top: 20px; }
-		.space-list .list-item .item-subject .subject-name { font-weight: bold; font-size: 16px; }
+		.space-list .list-item .item-subject .subject-name { width: calc(100% - 80px); font-weight: bold; font-size: 16px; }
+		.space-list .list-item .item-subject .subject-rating{ width: 80px; text-align: center; }
 		.space-list .list-item .item-info { margin-top: 10px; }
 		.space-list .list-item .item-info .info-addr { margin-top: 5px; font-size: 14px; color: #aaa; }
 		.space-list .list-item .item-info .info-date { font-size: 14px; color: #aaa; }
@@ -235,6 +236,10 @@
 						appendHtml.find(".info-addr").text(obj.addr);
 						appendHtml.find(".info-date").text(obj.inDate+" ~ "+obj.outDate);
 						appendHtml.find(".price-value").text(obj.priceFormat);
+						
+						if( obj.rating=="0.0" ){
+							appendHtml.find(".subject-rating").hide();
+						}
 						
 						// html 추가
 						appendEl.append(appendHtml);
