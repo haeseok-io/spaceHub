@@ -144,5 +144,4 @@ public class OrderOkCommand implements ActionCommand {
 		
 		return "/mypage/guest?cmd=reservationList";
 	}
-
 }
