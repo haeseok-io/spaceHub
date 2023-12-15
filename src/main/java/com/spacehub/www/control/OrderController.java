@@ -37,6 +37,8 @@ public class OrderController extends HttpServlet{
 		}else if(cmd.equals("orderOk")) {
 			ActionCommand ac = new  OrderOkCommand();
 			url = ac.execute(req, resp);
+			
+			isRedirect = true;
 		}else if(cmd.equals("cancel")) {
 			ActionCommand ac = new  CancelCommand();
 			url = ac.execute(req, resp);
