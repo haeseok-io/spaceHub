@@ -142,7 +142,7 @@ public class OrderOkCommand implements ActionCommand {
 			  memdao.close();
 		  }
 		
-		return "/mypage/guest?cmd=spaceList";
+		return "/mypage/guest?cmd=reservationList";
 	}
 
 }
